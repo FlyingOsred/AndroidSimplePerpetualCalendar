@@ -2,4 +2,49 @@
     <string name="app_name">SimplePerpetualCalendar</string>
     <string name="action_settings">Settings</string>
 
+    <string name="month_day_today_text">TODAY</string>
+
+    <string name="constellation_aquarius_name">Aquarius</string>
+    <string name="constellation_pisces_name">Pisces</string>
+    <string name="constellation_aries_name">Aries</string>
+    <string name="constellation_taurus_name">Taurus</string>
+    <string name="constellation_gemini_name">Gemini</string>
+    <string name="constellation_cancer_name">Cancer</string>
+    <string name="constellation_leo_name">Leo</string>
+    <string name="constellation_virgo_name">Virgo</string>
+    <string name="constellation_libra_name">Libra</string>
+    <string name="constellation_scorpio_name">Scorpio</string>
+    <string name="constellation_sagittarius_name">Sagittarius</string>
+    <string name="constellation_capricorn_name">Capricorn</string>
+
+    <string name="chinese_first_month_prefix">正</string>
+    <string name="chinese_last_month_prefix">腊</string>
+    <string name="chinese_month_name">月</string>
+    <string name="chinese_day_prefix_name">初</string>
+
+    <string name="solar_term_minor_cold_name">Minor Cold</string>
+    <string name="solar_term_major_cold_name">Major Cold</string>
+    <string name="solar_term_start_of_spring_name">Start of Spring</string>
+    <string name="solar_term_rain_water_name">Rain Water</string>
+    <string name="solar_term_awakening_of_insects_name">Awakening of Insects</string>
+    <string name="solar_term_vernal_equinox_name">Vernal Equinox</string>
+    <string name="solar_term_clear_and_bright_name">Clear and Bright</string>
+    <string name="solar_term_grain_rain_name">Grain Rain</string>
+    <string name="solar_term_start_of_summer_name">Start of Summer</string>
+    <string name="solar_term_grain_full_name">Grain Full</string>
+    <string name="solar_term_grain_in_ear_name">Grain in Ear</string>
+    <string name="solar_term_summer_solstice_name">Summer Solstice</string>
+    <string name="solar_term_minor_heat_name">Minor Heat</string>
+    <string name="solar_term_major_heat_name">Major Heat</string>
+    <string name="solar_term_start_of_autumn_name">Start of Autumn</string>
+    <string name="solar_term_limit_of_heat_name">Limit of Heat</string>
+    <string name="solar_term_white_dew_name">White Dew</string>
+    <string name="solar_term_autumnal_eqinox_name">Autumnal Equinox</string>
+    <string name="solar_term_cold_dew_name">Cold Dew</string>
+    <string name="solar_term_frost_descent_name">Frost Descent</string>
+    <string name="solar_term_start_of_winter_name">Start of Winter</string>
+    <string name="solar_term_minor_snow_name">Minor Snow</string>
+    <string name="solar_term_major_snow_name">Major Snow</string>
+    <string name="solar_term_winter_solstice_name">Winter Solstice</string>
+
 </resources>

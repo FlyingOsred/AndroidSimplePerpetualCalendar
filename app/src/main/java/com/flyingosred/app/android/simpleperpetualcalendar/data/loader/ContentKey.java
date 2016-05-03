@@ -2,29 +2,30 @@ package com.flyingosred.app.android.simpleperpetualcalendar.data.loader;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.util.Utils;
 
-import java.util.Calendar;
+import static com.flyingosred.app.android.simpleperpetualcalendar.data.loader.Content.INVALID_POSITION;
 
 final class ContentKey {
 
-    private final Calendar mCalendar;
+    private final int mYear;
+
+    private final int mMonth;
+
+    private final int mDay;
 
     private final int mPosition;
 
     public ContentKey(int position) {
-        this(position, null);
+        this(position, -1, -1, -1);
     }
 
-    public ContentKey(Calendar calendar) {
-        this(Content.INVALID_POSITION, calendar);
+    public ContentKey(int year, int month, int day) {
+        this(INVALID_POSITION, year, month, day);
     }
 
-    public ContentKey(int position, Calendar calendar) {
-        if (calendar != null) {
-            mCalendar = Calendar.getInstance();
-            mCalendar.setTimeInMillis(calendar.getTimeInMillis());
-        } else {
-            mCalendar = null;
-        }
+    public ContentKey(int position, int year, int month, int day) {
+        mYear = year;
+        mMonth = month;
+        mDay = day;
         mPosition = position;
     }
 
@@ -37,14 +38,33 @@ final class ContentKey {
         if (o.getClass() != getClass())
             return false;
         ContentKey key = (ContentKey) o;
-        if (Utils.isSameDay(key.get(), mCalendar) || (key.getPosition() == mPosition)) {
+        if (Utils.isSameDay(mYear, mMonth, mDay, key.getYear(), key.getMonth(), key.getDay())
+                || (mPosition != INVALID_POSITION && key.getPosition() == mPosition)) {
             return true;
         }
         return false;
     }
 
-    public Calendar get() {
-        return mCalendar;
+    @Override
+    public int hashCode() {
+        if (mYear > 0) {
+            return (mDay & 0x1F) | ((mMonth & 0xF) << 5) | (mYear << 9);
+        } else if (mPosition != INVALID_POSITION) {
+            return mPosition + 1;
+        }
+        return 31;
+    }
+
+    public int getYear() {
+        return mYear;
+    }
+
+    public int getMonth() {
+        return mMonth;
+    }
+
+    public int getDay() {
+        return mDay;
     }
 
     public int getPosition() {

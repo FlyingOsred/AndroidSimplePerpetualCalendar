@@ -1,9 +1,6 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
-import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
-
-import java.util.Calendar;
 
 public class LunarDatabase {
 
@@ -30,23 +27,14 @@ public class LunarDatabase {
             0x0D5252, 0x0DAA47, 0x66B53B, 0x056D4F, 0x04AE45, 0x4A4EB9, 0x0A4D4C, 0x0D1541, 0x2D92B5            /*2091-2099*/
     };
 
-    public Calendar getSpringFestivalDay(int year) {
-        Calendar calendar = Calendar.getInstance();
-        long data = LUNAR_DATABASE[year - PerpetualCalendar.START_YEAR];
-        int SpringFestivalDay = (int) data & 0x1F;
-        int SpringFestivalMonth = (int) (data & 0x60) >> 5;
-        calendar.set(year, SpringFestivalMonth - 1, SpringFestivalDay);
-        return calendar;
-    }
-
-    public int getLeapMonth(int year) {
+    public static int getLeapMonth(int year) {
         long data = LUNAR_DATABASE[year - PerpetualCalendar.START_YEAR];
         int month = (int) (data >> 20) & 0xF;
         return month;
     }
 
-    public int getDaysInMonth(int year, int bit) {
-        if ((LUNAR_DATABASE[year - 1901] & (0x80000 >> (bit))) == 0) {
+    public static int getDaysInMonth(int year, int month) {
+        if ((LUNAR_DATABASE[year - 1901] & (0x80000 >> (month - 1))) == 0) {
             return 29;
         }
         return 30;

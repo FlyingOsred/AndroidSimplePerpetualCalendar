@@ -52,4 +52,32 @@ public class Utils {
             return false;
         }
     }
+
+    public static boolean isDayAfter(int year, int month, int day, int endYear, int endMonth, int endDay) {
+        if (year > endYear) {
+            return true;
+        } else if (year < endYear) {
+            return false;
+        }
+
+        if (month > endMonth) {
+            return true;
+        } else if (month < endMonth) {
+            return false;
+        }
+
+        if (day > endDay) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isSameDay(int year1, int month1, int day1, int year2, int month2, int day2) {
+        if (year1 <= 0 || year2 <= 0) {
+            return false;
+        }
+        return year1 == year2 && month1 == month2 && day1 == day2;
+    }
+
 }

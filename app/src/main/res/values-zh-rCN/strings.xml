@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="month_day_today_text">今</string>
+
+    <string name="chinese_number_one">一</string>
+    <string name="chinese_number_two">二</string>
+    <string name="chinese_number_three">三</string>
+    <string name="chinese_number_four">四</string>
+    <string name="chinese_number_five">五</string>
+    <string name="chinese_number_six">六</string>
+    <string name="chinese_number_seven">七</string>
+    <string name="chinese_number_eight">八</string>
+    <string name="chinese_number_nine">九</string>
+    <string name="chinese_number_ten">十</string>
+
+    <string name="chinese_first_month_prefix">正</string>
+    <string name="chinese_last_month_prefix">腊</string>
+    <string name="chinese_month_name">月</string>
+    <string name="chinese_day_prefix_name">初</string>
+
+    <string name="solar_term_minor_cold_name">小寒</string>
+    <string name="solar_term_major_cold_name">大寒</string>
+    <string name="solar_term_start_of_spring_name">立春</string>
+    <string name="solar_term_rain_water_name">雨水</string>
+    <string name="solar_term_awakening_of_insects_name">惊蛰</string>
+    <string name="solar_term_vernal_equinox_name">春分</string>
+    <string name="solar_term_clear_and_bright_name">清明</string>
+    <string name="solar_term_grain_rain_name">谷雨</string>
+    <string name="solar_term_start_of_summer_name">立夏</string>
+    <string name="solar_term_grain_full_name">小满</string>
+    <string name="solar_term_grain_in_ear_name">芒种</string>
+    <string name="solar_term_summer_solstice_name">夏至</string>
+    <string name="solar_term_minor_heat_name">小暑</string>
+    <string name="solar_term_major_heat_name">大暑</string>
+    <string name="solar_term_start_of_autumn_name">立秋</string>
+    <string name="solar_term_limit_of_heat_name">处暑</string>
+    <string name="solar_term_white_dew_name">白露</string>
+    <string name="solar_term_autumnal_eqinox_name">秋分</string>
+    <string name="solar_term_cold_dew_name">寒露</string>
+    <string name="solar_term_frost_descent_name">霜降</string>
+    <string name="solar_term_start_of_winter_name">立冬</string>
+    <string name="solar_term_minor_snow_name">小雪</string>
+    <string name="solar_term_major_snow_name">大雪</string>
+    <string name="solar_term_winter_solstice_name">冬至</string>
+
+    <string name="constellation_aquarius_name">水瓶座</string>
+    <string name="constellation_aries_name">白羊座</string>
+    <string name="constellation_cancer_name">巨蟹座</string>
+    <string name="constellation_capricorn_name">摩羯座</string>
+    <string name="constellation_gemini_name">双子座</string>
+    <string name="constellation_leo_name">狮子座</string>
+    <string name="constellation_libra_name">天秤座</string>
+    <string name="constellation_pisces_name">双鱼座</string>
+    <string name="constellation_sagittarius_name">射手座</string>
+    <string name="constellation_scorpio_name">天蝎座</string>
+    <string name="constellation_taurus_name">金牛座</string>
+    <string name="constellation_virgo_name">处女座</string>
+</resources>

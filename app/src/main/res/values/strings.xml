@@ -4,6 +4,8 @@
 
     <string name="month_day_today_text">TODAY</string>
 
+    <string name="week_number_text">WEEK</string>
+
     <string name="constellation_aquarius_name">Aquarius</string>
     <string name="constellation_pisces_name">Pisces</string>
     <string name="constellation_aries_name">Aries</string>
@@ -47,4 +49,17 @@
     <string name="solar_term_major_snow_name">Major Snow</string>
     <string name="solar_term_winter_solstice_name">Winter Solstice</string>
 
+    <string name="pref_first_day_of_week_title">First day of week</string>
+    <string name="pref_label_first_day_of_week_locale_default">Locale default</string>
+    <string name="pref_label_first_day_of_week_monday">Monday</string>
+    <string name="pref_label_first_day_of_week_sunday">Sunday</string>
+    <string name="pref_label_first_day_of_week_saturday">Saturday</string>
+    <string name="pref_first_day_of_week_default">-1</string>
+
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_show_week_num_title">Show week number</string>
+
+    <string name="pref_key_show_week_number">show_week_number</string>
+    <string name="pref_key_first_day_of_week">first_day_of_week</string>
 </resources>

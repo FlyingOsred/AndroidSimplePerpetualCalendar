@@ -40,7 +40,7 @@
         <item>@string/solar_term_major_snow_name</item>
         <item>@string/solar_term_winter_solstice_name</item>
     </string-array>
-    
+
     <string-array name="constellation_name">
         <item>@string/constellation_aquarius_name</item>
         <item>@string/constellation_pisces_name</item>
@@ -69,6 +69,20 @@
         <item>\u264F</item>
         <item>\u2650</item>
         <item>\u2651</item>
+    </string-array>
+
+    <string-array name="pref_week_start_day_labels">
+        <item>@string/pref_label_first_day_of_week_locale_default</item>
+        <item>@string/pref_label_first_day_of_week_monday</item>
+        <item>@string/pref_label_first_day_of_week_sunday</item>
+        <item>@string/pref_label_first_day_of_week_saturday</item>
+    </string-array>
+
+    <string-array name="pref_first_day_of_week_values" translatable="false">
+        <item>"-1"</item>
+        <item>"2"</item>
+        <item>"1"</item>
+        <item>"7"</item>
     </string-array>
 
 </resources>

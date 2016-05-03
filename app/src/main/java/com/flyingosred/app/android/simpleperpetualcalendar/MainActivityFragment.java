@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayAdapter;
+import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayOfWeekAdapter;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.loader.Content;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.loader.ContentLoader;
 
@@ -27,7 +28,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private DayRecyclerView mDayView = null;
 
+    private RecyclerView mDayOfWeekView = null;
+
     private DayAdapter mDayAdapter = null;
+
+    private DayOfWeekAdapter mDayOfWeekAdapter = null;
 
     public MainActivityFragment() {
     }
@@ -37,6 +42,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mDayView = (DayRecyclerView) view.findViewById(R.id.day_recycler_view);
+        mDayOfWeekView = (RecyclerView) view.findViewById(R.id.day_of_week_recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar_loading);
         return view;
     }
@@ -49,6 +55,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mDayView.setLayoutManager(layoutManager);
         mDayAdapter = new DayAdapter();
         mDayView.setAdapter(mDayAdapter);
+        GridLayoutManager dayOfWeekLayout = new GridLayoutManager(getContext(), 7);
+        mDayOfWeekView.setLayoutManager(dayOfWeekLayout);
+        mDayOfWeekAdapter = new DayOfWeekAdapter();
+        mDayOfWeekView.setAdapter(mDayOfWeekAdapter);
         getActivity().getSupportLoaderManager().initLoader(CONTENT_LOADER_ID, null, this);
     }
 

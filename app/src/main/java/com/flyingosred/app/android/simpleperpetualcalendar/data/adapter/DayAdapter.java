@@ -18,6 +18,8 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     private Content mContent = null;
 
+    private int mFirstDayOfWeek;
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
@@ -53,6 +55,7 @@ public class DayAdapter extends RecyclerView.Adapter {
                 } else {
                     viewHolder.mTodayTextView.setText("");
                 }
+
             }
         }
     }

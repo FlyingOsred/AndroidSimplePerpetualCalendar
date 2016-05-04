@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="action_settings">设置</string>
+    <string name="action_today">今</string>
+
     <string name="month_day_today_text">今</string>
 
     <string name="chinese_number_one">一</string>

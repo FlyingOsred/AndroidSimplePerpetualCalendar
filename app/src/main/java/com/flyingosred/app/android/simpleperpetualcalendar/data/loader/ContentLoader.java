@@ -42,7 +42,6 @@ public class ContentLoader extends AsyncTaskLoader<Content> {
                 break;
             }
         }
-        contentData.computeOffset(mFirstDayOfWeek);
         long endTime = System.currentTimeMillis();
         Log.i(LOG_TAG, "loadInBackground end, cost " + (endTime - startTime) / 1000 + " seconds.");
         return contentData;

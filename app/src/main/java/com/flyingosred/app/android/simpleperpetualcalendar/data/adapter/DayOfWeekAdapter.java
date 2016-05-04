@@ -18,6 +18,11 @@ public class DayOfWeekAdapter extends RecyclerView.Adapter {
 
     private boolean mShowWeekNumber = false;
 
+    public DayOfWeekAdapter(int firstDayOfWeek, boolean showWeekNumber) {
+        mShowWeekNumber = showWeekNumber;
+        mFirstDayOfWeek = firstDayOfWeek;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
@@ -29,7 +34,7 @@ public class DayOfWeekAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        if (mShowWeekNumber) {
+        if (mShowWeekNumber && position == 0) {
             viewHolder.mWeekNumberTextView.setVisibility(View.VISIBLE);
         } else {
             viewHolder.mWeekNumberTextView.setVisibility(View.GONE);
@@ -58,13 +63,20 @@ public class DayOfWeekAdapter extends RecyclerView.Adapter {
         public ViewHolder(View itemView) {
             super(itemView);
             mDayOfWeekTextView = (TextView) itemView.findViewById(R.id.day_of_week_text_view);
-            mWeekNumberTextView = (TextView) itemView.findViewById(R.id.week_number_text_view);
+            mWeekNumberTextView = (TextView) itemView.findViewById(R.id.week_number_label_text_view);
         }
     }
 
     public void setFirstDayOfWeek(int firstDayOfWeek) {
         if (mFirstDayOfWeek != firstDayOfWeek) {
             mFirstDayOfWeek = firstDayOfWeek;
+            notifyDataSetChanged();
+        }
+    }
+
+    public void setShowWeekNumber(boolean showWeekNumber) {
+        if (mShowWeekNumber != showWeekNumber) {
+            mShowWeekNumber = showWeekNumber;
             notifyDataSetChanged();
         }
     }

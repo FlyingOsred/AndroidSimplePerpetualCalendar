@@ -67,7 +67,8 @@ public class ContentItem implements PerpetualCalendar {
     }
 
     public static ContentItem FirstDay() {
-        return new ContentItem(0, START_YEAR, START_MONTH, START_DAY, LunarDatabaseItem.FirstDay(), INVALID_ID, INVALID_ID);
+        return new ContentItem(0, START_YEAR, START_MONTH, START_DAY, LunarDatabaseItem.FirstDay(),
+                INVALID_ID, ConstellationDatabase.get(START_MONTH, START_DAY));
     }
 
     public int getPosition() {

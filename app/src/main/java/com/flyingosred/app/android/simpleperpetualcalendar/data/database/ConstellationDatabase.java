@@ -1,5 +1,9 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
+import android.util.Log;
+
+import com.flyingosred.app.android.simpleperpetualcalendar.util.Utils;
+
 public final class ConstellationDatabase {
 
     private static final int[][] CONSTELLATION_DATE = {
@@ -24,6 +28,7 @@ public final class ConstellationDatabase {
                 return i;
             }
         }
+        Log.e(Utils.LOG_TAG, "No Constellation found for month " + month + " day " + day);
         return -1;
     }
 }

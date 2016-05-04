@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">SimplePerpetualCalendar</string>
     <string name="action_settings">Settings</string>
+    <string name="action_today">Today</string>
+    <string name="action_select_date">Select date</string>
 
     <string name="month_day_today_text">TODAY</string>
 

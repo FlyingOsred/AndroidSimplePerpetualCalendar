@@ -1,60 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/day_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/constellation_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/day_text_view"
-            android:textSize="6sp" />
-
-        <TextView
-            android:id="@+id/today_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/day_text_view"
-            android:layout_toLeftOf="@id/day_text_view"
-            android:textSize="6sp" />
-
-        <TextView
-            android:id="@+id/off_or_work_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/today_text_view"
-            android:layout_marginRight="6dp"
-            android:layout_toLeftOf="@id/day_text_view"
-            android:gravity="left"
-            android:text="Off"
-            android:textSize="6sp" />
-    </RelativeLayout>
+    android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/lunar_text_view"
-        android:layout_width="match_parent"
+        android:id="@+id/week_number_text_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
+        android:layout_gravity="right|top"
         android:textSize="6sp" />
 
-    <TextView
-        android:id="@+id/solar_term_text_view"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/activate_area_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:textSize="6sp" />
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/day_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/constellation_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/day_text_view"
+                android:textSize="6sp" />
+
+            <TextView
+                android:id="@+id/today_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/day_text_view"
+                android:layout_toLeftOf="@id/day_text_view"
+                android:textSize="6sp" />
+
+            <TextView
+                android:id="@+id/off_or_work_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/today_text_view"
+                android:layout_marginRight="6dp"
+                android:layout_toLeftOf="@id/day_text_view"
+                android:gravity="left"
+                android:textSize="6sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/lunar_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textSize="6sp" />
+
+        <TextView
+            android:id="@+id/solar_term_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textSize="6sp" />
+
+        <TextView
+            android:id="@+id/national_holiday_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textSize="6sp" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

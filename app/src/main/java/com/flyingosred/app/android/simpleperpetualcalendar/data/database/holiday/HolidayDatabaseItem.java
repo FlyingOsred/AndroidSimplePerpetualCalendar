@@ -2,26 +2,55 @@ package com.flyingosred.app.android.simpleperpetualcalendar.data.database.holida
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 
-import static com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday.INVALID_FIELD;
+public class HolidayDatabaseItem implements Holiday {
 
-public class HolidayDatabaseItem {
+    private int mRegion = INVALID_FIELD;
 
-    private final int mStartYear;
+    private int mStartYear = INVALID_FIELD;
 
-    private final int mRegion;
+    private int mResId = INVALID_FIELD;
 
-    private final int mId;
+    private int mYear = INVALID_FIELD;
 
-    private final int mOffOrWork;
+    private int mOffOrWork = INVALID_FIELD;
 
-    public HolidayDatabaseItem(int region, int id) {
-        this(INVALID_FIELD, region, id, INVALID_FIELD);
+    public int getOffOrWork() {
+        return mOffOrWork;
     }
 
-    public HolidayDatabaseItem(int startYear, int region, int id, int offOrWork) {
-        mStartYear = startYear;
-        mRegion = region;
-        mId = id;
+    public void setOffOrWork(int offOrWork) {
         mOffOrWork = offOrWork;
+    }
+
+    public int getRegion() {
+        return mRegion;
+    }
+
+    public void setRegion(int region) {
+        mRegion = region;
+    }
+
+    public int getResId() {
+        return mResId;
+    }
+
+    public void setResId(int resId) {
+        mResId = resId;
+    }
+
+    public int getStartYear() {
+        return mStartYear;
+    }
+
+    public void setStartYear(int startYear) {
+        mStartYear = startYear;
+    }
+
+    public int getYear() {
+        return mYear;
+    }
+
+    public void setYear(int year) {
+        mYear = year;
     }
 }

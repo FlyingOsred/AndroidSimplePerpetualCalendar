@@ -14,7 +14,7 @@
         <item>@string/chinese_number_ten</item>
     </string-array>
 
-    <string-array name="solar_term">
+    <string-array name="solar_term_name">
         <item>@string/solar_term_minor_cold_name</item>
         <item>@string/solar_term_major_cold_name</item>
         <item>@string/solar_term_start_of_spring_name</item>

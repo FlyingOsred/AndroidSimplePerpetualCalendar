@@ -10,9 +10,9 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.R;
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
-import com.flyingosred.app.android.simpleperpetualcalendar.data.loader.Content;
 
 import java.util.Calendar;
 
@@ -22,7 +22,7 @@ import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG
 
 public class DayAdapter extends RecyclerView.Adapter {
 
-    private Content mContent = null;
+    private Database mDatabase = null;
 
     private int mFrontOffset = 0;
 
@@ -52,12 +52,12 @@ public class DayAdapter extends RecyclerView.Adapter {
         if (position < mFrontOffset) {
             return;
         }
-        if (mContent != null) {
-            PerpetualCalendar calendar = mContent.get(position - mFrontOffset);
+        if (mDatabase != null) {
+            PerpetualCalendar calendar = mDatabase.get(position - mFrontOffset);
             if (calendar != null) {
-                int day = calendar.get().get(Calendar.DATE);
-                int month = calendar.get().get(Calendar.MONTH);
-                int year = calendar.get().get(Calendar.YEAR);
+                int day = calendar.getSolar().getDay();
+                int month = calendar.getSolar().getMonth() - 1;
+                int year = calendar.getSolar().getYear();
                 viewHolder.mDateTextView.setText(String.valueOf(day));
                 int constellationId = calendar.getConstellationId();
                 String constellationText = viewHolder.getContext().getResources().getStringArray(R.array.constellation_name)[constellationId];
@@ -67,7 +67,7 @@ public class DayAdapter extends RecyclerView.Adapter {
                 viewHolder.mLunarTextView.setText(lunarText);
                 int solarTermId = calendar.getSolarTermId();
                 if (solarTermId != PerpetualCalendar.INVALID_ID) {
-                    viewHolder.mSolarTermTextView.setText(viewHolder.getContext().getResources().getStringArray(R.array.solar_term)[solarTermId]);
+                    viewHolder.mSolarTermTextView.setText(viewHolder.getContext().getResources().getStringArray(R.array.solar_term_name)[solarTermId]);
                 } else {
                     viewHolder.mSolarTermTextView.setText("");
                 }
@@ -97,14 +97,14 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if (mContent != null) {
-            return mContent.getCount() + mFrontOffset;
+        if (mDatabase != null) {
+            return mDatabase.getCount() + mFrontOffset;
         }
         return 0;
     }
 
-    public void changeContent(Content content) {
-        mContent = content;
+    public void changeDatabase(Database database) {
+        mDatabase = database;
         notifyDataSetChanged();
     }
 
@@ -194,17 +194,17 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     public int getTodayPosition() {
         int position = AdapterView.INVALID_POSITION;
-        if (mContent != null) {
+        if (mDatabase != null) {
             Calendar calendar = Calendar.getInstance();
-            int today = mContent.get(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
+            int today = mDatabase.getPosition(calendar);
             position = today + mFrontOffset;
         }
         return position;
     }
 
     public PerpetualCalendar get(int position) {
-        if (position >= mFrontOffset && mContent != null) {
-            return mContent.get(position - mFrontOffset);
+        if (position >= mFrontOffset && mDatabase != null) {
+            return mDatabase.get(position - mFrontOffset);
         }
         return null;
     }

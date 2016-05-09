@@ -80,4 +80,8 @@ public class Utils {
         return year1 == year2 && month1 == month2 && day1 == day2;
     }
 
+    public static int dateHash(int year, int month, int day) {
+        return (day & 0x1F) | ((month & 0xF) << 5) | (year << 9);
+    }
+
 }

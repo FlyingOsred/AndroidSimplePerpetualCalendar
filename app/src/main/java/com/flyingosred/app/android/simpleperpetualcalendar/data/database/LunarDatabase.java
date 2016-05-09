@@ -1,5 +1,6 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 
 public class LunarDatabase {
@@ -38,5 +39,39 @@ public class LunarDatabase {
             return 29;
         }
         return 30;
+    }
+
+    public Lunar firstDay() {
+        return new LunarDatabaseItem(Lunar.LUNAR_YEAR_MIN, 1, 1, false, false);
+    }
+
+    public Lunar nextDay(Lunar previous) {
+        int day = previous.getDay();
+        int month = previous.getMonth();
+        int year = previous.getYear();
+        boolean isLastDayInMonth = false;
+        boolean isLeapMonth = previous.isLeapMonth();
+        int leapMonth = LunarDatabase.getLeapMonth(year);
+        day++;
+        int daysInMonth = LunarDatabase.getDaysInMonth(year, month);
+        if (day > daysInMonth) {
+            day = 1;
+            if (month == leapMonth && !previous.isLeapMonth()) {
+                isLeapMonth = true;
+            } else {
+                isLeapMonth = false;
+                month++;
+            }
+        }
+        if (month > Lunar.MONTHS_IN_YEAR) {
+            month = 1;
+            year++;
+        }
+        daysInMonth = LunarDatabase.getDaysInMonth(year, month);
+        if (day == daysInMonth) {
+            isLastDayInMonth = true;
+        }
+
+        return new LunarDatabaseItem(year, month, day, isLastDayInMonth, isLeapMonth);
     }
 }

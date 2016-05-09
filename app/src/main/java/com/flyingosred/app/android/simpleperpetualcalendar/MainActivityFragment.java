@@ -2,7 +2,6 @@ package com.flyingosred.app.android.simpleperpetualcalendar;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -11,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -26,20 +24,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayAdapter;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayOfWeekAdapter;
-import com.flyingosred.app.android.simpleperpetualcalendar.data.loader.Content;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.loader.ContentLoader;
 import com.flyingosred.app.android.simpleperpetualcalendar.view.DayRecyclerView;
 
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.concurrent.RunnableFuture;
 
 import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
 
-public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Content>,
+public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Database>,
         SharedPreferences.OnSharedPreferenceChangeListener, RecyclerView.OnItemTouchListener {
 
     private static final int CONTENT_LOADER_ID = 1;
@@ -127,28 +124,28 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public Loader<Content> onCreateLoader(int id, Bundle args) {
+    public Loader<Database> onCreateLoader(int id, Bundle args) {
         Log.d(LOG_TAG, "onCreateLoader");
         return new ContentLoader(getContext());
     }
 
     @Override
-    public void onLoadFinished(Loader<Content> loader, Content data) {
+    public void onLoadFinished(Loader<Database> loader, Database database) {
         Log.d(LOG_TAG, "onLoadFinished");
         if (mProgressBar != null) {
             mProgressBar.setVisibility(View.GONE);
         }
         if (mDayAdapter != null) {
-            mDayAdapter.changeContent(data);
+            mDayAdapter.changeDatabase(database);
         }
         mScrollToToday = true;
     }
 
     @Override
-    public void onLoaderReset(Loader<Content> loader) {
+    public void onLoaderReset(Loader<Database> loader) {
         Log.d(LOG_TAG, "onLoaderReset");
         if (mDayAdapter != null) {
-            mDayAdapter.changeContent(null);
+            mDayAdapter.changeDatabase(null);
         }
     }
 
@@ -254,7 +251,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private void updateTitle(int position) {
         PerpetualCalendar perpetualCalendar = mDayAdapter.get(position);
         if (perpetualCalendar != null) {
-            Calendar calendar = perpetualCalendar.get();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(perpetualCalendar.getSolar().getYear(),
+                    perpetualCalendar.getSolar().getMonth() - 1,
+                    perpetualCalendar.getSolar().getDay());
             String date = DateUtils.formatDateRange(
                     getContext(),
                     calendar.getTimeInMillis(),

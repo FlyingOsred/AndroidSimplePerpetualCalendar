@@ -11,7 +11,7 @@ public class LunarDatabaseItem extends Lunar {
     private final boolean mLastDayInMonth;
     private final boolean mLeapMonth;
 
-    private LunarDatabaseItem(int year, int month, int day, boolean isLastDayInMonth, boolean isLeapMonth) {
+    public LunarDatabaseItem(int year, int month, int day, boolean isLastDayInMonth, boolean isLeapMonth) {
         mYear = year;
         mMonth = month;
         mDay = day;

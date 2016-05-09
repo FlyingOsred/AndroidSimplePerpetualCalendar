@@ -2,7 +2,12 @@ package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
 import android.util.Log;
 
+import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
 import com.flyingosred.app.android.simpleperpetualcalendar.util.Utils;
+
+import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.INVALID_ID;
+import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
 
 public final class ConstellationDatabase {
 
@@ -28,7 +33,20 @@ public final class ConstellationDatabase {
                 return i;
             }
         }
-        Log.e(Utils.LOG_TAG, "No Constellation found for month " + month + " day " + day);
+        Log.e(LOG_TAG, "No Constellation found for month " + month + " day " + day);
         return -1;
+    }
+
+    public int get(Solar solar) {
+        int month = solar.getMonth();
+        int day = solar.getDay();
+        for (int i = 0; i < CONSTELLATION_DATE.length; i++) {
+            int[] date = CONSTELLATION_DATE[i];
+            if ((month == date[0] && day >= date[1]) || (month == date[2] && day <= date[3])) {
+                return i;
+            }
+        }
+        Log.e(LOG_TAG, "No Constellation found for month " + month + " day " + day);
+        return INVALID_ID;
     }
 }

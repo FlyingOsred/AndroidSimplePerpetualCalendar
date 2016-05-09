@@ -6,6 +6,8 @@ public interface PerpetualCalendar {
 
     public static final int INVALID_ID = -1;
 
+    public static final int INVALID_POSITION = -1;
+
     public static final int START_YEAR = 1901;
 
     public static final int START_MONTH = 2;
@@ -24,7 +26,7 @@ public interface PerpetualCalendar {
 
     public static final int DAYS_IN_WEEK = 7;
 
-    public Calendar get();
+    public Solar getSolar();
 
     public Lunar getLunar();
 

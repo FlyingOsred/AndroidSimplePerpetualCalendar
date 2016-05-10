@@ -14,11 +14,15 @@ import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday.INVALID_FIELD;
 import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.DAYS_IN_WEEK;
+import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.INVALID_ID;
 import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.START_DAY_OF_WEEK;
 import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
 
@@ -64,66 +68,9 @@ public class DayAdapter extends RecyclerView.Adapter {
             return;
         }
         if (mDatabase != null) {
-            PerpetualCalendar calendar = mDatabase.get(position - mFrontOffset);
-            if (calendar != null) {
-                int day = calendar.getSolar().getDay();
-                int month = calendar.getSolar().getMonth() - 1;
-                int year = calendar.getSolar().getYear();
-                viewHolder.mDateTextView.setText(String.valueOf(day));
-                int constellationId = calendar.getConstellationId();
-                String constellationText = viewHolder.getContext().getResources().getStringArray(R.array.constellation_name)[constellationId];
-                String constellationSymbol = viewHolder.getContext().getResources().getStringArray(R.array.constellation_symbol)[constellationId];
-                viewHolder.mConstellationTextView.setText(constellationSymbol + constellationText);
-                String lunarText = Lunar.formatMonthDayString(viewHolder.getContext(), calendar.getLunar().getMonth(), calendar.getLunar().getDay());
-                viewHolder.mLunarTextView.setText(lunarText);
-                int solarTermId = calendar.getSolarTermId();
-                if (solarTermId != PerpetualCalendar.INVALID_ID) {
-                    viewHolder.mSolarTermTextView.setText(viewHolder.getContext().getResources().getStringArray(R.array.solar_term_name)[solarTermId]);
-                } else {
-                    viewHolder.mSolarTermTextView.setText("");
-                }
-                if (isToday(year, month, day)) {
-                    viewHolder.mTodayTextView.setText(R.string.month_day_today_text);
-                } else {
-                    viewHolder.mTodayTextView.setText("");
-                }
-                if (mShowWeekNumber && (position % PerpetualCalendar.DAYS_IN_WEEK == 0)) {
-                    Calendar weekCalendar = Calendar.getInstance();
-                    weekCalendar.setFirstDayOfWeek(mFirstDayOfWeek);
-                    weekCalendar.set(year, month, day);
-                    int weekNumber = weekCalendar.get(Calendar.WEEK_OF_YEAR);
-                    viewHolder.mWeekNumberTextView.setText(String.valueOf(weekNumber));
-                    viewHolder.mWeekNumberTextView.setVisibility(View.VISIBLE);
-                } else {
-                    viewHolder.mWeekNumberTextView.setVisibility(View.GONE);
-                }
-                if (position == mActivatedItem) {
-                    viewHolder.mActivateAreaView.setActivated(true);
-                } else {
-                    viewHolder.mActivateAreaView.setActivated(false);
-                }
-                if (mHolidayRegion != null && calendar.getHolidayList() != null) {
-                    List<Holiday> list = calendar.getHolidayList();
-                    for (Holiday holiday : list) {
-                        if (mHolidayRegion.equals(holiday.getRegion())) {
-                            if (holiday.getId() != Holiday.INVALID_FIELD) {
-                                viewHolder.mHolidayTextView.setText(mHolidayNames[holiday.getId()]);
-                            } else {
-                                viewHolder.mHolidayTextView.setText("");
-                            }
-                            if (holiday.getOffOrWork() != Holiday.INVALID_FIELD) {
-                                if (holiday.getOffOrWork() == Holiday.TYPE_WORK) {
-                                    viewHolder.mOffOrWorkTextView.setText(R.string.holiday_type_work);
-                                } else {
-                                    viewHolder.mOffOrWorkTextView.setText(R.string.holiday_type_off);
-                                }
-                            }
-                        } else {
-                            //viewHolder.mOffOrWorkTextView.setText("");
-                        }
-                    }
-                }
-            }
+            viewHolder.bindData(mDatabase.get(position - mFrontOffset),
+                    mShowWeekNumber && (position % PerpetualCalendar.DAYS_IN_WEEK == 0),
+                    position == mActivatedItem);
         }
     }
 
@@ -180,16 +127,16 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public final View mItemView;
-        public final View mActivateAreaView;
-        public final TextView mConstellationTextView;
-        public final TextView mDateTextView;
-        public final TextView mLunarTextView;
-        public final TextView mSolarTermTextView;
-        public final TextView mTodayTextView;
-        public final TextView mOffOrWorkTextView;
-        public final TextView mWeekNumberTextView;
-        public final TextView mHolidayTextView;
+        private final View mItemView;
+        private final View mActivateAreaView;
+        private final TextView mConstellationTextView;
+        private final TextView mDateTextView;
+        private final TextView mLunarTextView;
+        private final TextView mSolarTermTextView;
+        private final TextView mTodayTextView;
+        private final TextView mOffOrWorkTextView;
+        private final TextView mWeekNumberTextView;
+        private final TextView mHolidayTextView;
 
         public ViewHolder(View itemView, Context context) {
             super(itemView);
@@ -205,10 +152,113 @@ public class DayAdapter extends RecyclerView.Adapter {
             mHolidayTextView = (TextView) itemView.findViewById(R.id.holiday_text_view);
         }
 
-        public Context getContext() {
-            return mContext;
+        public void bindData(PerpetualCalendar calendar, boolean showWeekNumber, boolean active) {
+            if (calendar == null) {
+                return;
+            }
+            setDateText(calendar.getSolar().getDay());
+            setLunarText(calendar.getLunar());
+            setSolarTermText(calendar.getSolarTermId());
+            setHolidayText(calendar.getHolidayList());
+            setTodayText(calendar.getSolar());
+            setConstellationText(calendar.getConstellationId());
+            setWeekNumber(showWeekNumber, calendar.getSolar());
+            setActive(active);
         }
 
+        private void setDateText(int day) {
+            mDateTextView.setText(String.valueOf(day));
+        }
+
+        private void setLunarText(Lunar lunar) {
+            String lunarText = Lunar.formatMonthDayString(mContext, lunar.getMonth(), lunar.getDay());
+            mLunarTextView.setText(lunarText);
+        }
+
+        private void setSolarTermText(int id) {
+            if (id != INVALID_ID) {
+                mSolarTermTextView.setVisibility(View.VISIBLE);
+                mSolarTermTextView.setText(mContext.getResources().getStringArray(R.array.solar_term_name)[id]);
+            } else {
+                mSolarTermTextView.setVisibility(View.GONE);
+            }
+        }
+
+        private void setHolidayText(List<Holiday> holidayList) {
+            List<Integer> holidayIdList = new ArrayList<>();
+            int offOrWorkResId = INVALID_ID;
+            if (mHolidayRegion != null && holidayList != null) {
+                for (Holiday holiday : holidayList) {
+                    if (!mHolidayRegion.equals(holiday.getRegion())) {
+                        continue;
+                    }
+                    int id = holiday.getId();
+                    if (id != INVALID_FIELD) {
+                        holidayIdList.add(id);
+                    }
+                    int offOrWork = holiday.getOffOrWork();
+                    if (offOrWork == Holiday.TYPE_WORK) {
+                        offOrWorkResId = R.string.holiday_type_work;
+                    } else if (offOrWork == Holiday.TYPE_OFF) {
+                        offOrWorkResId = R.string.holiday_type_off;
+                    }
+                }
+            }
+
+            if (offOrWorkResId != INVALID_ID) {
+                mOffOrWorkTextView.setText(offOrWorkResId);
+                mOffOrWorkTextView.setVisibility(View.VISIBLE);
+            } else {
+                mOffOrWorkTextView.setVisibility(View.GONE);
+            }
+
+            if (holidayIdList.size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < holidayIdList.size(); i++) {
+                    int holidayId = holidayIdList.get(i);
+                    if (i > 0) {
+                        sb.append("\n");
+                    }
+                    sb.append(mHolidayNames[holidayId]);
+                }
+                mHolidayTextView.setVisibility(View.VISIBLE);
+                mHolidayTextView.setText(sb.toString());
+            } else {
+                mHolidayTextView.setVisibility(View.GONE);
+            }
+        }
+
+        private void setTodayText(Solar solar) {
+            if (isToday(solar.getYear(), solar.getMonth() - 1, solar.getDay())) {
+                mTodayTextView.setVisibility(View.VISIBLE);
+                mTodayTextView.setText(R.string.month_day_today_text);
+            } else {
+                mTodayTextView.setVisibility(View.GONE);
+            }
+        }
+
+        private void setConstellationText(int constellationId) {
+            String constellationText = mContext.getResources().getStringArray(R.array.constellation_name)[constellationId];
+            String constellationSymbol = mContext.getResources().getStringArray(R.array.constellation_symbol)[constellationId];
+            mConstellationTextView.setText(constellationSymbol + constellationText);
+        }
+
+        private void setWeekNumber(boolean showWeekNumber, Solar solar) {
+            if (showWeekNumber) {
+                Calendar weekCalendar = Calendar.getInstance();
+                weekCalendar.setFirstDayOfWeek(mFirstDayOfWeek);
+                weekCalendar.set(solar.getYear(), solar.getMonth() - 1, solar.getDay());
+                int weekNumber = weekCalendar.get(Calendar.WEEK_OF_YEAR);
+                mWeekNumberTextView.setText(String.valueOf(weekNumber));
+                mWeekNumberTextView.setVisibility(View.VISIBLE);
+            } else {
+                mWeekNumberTextView.setVisibility(View.GONE);
+            }
+        }
+
+        private void setActive(boolean active) {
+            mActivateAreaView.setActivated(active);
+        }
     }
 
     private boolean isToday(int year, int month, int day) {

@@ -14,33 +14,6 @@
         <item>@string/chinese_number_ten</item>
     </string-array>
 
-    <string-array name="solar_term_name">
-        <item>@string/solar_term_minor_cold_name</item>
-        <item>@string/solar_term_major_cold_name</item>
-        <item>@string/solar_term_start_of_spring_name</item>
-        <item>@string/solar_term_rain_water_name</item>
-        <item>@string/solar_term_awakening_of_insects_name</item>
-        <item>@string/solar_term_vernal_equinox_name</item>
-        <item>@string/solar_term_clear_and_bright_name</item>
-        <item>@string/solar_term_grain_rain_name</item>
-        <item>@string/solar_term_start_of_summer_name</item>
-        <item>@string/solar_term_grain_full_name</item>
-        <item>@string/solar_term_grain_in_ear_name</item>
-        <item>@string/solar_term_summer_solstice_name</item>
-        <item>@string/solar_term_minor_heat_name</item>
-        <item>@string/solar_term_major_heat_name</item>
-        <item>@string/solar_term_start_of_autumn_name</item>
-        <item>@string/solar_term_limit_of_heat_name</item>
-        <item>@string/solar_term_white_dew_name</item>
-        <item>@string/solar_term_autumnal_eqinox_name</item>
-        <item>@string/solar_term_cold_dew_name</item>
-        <item>@string/solar_term_frost_descent_name</item>
-        <item>@string/solar_term_start_of_winter_name</item>
-        <item>@string/solar_term_minor_snow_name</item>
-        <item>@string/solar_term_major_snow_name</item>
-        <item>@string/solar_term_winter_solstice_name</item>
-    </string-array>
-
     <string-array name="constellation_name">
         <item>@string/constellation_aquarius_name</item>
         <item>@string/constellation_pisces_name</item>

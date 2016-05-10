@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="holiday_hongkong_new_years_day_name">New Year\'s Day</string>
     <string name="holiday_hongkong_lunar_new_years_eve_name">Lunar New Year\'s Eve</string>
     <string name="holiday_hongkong_lunar_new_year_name">Lunar New Year</string>
@@ -33,5 +32,4 @@
     <string name="holiday_hongkong_christmas_name">Christmas</string>
     <string name="holiday_hongkong_the_first_weekday_after_christmas_name">The first weekday after Christmas</string>
     <string name="holiday_hongkong_the_second_weekday_after_christmas_name">The second weekday after Christmas</string>
-
 </resources>

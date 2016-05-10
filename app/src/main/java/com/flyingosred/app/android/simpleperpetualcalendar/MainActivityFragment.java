@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -253,8 +254,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     private void scrollToToday() {
-        //int today = mDayAdapter.getTodayPosition();
-        int today = AdapterView.INVALID_POSITION;
+        int today = mDayAdapter.getTodayPosition();
         if (today != AdapterView.INVALID_POSITION) {
             GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
             int offset = PerpetualCalendar.DAYS_IN_WEEK * 2;
@@ -264,23 +264,23 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             }
             Log.d(LOG_TAG, "Today position with offset is " + position);
             layoutManager.scrollToPositionWithOffset(position, offset);
+            mDayAdapter.activateItem(today);
         }
     }
 
     private void updateTitle(int position) {
+        ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         PerpetualCalendar perpetualCalendar = mDayAdapter.get(position);
-        if (perpetualCalendar != null) {
+        if (perpetualCalendar != null && actionBar != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(perpetualCalendar.getSolar().getYear(),
                     perpetualCalendar.getSolar().getMonth() - 1,
                     perpetualCalendar.getSolar().getDay());
-            String date = DateUtils.formatDateRange(
-                    getContext(),
-                    calendar.getTimeInMillis(),
+            String date = DateUtils.formatDateRange(getContext(), calendar.getTimeInMillis(),
                     calendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_MONTH_DAY
-                            | DateUtils.FORMAT_SHOW_YEAR).toString().toUpperCase(Locale.getDefault());
-            ((MainActivity) getActivity()).getSupportActionBar().setTitle(date);
+                            | DateUtils.FORMAT_SHOW_YEAR).toUpperCase(Locale.getDefault());
+            actionBar.setTitle(date);
         }
     }
 

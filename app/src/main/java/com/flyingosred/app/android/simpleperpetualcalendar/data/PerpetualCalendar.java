@@ -1,6 +1,7 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data;
 
 import java.util.Calendar;
+import java.util.List;
 
 public interface PerpetualCalendar {
 
@@ -33,4 +34,6 @@ public interface PerpetualCalendar {
     public int getSolarTermId();
 
     public int getConstellationId();
+
+    public List<Holiday> getHolidayList();
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_holiday_region_china">China Holiday</string>
+    <string name="setting_holiday_region_taiwan">Taiwan Holiday</string>
+    <string name="setting_holiday_region_hongkong">HongKong Holiday</string>
+    <string name="setting_holiday_region_value_china">china</string>
+    <string name="setting_holiday_region_value_taiwan">taiwan</string>
+    <string name="setting_holiday_region_value_hongkong">hongkong</string>
+
+    <string name="pref_holiday_region_default">china</string>
+    <string name="pref_holiday_region_title">Holiday</string>
+    <string name="pref_key_holiday_region">holiday_region</string>
+
+    <string name="holiday_type_work">Work</string>
+    <string name="holiday_type_off">Off</string>
+
+</resources>

@@ -1,10 +1,12 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class DatabaseItem implements PerpetualCalendar {
 
@@ -18,13 +20,16 @@ public class DatabaseItem implements PerpetualCalendar {
 
     private final int mPosition;
 
+    private final List<Holiday> mHolidayList;
+
     public DatabaseItem(int position, Solar solar, Lunar lunar, int solarTermId,
-                        int constellationId) {
+                        int constellationId, List<Holiday> holidayList) {
         mPosition = position;
         mSolar = solar;
         mLunar = lunar;
         mSolarTermId = solarTermId;
         mConstellationId = constellationId;
+        mHolidayList = holidayList;
     }
 
     @Override
@@ -45,6 +50,11 @@ public class DatabaseItem implements PerpetualCalendar {
     @Override
     public int getConstellationId() {
         return mConstellationId;
+    }
+
+    @Override
+    public List<Holiday> getHolidayList() {
+        return mHolidayList;
     }
 
     public int getPosition() {

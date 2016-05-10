@@ -5,12 +5,14 @@ import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.INVALID_POSITION;
@@ -33,6 +35,8 @@ public class DatabaseContainer implements Database {
     private final LunarDatabase mLunarDatabase = new LunarDatabase();
 
     private final ConstellationDatabase mConstellationDatabase = new ConstellationDatabase();
+
+    private final HolidayDatabase mHolidayDatabase = new HolidayDatabase();
 
     public static DatabaseContainer getInstance() {
         return mInstance;
@@ -65,17 +69,20 @@ public class DatabaseContainer implements Database {
                     Log.w(LOG_TAG, "Init semaphore was interrupted.");
                 }
                 mSolarTermDatabase.init(context);
+                mHolidayDatabase.init(context);
 
                 int solarTermId;
                 int constellationId;
                 Solar solar = mSolarDatabase.firstDay();
                 Lunar lunar = mLunarDatabase.firstDay();
                 int position = 0;
+                List<Holiday> holidayList;
                 while (true) {
                     solarTermId = mSolarTermDatabase.get(solar);
                     constellationId = mConstellationDatabase.get(solar);
+                    holidayList = mHolidayDatabase.get(solar);
                     DatabaseItem item = new DatabaseItem(position, solar, lunar, solarTermId,
-                            constellationId);
+                            constellationId, holidayList);
                     DatabaseKey keyPosition = new DatabaseKey(position);
                     mDatabaseMap.put(keyPosition, item);
                     DatabaseKey keyDate = new DatabaseKey(solar);
@@ -105,6 +112,17 @@ public class DatabaseContainer implements Database {
     public int getPosition(Calendar calendar) {
         Solar solar = new SolarDatabaseItem(calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
+        DatabaseKey key = new DatabaseKey(solar);
+        if (mDatabaseMap.containsKey(key)) {
+            DatabaseItem item = mDatabaseMap.get(key);
+            return item.getPosition();
+        }
+        return INVALID_POSITION;
+    }
+
+    @Override
+    public int getPosition(int year, int month, int day) {
+        Solar solar = new SolarDatabaseItem(year, month, day);
         DatabaseKey key = new DatabaseKey(solar);
         if (mDatabaseMap.containsKey(key)) {
             DatabaseItem item = mDatabaseMap.get(key);

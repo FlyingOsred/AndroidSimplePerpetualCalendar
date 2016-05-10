@@ -9,4 +9,7 @@ public interface Database {
     public PerpetualCalendar get(int position);
 
     public int getPosition(Calendar calendar);
+
+    public int getPosition(int year, int month, int day);
+
 }

@@ -11,16 +11,20 @@ import android.widget.TextView;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.R;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.DAYS_IN_WEEK;
 import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.START_DAY_OF_WEEK;
 import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
 
 public class DayAdapter extends RecyclerView.Adapter {
+
+    private final Context mContext;
 
     private Database mDatabase = null;
 
@@ -30,11 +34,18 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     private boolean mShowWeekNumber;
 
+    private String mHolidayRegion;
+
+    private String[] mHolidayNames = null;
+
     private int mActivatedItem = AdapterView.INVALID_POSITION;
 
-    public DayAdapter(int firstDayOfWeek, boolean showWeekNumber) {
+    public DayAdapter(Context context, int firstDayOfWeek, boolean showWeekNumber, String region) {
+        mContext = context;
         mShowWeekNumber = showWeekNumber;
         mFirstDayOfWeek = firstDayOfWeek;
+        mHolidayRegion = region;
+        getHolidayNames();
         computeOffset(firstDayOfWeek);
     }
 
@@ -91,6 +102,27 @@ public class DayAdapter extends RecyclerView.Adapter {
                 } else {
                     viewHolder.mActivateAreaView.setActivated(false);
                 }
+                if (mHolidayRegion != null && calendar.getHolidayList() != null) {
+                    List<Holiday> list = calendar.getHolidayList();
+                    for (Holiday holiday : list) {
+                        if (mHolidayRegion.equals(holiday.getRegion())) {
+                            if (holiday.getId() != Holiday.INVALID_FIELD) {
+                                viewHolder.mHolidayTextView.setText(mHolidayNames[holiday.getId()]);
+                            } else {
+                                viewHolder.mHolidayTextView.setText("");
+                            }
+                            if (holiday.getOffOrWork() != Holiday.INVALID_FIELD) {
+                                if (holiday.getOffOrWork() == Holiday.TYPE_WORK) {
+                                    viewHolder.mOffOrWorkTextView.setText(R.string.holiday_type_work);
+                                } else {
+                                    viewHolder.mOffOrWorkTextView.setText(R.string.holiday_type_off);
+                                }
+                            }
+                        } else {
+                            //viewHolder.mOffOrWorkTextView.setText("");
+                        }
+                    }
+                }
             }
         }
     }
@@ -137,9 +169,17 @@ public class DayAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void setHolidayRegion(String region) {
+        if (mHolidayRegion == region || (mHolidayRegion != null && mHolidayRegion.equals(region))) {
+            return;
+        }
+        mHolidayRegion = region;
+        getHolidayNames();
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final Context mContext;
         public final View mItemView;
         public final View mActivateAreaView;
         public final TextView mConstellationTextView;
@@ -149,10 +189,10 @@ public class DayAdapter extends RecyclerView.Adapter {
         public final TextView mTodayTextView;
         public final TextView mOffOrWorkTextView;
         public final TextView mWeekNumberTextView;
+        public final TextView mHolidayTextView;
 
         public ViewHolder(View itemView, Context context) {
             super(itemView);
-            mContext = context;
             mItemView = itemView;
             mDateTextView = (TextView) itemView.findViewById(R.id.day_text_view);
             mConstellationTextView = (TextView) itemView.findViewById(R.id.constellation_text_view);
@@ -161,12 +201,14 @@ public class DayAdapter extends RecyclerView.Adapter {
             mTodayTextView = (TextView) itemView.findViewById(R.id.today_text_view);
             mOffOrWorkTextView = (TextView) itemView.findViewById(R.id.off_or_work_text_view);
             mWeekNumberTextView = (TextView) itemView.findViewById(R.id.week_number_text_view);
-            mActivateAreaView = (View) itemView.findViewById(R.id.activate_area_view);
+            mActivateAreaView = itemView.findViewById(R.id.activate_area_view);
+            mHolidayTextView = (TextView) itemView.findViewById(R.id.holiday_text_view);
         }
 
         public Context getContext() {
             return mContext;
         }
+
     }
 
     private boolean isToday(int year, int month, int day) {
@@ -207,5 +249,27 @@ public class DayAdapter extends RecyclerView.Adapter {
             return mDatabase.get(position - mFrontOffset);
         }
         return null;
+    }
+
+    public int getPosition(int year, int month, int day) {
+        int position = AdapterView.INVALID_POSITION;
+        if (mDatabase != null) {
+            position = mDatabase.getPosition(year, month, day);
+        }
+        if (position != AdapterView.INVALID_POSITION) {
+            position += mFrontOffset;
+        }
+        return position;
+    }
+
+    private void getHolidayNames() {
+        if (mHolidayRegion != null) {
+            String arrayName = "holiday_" + mHolidayRegion;
+            int resId = mContext.getResources().getIdentifier(arrayName, "array",
+                    mContext.getPackageName());
+            if (resId > 0) {
+                mHolidayNames = mContext.getResources().getStringArray(resId);
+            }
+        }
     }
 }

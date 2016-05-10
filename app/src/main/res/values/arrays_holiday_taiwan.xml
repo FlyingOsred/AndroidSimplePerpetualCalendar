@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="holiday_taiwan">
+        <item>@string/holiday_taiwan_new_years_day_name</item>
+        <item>@string/holiday_taiwan_republic_day_name</item>
+        <item>@string/holiday_taiwan_beano_name</item>
+        <item>@string/holiday_taiwan_farmers_day_name</item>
+        <item>@string/holiday_taiwan_chinese_new_years_eve_name</item>
+        <item>@string/holiday_taiwan_spring_festival_name</item>
+        <item>@string/holiday_taiwan_taoist_day_name</item>
+        <item>@string/holiday_taiwan_valentines_day_name</item>
+        <item>@string/holiday_taiwan_lantern_festival_name</item>
+        <item>@string/holiday_taiwan_peace_memorial_day_name</item>
+        <item>@string/holiday_taiwan_army_day_children_name</item>
+        <item>@string/holiday_taiwan_womens_day_name</item>
+        <item>@string/holiday_taiwan_arbor_day_name</item>
+        <item>@string/holiday_taiwan_sun_yat_sens_passing_day_name</item>
+        <item>@string/holiday_taiwan_japanese_aggression_name</item>
+        <item>@string/holiday_taiwan_art_festival_name</item>
+        <item>@string/holiday_taiwan_day_martyrs_name</item>
+        <item>@string/holiday_taiwan_youth_day_name</item>
+        <item>@string/holiday_taiwan_april_fools_day_name</item>
+        <item>@string/holiday_taiwan_joint_service_day_name</item>
+        <item>@string/holiday_taiwan_tomb_sweeping_day_name</item>
+        <item>@string/holiday_taiwan_childrens_day_name</item>
+        <item>@string/holiday_taiwan_matsus_birthday_name</item>
+        <item>@string/holiday_taiwan_labour_day_name</item>
+        <item>@string/holiday_taiwan_mothers_day_name</item>
+        <item>@string/holiday_taiwan_buddhas_birthday_name</item>
+        <item>@string/holiday_taiwan_dragon_boat_festival_name</item>
+        <item>@string/holiday_taiwan_army_day_name</item>
+        <item>@string/holiday_taiwan_martial_law_anniversary_name</item>
+        <item>@string/holiday_taiwan_fathers_day_name</item>
+        <item>@string/holiday_taiwan_double_seventh_day_name</item>
+        <item>@string/holiday_taiwan_air_force_day_name</item>
+        <item>@string/holiday_taiwan_ghost_festival_name</item>
+        <item>@string/holiday_taiwan_navy_day_name</item>
+        <item>@string/holiday_taiwan_armed_forces_day_name</item>
+        <item>@string/holiday_taiwan_mid_autumn_festival_name</item>
+        <item>@string/holiday_taiwan_confucius_birthday_name</item>
+        <item>@string/holiday_taiwan_teachers_day_name</item>
+        <item>@string/holiday_taiwan_national_day_name</item>
+        <item>@string/holiday_taiwan_double_ninth_festival_name</item>
+        <item>@string/holiday_taiwan_overseas_chinese_day_name</item>
+        <item>@string/holiday_taiwan_united_nations_day_name</item>
+        <item>@string/holiday_taiwan_taiwan_retrocession_day_name</item>
+        <item>@string/holiday_taiwan_sun_yat_sens_birthday_name</item>
+        <item>@string/holiday_taiwan_cultural_renaissance_day_name</item>
+        <item>@string/holiday_taiwan_gendarmerie_section_day_name</item>
+        <item>@string/holiday_taiwan_constitution_day_name</item>
+        <item>@string/holiday_taiwan_christmas_eve_name</item>
+        <item>@string/holiday_taiwan_christmas_name</item>
+    </string-array>
+
+</resources>

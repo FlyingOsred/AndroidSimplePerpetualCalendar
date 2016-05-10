@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="holiday_china_new_years_day_name">New Year\'s Day</string>
+    <string name="holiday_china_laba_rice_porridge_festival_name">Laba Rice Porridge Festival</string>
+    <string name="holiday_china_kitchen_god_festival_name">kitchen God Festival</string>
+    <string name="holiday_china_chinese_new_years_eve_name">Chinese New Year\'s Eve</string>
+    <string name="holiday_china_spring_festival_name">Spring Festival</string>
+    <string name="holiday_china_valentines_day_name">Valentine\'s Day</string>
+    <string name="holiday_china_lantern_festival_name">Lantern Festival</string>
+    <string name="holiday_china_youth_volunteer_service_day_name">Youth Volunteer Service Day</string>
+    <string name="holiday_china_womens_day_name">Women\'s Day</string>
+    <string name="holiday_china_dragon_head_raising_festival_name">Dragon-Head-Raising Festival</string>
+    <string name="holiday_china_arbor_day_name">Arbor Day</string>
+    <string name="holiday_china_world_consumer_rights_day_name">World Consumer Rights Day</string>
+    <string name="holiday_china_april_fools_day_name">April Fool\'s Day</string>
+    <string name="holiday_china_tomb_sweeping_day_name">Tomb-sweeping Day</string>
+    <string name="holiday_china_labour_day_name">Labour Day</string>
+    <string name="holiday_china_youth_day_name">Youth Day</string>
+    <string name="holiday_china_mothers_day_name">Mother\'s Day</string>
+    <string name="holiday_china_childrens_day_name">Children\'s Day</string>
+    <string name="holiday_china_dragon_boat_festival_name">Dragon Boat Festival</string>
+    <string name="holiday_china_fathers_day_name">Father\'s Day</string>
+    <string name="holiday_china_chinese_communist_party_day_name">Chinese Communist Party Day</string>
+    <string name="holiday_china_hong_kong_reunification_day_name">Hong Kong Reunification Day</string>
+    <string name="holiday_china_army_day_name">Army Day</string>
+    <string name="holiday_china_double_seventh_day_name">Double-Seventh Day</string>
+    <string name="holiday_china_ghost_festival_name">Ghost Festival</string>
+    <string name="holiday_china_teachers_day_name">Teacher\'s Day</string>
+    <string name="holiday_china_mid_autumn_festival_name">Mid-Autumn Festival</string>
+    <string name="holiday_china_national_day_name">National Day</string>
+    <string name="holiday_china_double_ninth_festival_name">Double Ninth Festival</string>
+    <string name="holiday_china_reporter_festival_name">Reporter Festival</string>
+    <string name="holiday_china_macao_memorial_day_name">Macao Memorial Day</string>
+    <string name="holiday_china_nanjing_massacre_anniversary_name">Nanjing Massacre Anniversary</string>
+    <string name="holiday_china_christmas_eve_name">Christmas Eve</string>
+    <string name="holiday_china_christmas_name">Christmas</string>
+</resources>

@@ -28,14 +28,19 @@ public class LunarDatabase {
             0x0D5252, 0x0DAA47, 0x66B53B, 0x056D4F, 0x04AE45, 0x4A4EB9, 0x0A4D4C, 0x0D1541, 0x2D92B5            /*2091-2099*/
     };
 
-    public static int getLeapMonth(int year) {
+    private int getLeapMonth(int year) {
         long data = LUNAR_DATABASE[year - PerpetualCalendar.START_YEAR];
         int month = (int) (data >> 20) & 0xF;
         return month;
     }
 
-    public static int getDaysInMonth(int year, int month) {
-        if ((LUNAR_DATABASE[year - 1901] & (0x80000 >> (month - 1))) == 0) {
+    private int getDaysInMonth(int year, int month, boolean isLeapMonth) {
+        int leapMonth = getLeapMonth(year);
+        int index = month;
+        if (leapMonth > 0 && (isLeapMonth || month > leapMonth)) {
+            index++;
+        }
+        if ((LUNAR_DATABASE[year - 1901] & (0x80000 >> (index - 1))) == 0) {
             return 29;
         }
         return 30;
@@ -51,9 +56,9 @@ public class LunarDatabase {
         int year = previous.getYear();
         boolean isLastDayInMonth = false;
         boolean isLeapMonth = previous.isLeapMonth();
-        int leapMonth = LunarDatabase.getLeapMonth(year);
+        int leapMonth = getLeapMonth(year);
         day++;
-        int daysInMonth = LunarDatabase.getDaysInMonth(year, month);
+        int daysInMonth = getDaysInMonth(year, month, isLeapMonth);
         if (day > daysInMonth) {
             day = 1;
             if (month == leapMonth && !previous.isLeapMonth()) {
@@ -67,7 +72,7 @@ public class LunarDatabase {
             month = 1;
             year++;
         }
-        daysInMonth = LunarDatabase.getDaysInMonth(year, month);
+        daysInMonth = getDaysInMonth(year, month, isLeapMonth);
         if (day == daysInMonth) {
             isLastDayInMonth = true;
         }

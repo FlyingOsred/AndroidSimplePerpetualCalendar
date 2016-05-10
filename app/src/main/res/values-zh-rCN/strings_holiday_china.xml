@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="holiday_china_new_years_day_name">元旦</string>
+    <string name="holiday_china_laba_rice_porridge_festival_name">腊八节</string>
+    <string name="holiday_china_kitchen_god_festival_name">小年</string>
+    <string name="holiday_china_chinese_new_years_eve_name">除夕</string>
+    <string name="holiday_china_spring_festival_name">春节</string>
+    <string name="holiday_china_valentines_day_name">情人节</string>
+    <string name="holiday_china_lantern_festival_name">元宵节</string>
+    <string name="holiday_china_youth_volunteer_service_day_name">青年志愿者服务日</string>
+    <string name="holiday_china_womens_day_name">妇女节</string>
+    <string name="holiday_china_dragon_head_raising_festival_name">龙抬头</string>
+    <string name="holiday_china_arbor_day_name">植树节</string>
+    <string name="holiday_china_world_consumer_rights_day_name">消费者权益保护日</string>
+    <string name="holiday_china_april_fools_day_name">愚人节</string>
+    <string name="holiday_china_tomb_sweeping_day_name">清明节</string>
+    <string name="holiday_china_labour_day_name">劳动节</string>
+    <string name="holiday_china_youth_day_name">青年节</string>
+    <string name="holiday_china_mothers_day_name">母亲节</string>
+    <string name="holiday_china_childrens_day_name">儿童节</string>
+    <string name="holiday_china_dragon_boat_festival_name">端午节</string>
+    <string name="holiday_china_fathers_day_name">父亲节</string>
+    <string name="holiday_china_chinese_communist_party_day_name">建党日</string>
+    <string name="holiday_china_hong_kong_reunification_day_name">香港回归纪念日</string>
+    <string name="holiday_china_army_day_name">建军节</string>
+    <string name="holiday_china_double_seventh_day_name">七夕</string>
+    <string name="holiday_china_ghost_festival_name">中元节</string>
+    <string name="holiday_china_teachers_day_name">教师节</string>
+    <string name="holiday_china_mid_autumn_festival_name">中秋节</string>
+    <string name="holiday_china_national_day_name">国庆节</string>
+    <string name="holiday_china_double_ninth_festival_name">重阳节</string>
+    <string name="holiday_china_reporter_festival_name">记者节</string>
+    <string name="holiday_china_macao_memorial_day_name">澳门回归日</string>
+    <string name="holiday_china_nanjing_massacre_anniversary_name">南京大屠杀纪念日</string>
+    <string name="holiday_china_christmas_eve_name">平安夜</string>
+    <string name="holiday_china_christmas_name">圣诞节</string>
+</resources>

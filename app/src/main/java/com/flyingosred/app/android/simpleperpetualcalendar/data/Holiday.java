@@ -2,16 +2,16 @@ package com.flyingosred.app.android.simpleperpetualcalendar.data;
 
 public interface Holiday {
 
-    public static final int REGION_INTERNATIONAL = 0;
+    int INVALID_FIELD = -1;
 
-    public static final int REGION_CHINA = 1 << 0;
+    int TYPE_WORK = 0;
 
-    public static final int REGION_TAIWAN = 1 << 1;
+    int TYPE_OFF = 1;
 
-    public static final int REGION_HONGKONG = 1 << 2;
+    String getRegion();
 
-    public static final int REGION_ID_OFFSET = 1000;
+    int getId();
 
-    public static final int INVALID_FIELD = -1;
+    int getOffOrWork();
 
 }

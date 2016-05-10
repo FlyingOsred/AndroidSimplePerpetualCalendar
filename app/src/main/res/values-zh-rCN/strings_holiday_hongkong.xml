@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="holiday_hongkong_new_years_day_name">新历新年</string>
+    <string name="holiday_hongkong_lunar_new_years_eve_name">除夕</string>
+    <string name="holiday_hongkong_lunar_new_year_name">农历年初一</string>
+    <string name="holiday_hongkong_second_day_of_lunar_new_year_name">农历年初二</string>
+    <string name="holiday_hongkong_third_day_of_lunar_new_year_name">农历年初三</string>
+    <string name="holiday_hongkong_valentines_day_name">情人节</string>
+    <string name="holiday_hongkong_lantern_festival_name">元宵节</string>
+    <string name="holiday_hongkong_womens_day_name">妇女节</string>
+    <string name="holiday_hongkong_good_friday_name">耶稣受难节</string>
+    <string name="holiday_hongkong_holy_saturday_name">耶稣受难节翌日</string>
+    <string name="holiday_hongkong_easter_sunday_name">复活节</string>
+    <string name="holiday_hongkong_easter_monday_name">复活节星期一</string>
+    <string name="holiday_hongkong_april_fools_day_name">愚人节</string>
+    <string name="holiday_hongkong_tomb_sweeping_day_name">清明节</string>
+    <string name="holiday_hongkong_matsus_birthday_name">妈祖诞辰</string>
+    <string name="holiday_hongkong_labour_day_name">劳动节</string>
+    <string name="holiday_hongkong_day_following_labour_day_name">劳动节翌日</string>
+    <string name="holiday_hongkong_mothers_day_name">母亲节</string>
+    <string name="holiday_hongkong_buddhas_birthday_name">佛诞</string>
+    <string name="holiday_hongkong_dragon_boat_festival_name">端午节</string>
+    <string name="holiday_hongkong_fathers_day_name">父亲节</string>
+    <string name="holiday_hongkong_hong_kong_special_administrative_region_establishment_day_name">香港特别行政区成立纪念日</string>
+    <string name="holiday_hongkong_ghost_festival_name">盂兰节</string>
+    <string name="holiday_hongkong_mid_autumn_festival_name">中秋节</string>
+    <string name="holiday_hongkong_day_following_the_mid_autumn_festival_name">中秋节翌日</string>
+    <string name="holiday_hongkong_national_day_name">国庆日</string>
+    <string name="holiday_hongkong_double_ninth_festival_name">重阳节</string>
+    <string name="holiday_hongkong_day_following_double_ninth_festival_next_day_name">重阳节翌日</string>
+    <string name="holiday_hongkong_christmas_eve_name">平安夜</string>
+    <string name="holiday_hongkong_christmas_name">圣诞节</string>
+    <string name="holiday_hongkong_the_first_weekday_after_christmas_name">圣诞节后第一个周日</string>
+    <string name="holiday_hongkong_the_second_weekday_after_christmas_name">圣诞节后第二个周日</string>
+</resources>

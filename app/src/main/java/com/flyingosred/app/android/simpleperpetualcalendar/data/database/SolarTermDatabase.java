@@ -60,8 +60,8 @@ public class SolarTermDatabase {
                         Date date = formatter.parse(dates[i]);
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
-                        int hash = getDateHash(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                                calendar.get(Calendar.DATE));
+                        int hash = getDateHash(calendar.get(Calendar.YEAR),
+                                calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
                         Log.d(LOG_TAG, "Found solar term id " + i + " for " + date);
                         mDatabase.put(hash, i);
                     } catch (ParseException e) {

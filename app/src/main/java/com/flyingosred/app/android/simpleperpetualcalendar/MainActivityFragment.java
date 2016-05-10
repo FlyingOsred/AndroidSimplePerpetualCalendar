@@ -84,10 +84,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         int firstDayOfWeek = getPrefFirstDayOfWeek(mSharedPreferences);
         boolean showWeekNumber = getPrefShowWeekNumber(mSharedPreferences);
+        String holidayRegion = getPrefHolidayRegion(mSharedPreferences);
+        Log.d(LOG_TAG, "Holiday region is " + holidayRegion);
         mGestureDetector = new GestureDetectorCompat(getActivity(), new DayViewOnGestureListener());
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         mDayView.setLayoutManager(layoutManager);
-        mDayAdapter = new DayAdapter(firstDayOfWeek, showWeekNumber);
+        mDayAdapter = new DayAdapter(getContext(), firstDayOfWeek, showWeekNumber, holidayRegion);
         mDayAdapter.registerAdapterDataObserver(new DayAdapterDataObserver());
         mDayView.setAdapter(mDayAdapter);
         mDayView.addOnItemTouchListener(this);
@@ -187,10 +189,23 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         }
     }
 
+    private void setHolidayRegion(String region) {
+        if (mDayAdapter != null) {
+            mDayAdapter.setHolidayRegion(region);
+        }
+    }
+
     private boolean getPrefShowWeekNumber(SharedPreferences sharedPreferences) {
         String key = getString(R.string.pref_key_show_week_number);
         boolean showWeekNumber = sharedPreferences.getBoolean(key, false);
         return showWeekNumber;
+    }
+
+    private String getPrefHolidayRegion(SharedPreferences sharedPreferences) {
+        String key = getString(R.string.pref_key_holiday_region);
+        String defaultRegion = getString(R.string.pref_holiday_region_default);
+        String region = sharedPreferences.getString(key, defaultRegion);
+        return region;
     }
 
     @Override
@@ -202,6 +217,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         } else if (key.equals(getString(R.string.pref_key_show_week_number))) {
             boolean showWeekNumber = getPrefShowWeekNumber(sharedPreferences);
             setShowWeekNumber(showWeekNumber);
+        } else if (key.equals(getString(R.string.pref_key_holiday_region))) {
+            String holidayRegion = getPrefHolidayRegion(sharedPreferences);
+            setHolidayRegion(holidayRegion);
         }
     }
 
@@ -235,7 +253,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     private void scrollToToday() {
-        int today = mDayAdapter.getTodayPosition();
+        //int today = mDayAdapter.getTodayPosition();
+        int today = AdapterView.INVALID_POSITION;
         if (today != AdapterView.INVALID_POSITION) {
             GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
             int offset = PerpetualCalendar.DAYS_IN_WEEK * 2;
@@ -288,4 +307,21 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             scrollToToday();
         }
     }
+
+    public void scrollToDate(int year, int month, int day) {
+        int position = mDayAdapter.getPosition(year, month, day);
+        Log.d(LOG_TAG, "scrollToDate year " + year + " month " + month + " day " + day
+                + " position " + position);
+        if (position != AdapterView.INVALID_POSITION) {
+            GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
+            int offset = PerpetualCalendar.DAYS_IN_WEEK * 2;
+            int innerPosition = position - offset;
+            if (innerPosition < 0) {
+                innerPosition = 0;
+            }
+            Log.d(LOG_TAG, "Today position with offset is " + innerPosition);
+            layoutManager.scrollToPositionWithOffset(innerPosition, offset);
+        }
+    }
+
 }

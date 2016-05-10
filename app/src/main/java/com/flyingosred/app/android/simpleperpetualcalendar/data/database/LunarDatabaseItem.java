@@ -19,40 +19,6 @@ public class LunarDatabaseItem extends Lunar {
         mLeapMonth = isLeapMonth;
     }
 
-    public static LunarDatabaseItem FirstDay() {
-        return new LunarDatabaseItem(LUNAR_YEAR_MIN, 1, 1, false, false);
-    }
-
-    public LunarDatabaseItem getNextDay() {
-        int day = mDay;
-        int month = mMonth;
-        int year = mYear;
-        boolean isLastDayInMonth = false;
-        boolean isLeapMonth = mLeapMonth;
-        int leapMonth = LunarDatabase.getLeapMonth(year);
-        day++;
-        int daysInMonth = LunarDatabase.getDaysInMonth(year, month);
-        if (day > daysInMonth) {
-            day = 1;
-            if (month == leapMonth && !mLeapMonth) {
-                isLeapMonth = true;
-            } else {
-                isLeapMonth = false;
-                month++;
-            }
-        }
-        if (month > Lunar.MONTHS_IN_YEAR) {
-            month = 1;
-            year++;
-        }
-        daysInMonth = LunarDatabase.getDaysInMonth(year, month);
-        if (day == daysInMonth) {
-            isLastDayInMonth = true;
-        }
-
-        return new LunarDatabaseItem(year, month, day, isLastDayInMonth, isLeapMonth);
-    }
-
     @Override
     public int getYear() {
         return mYear;

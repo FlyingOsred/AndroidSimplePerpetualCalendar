@@ -1,12 +1,19 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.R;
@@ -41,6 +48,8 @@ public class DayAdapter extends RecyclerView.Adapter {
     private String mHolidayRegion;
 
     private String[] mHolidayNames = null;
+
+    private int mHolidayNationFlagId = -1;
 
     private int mActivatedItem = AdapterView.INVALID_POSITION;
 
@@ -136,7 +145,8 @@ public class DayAdapter extends RecyclerView.Adapter {
         private final TextView mTodayTextView;
         private final TextView mOffOrWorkTextView;
         private final TextView mWeekNumberTextView;
-        private final TextView mHolidayTextView;
+        //private final TextView mHolidayTextView;
+        private final LinearLayout mHolidayContainer;
 
         public ViewHolder(View itemView, Context context) {
             super(itemView);
@@ -149,7 +159,8 @@ public class DayAdapter extends RecyclerView.Adapter {
             mOffOrWorkTextView = (TextView) itemView.findViewById(R.id.off_or_work_text_view);
             mWeekNumberTextView = (TextView) itemView.findViewById(R.id.week_number_text_view);
             mActivateAreaView = itemView.findViewById(R.id.activate_area_view);
-            mHolidayTextView = (TextView) itemView.findViewById(R.id.holiday_text_view);
+            //mHolidayTextView = (TextView) itemView.findViewById(R.id.holiday_text_view);
+            mHolidayContainer = (LinearLayout) itemView.findViewById(R.id.holiday_container_view);
         }
 
         public void bindData(PerpetualCalendar calendar, boolean showWeekNumber, boolean active) {
@@ -212,19 +223,21 @@ public class DayAdapter extends RecyclerView.Adapter {
                 mOffOrWorkTextView.setVisibility(View.GONE);
             }
 
+            mHolidayContainer.removeAllViews();
             if (holidayIdList.size() > 0) {
-                StringBuilder sb = new StringBuilder();
+                LayoutInflater inflater = LayoutInflater.from(mContext);
                 for (int i = 0; i < holidayIdList.size(); i++) {
                     int holidayId = holidayIdList.get(i);
-                    if (i > 0) {
-                        sb.append("\n");
-                    }
-                    sb.append(mHolidayNames[holidayId]);
+                    View holidayItem = inflater.inflate(R.layout.holiday_item_view, null);
+                    AppCompatImageView imageView = (AppCompatImageView) holidayItem.findViewById(R.id.holiday_item_image_view);
+                    imageView.setImageResource(mHolidayNationFlagId);
+                    TextView textView = (TextView) holidayItem.findViewById(R.id.holiday_item_text_view);
+                    textView.setText(mHolidayNames[holidayId]);
+                    mHolidayContainer.addView(holidayItem, i);
                 }
-                mHolidayTextView.setVisibility(View.VISIBLE);
-                mHolidayTextView.setText(sb.toString());
+                mHolidayContainer.setVisibility(View.VISIBLE);
             } else {
-                mHolidayTextView.setVisibility(View.GONE);
+                mHolidayContainer.setVisibility(View.GONE);
             }
         }
 
@@ -320,6 +333,9 @@ public class DayAdapter extends RecyclerView.Adapter {
             if (resId > 0) {
                 mHolidayNames = mContext.getResources().getStringArray(resId);
             }
+            String flagName = "ic_flag_" + mHolidayRegion;
+            mHolidayNationFlagId = mContext.getResources().getIdentifier(flagName, "mipmap",
+                    mContext.getPackageName());
         }
     }
 }

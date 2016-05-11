@@ -2,8 +2,8 @@
 <resources>
     <string name="holiday_taiwan_new_years_day_name">元旦</string>
     <string name="holiday_taiwan_republic_day_name">中華民國開國紀念日</string>
-    <string name="holiday_taiwan_beano_name">尾牙 </string>
-    <string name="holiday_taiwan_farmers_day_name">農民節 </string>
+    <string name="holiday_taiwan_beano_name">尾牙</string>
+    <string name="holiday_taiwan_farmers_day_name">農民節</string>
     <string name="holiday_taiwan_chinese_new_years_eve_name">除夕</string>
     <string name="holiday_taiwan_spring_festival_name">春節</string>
     <string name="holiday_taiwan_taoist_day_name">道教節</string>

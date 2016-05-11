@@ -20,6 +20,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
         dialog.getDatePicker().setCalendarViewShown(false);
         dialog.getDatePicker().setSpinnersShown(true);
+        dialog.updateDate(year, month, day);
         return dialog;
     }
 

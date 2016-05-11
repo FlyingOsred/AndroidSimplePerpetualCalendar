@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="setting_holiday_region_china">中国节假日</string>
-    <string name="setting_holiday_region_taiwan">台湾节假日</string>
-    <string name="setting_holiday_region_hongkong">香港节假日</string>
+    <string name="setting_holiday_region_taiwan">中国台湾节假日</string>
+    <string name="setting_holiday_region_hongkong">中国香港节假日</string>
 
     <string name="pref_holiday_region_title">节假日</string>
 

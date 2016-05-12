@@ -2,6 +2,7 @@ package com.flyingosred.app.android.simpleperpetualcalendar;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -24,15 +25,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayAdapter;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayOfWeekAdapter;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.loader.ContentLoader;
 import com.flyingosred.app.android.simpleperpetualcalendar.view.DayRecyclerView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
@@ -58,6 +65,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private boolean mScrollToToday = false;
 
+    private View mDetailView = null;
+
+    private CountDownTimer mDetailViewCountDownTimer = null;
+
     public MainActivityFragment() {
     }
 
@@ -74,6 +85,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mDayView = (DayRecyclerView) view.findViewById(R.id.day_recycler_view);
         mDayOfWeekView = (RecyclerView) view.findViewById(R.id.day_of_week_recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar_loading);
+        mDetailView = view.findViewById(R.id.day_detail_view);
         return view;
     }
 
@@ -248,7 +260,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             View view = mDayView.findChildViewUnder(e.getX(), e.getY());
             int position = mDayView.getChildAdapterPosition(view);
             Log.d(LOG_TAG, "onSingleTapConfirmed position is " + position);
-            mDayAdapter.activateItem(position);
+            activeItem(position);
             return super.onSingleTapConfirmed(e);
         }
     }
@@ -264,7 +276,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             }
             Log.d(LOG_TAG, "Today position with offset is " + position);
             layoutManager.scrollToPositionWithOffset(position, offset);
-            mDayAdapter.activateItem(today);
+            activeItem(today);
         }
     }
 
@@ -285,6 +297,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     private class DayViewOnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            if (mDetailView.getVisibility() == View.VISIBLE) {
+                mDetailViewCountDownTimer.cancel();
+                mDetailView.setVisibility(View.GONE);
+            }
+        }
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -322,6 +342,52 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             Log.d(LOG_TAG, "Today position with offset is " + innerPosition);
             layoutManager.scrollToPositionWithOffset(innerPosition, offset);
         }
+    }
+
+    private void activeItem(int position) {
+        showDetailView(mDayAdapter.get(position), true);
+        mDayAdapter.activateItem(position);
+    }
+
+    private void showDetailView(PerpetualCalendar calendar, boolean show) {
+        if (!show || calendar == null) {
+            mDetailView.setVisibility(View.GONE);
+        } else {
+            setDetailViewContent(calendar);
+            mDetailView.setVisibility(View.VISIBLE);
+            if (mDetailViewCountDownTimer == null) {
+                mDetailViewCountDownTimer = new CountDownTimer(3000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+                        mDetailView.setVisibility(View.GONE);
+                    }
+                };
+            } else {
+                mDetailViewCountDownTimer.cancel();
+            }
+            mDetailViewCountDownTimer.start();
+        }
+    }
+
+    private void setDetailViewContent(PerpetualCalendar perpetualCalendar) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(perpetualCalendar.getSolar().getYear(),
+                perpetualCalendar.getSolar().getMonth() - 1,
+                perpetualCalendar.getSolar().getDay());
+        TextView dateTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_date_text_view);
+        String date = DateUtils.formatDateRange(getContext(), calendar.getTimeInMillis(),
+                calendar.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
+                        | DateUtils.FORMAT_SHOW_YEAR).toUpperCase(Locale.getDefault());
+        dateTextView.setText(date);
+        TextView dayTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_day_text_view);
+        dayTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
+        TextView lunarDateTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_lunar_date_text_view);
+        String lunarDate = Lunar.formatFullString(getContext(), perpetualCalendar.getLunar());
+        lunarDateTextView.setText(lunarDate);
     }
 
 }

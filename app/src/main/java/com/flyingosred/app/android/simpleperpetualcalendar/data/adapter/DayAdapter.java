@@ -1,6 +1,8 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,26 +166,41 @@ public class DayAdapter extends RecyclerView.Adapter {
             mHolidayContainer = (LinearLayout) itemView.findViewById(R.id.holiday_container_view);
         }
 
-        public void bindData(PerpetualCalendar calendar, boolean showWeekNumber, boolean active) {
-            if (calendar == null) {
+        public void bindData(PerpetualCalendar perpetualCalendar, boolean showWeekNumber, boolean active) {
+            if (perpetualCalendar == null) {
                 return;
             }
-            setDateText(calendar.getSolar().getDay());
-            setLunarText(calendar.getLunar());
-            setSolarTermText(calendar.getSolarTermId());
-            setHolidayText(calendar.getHolidayList());
-            setTodayText(calendar.getSolar());
-            setConstellationText(calendar.getConstellationId());
-            setWeekNumber(showWeekNumber, calendar.getSolar());
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(perpetualCalendar.getSolar().getYear(),
+                    perpetualCalendar.getSolar().getMonth() - 1,
+                    perpetualCalendar.getSolar().getDay());
+            setDateText(calendar);
+            setLunarText(perpetualCalendar.getLunar());
+            setSolarTermText(perpetualCalendar.getSolarTermId());
+            setHolidayText(perpetualCalendar.getHolidayList());
+            setTodayText(perpetualCalendar.getSolar());
+            setConstellationText(perpetualCalendar.getConstellationId());
+            setWeekNumber(showWeekNumber, perpetualCalendar.getSolar());
             setActive(active);
         }
 
-        private void setDateText(int day) {
-            mDateTextView.setText(String.valueOf(day));
+        private void setDateText(Calendar calendar) {
+            mDateTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
+            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+                TypedValue typedValue = new TypedValue();
+
+                TypedArray a = mContext.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorSaturdayText});
+                int color = a.getColor(0, 0);
+
+                a.recycle();
+
+                Log.d(LOG_TAG, " color is " + color);
+                mDateTextView.setTextColor(color);
+            }
         }
 
         private void setLunarText(Lunar lunar) {
-            String lunarText = Lunar.formatMonthDayString(mContext, lunar.getMonth(), lunar.getDay());
+            String lunarText = Lunar.formatMonthDayString(mContext, lunar);
             mLunarTextView.setText(lunarText);
         }
 

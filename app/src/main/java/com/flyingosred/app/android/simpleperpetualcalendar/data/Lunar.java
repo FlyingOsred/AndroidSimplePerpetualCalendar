@@ -1,10 +1,8 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.R;
-import com.flyingosred.app.android.simpleperpetualcalendar.util.Utils;
 
 import java.util.Locale;
 
@@ -28,6 +26,10 @@ public abstract class Lunar {
 
     public abstract boolean isLeapMonth();
 
+    private static final int ERA_YEAR_START = 1864;
+
+    private static final int ERA_ANIMAL_YEAR_START = 1900;
+
     private static String getChineseNumber(Context context, int number) {
         String[] array = context.getResources().getStringArray(R.array.chinese_number);
         if (number <= array.length) {
@@ -47,7 +49,11 @@ public abstract class Lunar {
         return chineseNumber.toString();
     }
 
-    private static String getChineseMonthName(Context context, int month) {
+    private static String getChineseMonthName(Context context, int month, boolean isLeapMonth) {
+        StringBuilder sb = new StringBuilder();
+        if (isLeapMonth) {
+            sb.append(context.getString(R.string.lunar_leap));
+        }
         String prefix = null;
         if (month == 1) {
             prefix = context.getString(R.string.chinese_first_month_prefix);
@@ -56,29 +62,66 @@ public abstract class Lunar {
         } else {
             prefix = getChineseNumber(context, month);
         }
-        return prefix + context.getString(R.string.chinese_month_name);
+        sb.append(prefix);
+        sb.append(context.getString(R.string.chinese_month_name));
+        return sb.toString();
     }
 
-    public static String formatMonthDayString(Context context, int month, int day) {
+    public static String formatMonthDayString(Context context, Lunar lunar) {
+        if (isChineseLocale()) {
+            return formatChineseMonthDayString(context, lunar);
+        }
+        return lunar.getMonth() + "/" + lunar.getDay();
+    }
+
+    private static String formatChineseMonthDayString(Context context, Lunar lunar) {
+        StringBuilder sb = new StringBuilder();
+        String monthName = getChineseMonthName(context, lunar.getMonth(), lunar.isLeapMonth());
+        sb.append(monthName);
+        if (lunar.getDay() <= 10) {
+            sb.append(context.getString(R.string.chinese_day_prefix_name));
+        }
+        sb.append(getChineseNumber(context, lunar.getDay()));
+        return sb.toString();
+    }
+
+    public static String formatFullString(Context context, Lunar lunar) {
+        String monthDayString = formatMonthDayString(context, lunar);
+        String eraYear = getEraYear(context, lunar.getYear());
+        StringBuilder sb = new StringBuilder();
+        if (eraYear != null) {
+            sb.append(eraYear);
+            sb.append(" ");
+        }
+        sb.append(monthDayString);
+        return sb.toString();
+    }
+
+    private static boolean isChineseLocale() {
         Locale locale = Locale.getDefault();
         if (locale.equals(Locale.CHINESE) || locale.equals(Locale.CHINA)
                 || locale.equals(Locale.SIMPLIFIED_CHINESE)
                 || locale.equals(Locale.TRADITIONAL_CHINESE)
                 || locale.equals(locale.TAIWAN)) {
-            return formatChineseMonthDayString(context, month, day);
+            return true;
         }
-        return month + "/" + day;
+        return false;
     }
 
-    private static String formatChineseMonthDayString(Context context, int month, int day) {
-        StringBuilder sb = new StringBuilder();
-        String monthName = getChineseMonthName(context, month);
-        sb.append(monthName);
-        if (day <= 10) {
-            sb.append(context.getString(R.string.chinese_day_prefix_name));
+    private static String getEraYear(Context context, int year) {
+        if (isChineseLocale()) {
+            int i = (year - ERA_YEAR_START) % 60;
+            StringBuilder sb = new StringBuilder();
+            sb.append(context.getResources().getStringArray(R.array.era_stem)[i % 10]);
+            sb.append(context.getResources().getStringArray(R.array.era_branch)[i % 12]);
+            sb.append(context.getString(R.string.lunar_era_year));
+            sb.append("【");
+            sb.append(context.getResources().getStringArray(R.array.animal_sign)[(year - ERA_ANIMAL_YEAR_START) % 12]);
+            sb.append(context.getString(R.string.lunar_era_year));
+            sb.append("】");
+            return sb.toString();
         }
-        sb.append(getChineseNumber(context, day));
-        return sb.toString();
+        return null;
     }
 }
 

@@ -3,4 +3,26 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorGreenPrimary">#4CAF50</color>
+    <color name="colorGreenPrimaryDark">#388E3C</color>
+    <color name="colorGreenPrimaryLight">#C8E6C9</color>
+    <color name="colorGreenAccent">#FFC107</color>
+    <color name="colorGreenPrimaryText">#212121</color>
+    <color name="colorGreenSecondaryText">#727272</color>
+    <color name="colorGreenTextIcons">#FFFFFF</color>
+    <color name="colorGreenDivider">#B6B6B6</color>
+    <color name="colorGreenBackgroundTransparent">#D9388E3C</color>
+
+    <color name="colorLightGreenPrimary">#8BC34A</color>
+    <color name="colorLightGreenPrimaryDark">#689F38</color>
+    <color name="colorLightGreenPrimaryLight">#DCEDC8</color>
+    <color name="colorLightGreenAccent">#FFC107</color>
+    <color name="colorLightGreenPrimaryText">#212121</color>
+    <color name="colorLightGreenSecondaryText">#727272</color>
+    <color name="colorLightGreenTextIcons">#212121</color>
+    <color name="colorLightGreenDivider">#B6B6B6</color>
+    <color name="colorLightGreenBackgroundTransparent">#CC689F38</color>
+    <color name="colorLightGreenSaturdayText">#7B1FA2</color>
+    <color name="colorLightGreenSundayText">#7B1FA2</color>
 </resources>

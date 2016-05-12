@@ -8,7 +8,7 @@
         android:id="@+id/week_number_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
+        android:layout_gravity="end|top"
         android:textSize="6sp" />
 
     <LinearLayout
@@ -26,6 +26,7 @@
                 android:id="@+id/day_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:textSize="24sp" />
 
@@ -33,6 +34,7 @@
                 android:id="@+id/constellation_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/day_text_view"
                 android:textSize="6sp" />
@@ -43,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/day_text_view"
                 android:layout_toLeftOf="@id/day_text_view"
+                android:layout_toStartOf="@id/day_text_view"
                 android:textSize="6sp" />
 
             <TextView
@@ -50,9 +53,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/today_text_view"
-                android:layout_marginRight="6dp"
                 android:layout_toLeftOf="@id/day_text_view"
-                android:gravity="left"
+                android:layout_toStartOf="@id/day_text_view"
+                android:gravity="start"
                 android:textSize="6sp" />
         </RelativeLayout>
 
@@ -60,14 +63,16 @@
             android:id="@+id/lunar_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:textSize="6sp" />
 
         <TextView
             android:id="@+id/solar_term_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
             android:textSize="6sp" />
 
         <LinearLayout
@@ -75,15 +80,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
-
-        <!--<TextView-->
-        <!--android:id="@+id/holiday_text_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:maxLines="1"-->
-        <!--android:ellipsize="end"-->
-        <!--android:gravity="right"-->
-        <!--android:textSize="6sp" />-->
 
     </LinearLayout>
 

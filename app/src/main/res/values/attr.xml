@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="popupTransparentBackgroundColor" format="reference|color" />
+    <attr name="popupTextColor" format="reference|color" />
+
+    <attr name="colorSaturdayText" format="reference|color" />
+    <attr name="colorSundayText" format="reference|color" />
+    <attr name="colorHolidayText" format="reference|color" />
+
+</resources>

@@ -1,12 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:datePickerStyle">@style/AppDatePicker</item>
+        <item name="popupTransparentBackgroundColor">?android:colorBackground</item>
+        <item name="popupTextColor">?android:textColorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,4 +22,39 @@
         <item name="android:datePickerMode">spinner</item>
     </style>
 
+    <style name="GreenTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/colorGreenPrimary</item>
+        <item name="colorPrimaryDark">@color/colorGreenPrimaryDark</item>
+        <item name="colorAccent">@color/colorGreenAccent</item>
+        <item name="android:textColorPrimary">@color/colorGreenPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorGreenSecondaryText</item>
+        <item name="android:divider">@color/colorGreenDivider</item>
+        <item name="popupTransparentBackgroundColor">@color/colorGreenBackgroundTransparent</item>
+        <item name="popupTextColor">@color/colorGreenTextIcons</item>
+    </style>
+
+    <style name="GreenTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="LightGreenTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/colorLightGreenPrimary</item>
+        <item name="colorPrimaryDark">@color/colorLightGreenPrimaryDark</item>
+        <item name="colorAccent">@color/colorLightGreenAccent</item>
+        <item name="android:textColorPrimary">@color/colorLightGreenPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorLightGreenSecondaryText</item>
+        <item name="android:divider">@color/colorLightGreenDivider</item>
+        <item name="popupTransparentBackgroundColor">@color/colorLightGreenBackgroundTransparent
+        </item>
+        <item name="popupTextColor">@color/colorLightGreenTextIcons</item>
+        <item name="colorSaturdayText">@color/colorLightGreenSaturdayText</item>
+        <item name="colorSundayText">@color/colorLightGreenSaturdayText</item>
+        <item name="colorHolidayText">@color/colorLightGreenSundayText</item>
+    </style>
+
+    <style name="LightGreenTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

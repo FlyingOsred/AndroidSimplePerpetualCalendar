@@ -9,6 +9,7 @@
 
     <string name="week_number_text">WEEK</string>
 
+    <string name="constellation_name">Constellation</string>
     <string name="constellation_aquarius_name">Aquarius</string>
     <string name="constellation_pisces_name">Pisces</string>
     <string name="constellation_aries_name">Aries</string>
@@ -27,7 +28,7 @@
     <string name="chinese_month_name">月</string>
     <string name="chinese_day_prefix_name">初</string>
 
-    <string name="pref_first_day_of_week_title">First day of week</string>
+    <string name="pref_first_day_of_week_title">Week starts on</string>
     <string name="pref_label_first_day_of_week_locale_default">Locale default</string>
     <string name="pref_label_first_day_of_week_monday">Monday</string>
     <string name="pref_label_first_day_of_week_sunday">Sunday</string>
@@ -51,4 +52,8 @@
     <string name="chinese_number_ten" translatable="false">十</string>
     <string name="chinese_number_three" translatable="false">三</string>
     <string name="chinese_number_two" translatable="false">二</string>
+
+    <string name="lunar_era_year">年</string>
+    <string name="lunar_leap">闰</string>
+
 </resources>

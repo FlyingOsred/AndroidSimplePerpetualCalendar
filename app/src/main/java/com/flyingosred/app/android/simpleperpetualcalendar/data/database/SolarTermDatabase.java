@@ -19,7 +19,7 @@ public class SolarTermDatabase {
 
     public static final String ARRAYS_PREFIX = "solar_term_date_";
 
-    public static final int START_YEAR = 2016;
+    public static final int START_YEAR = 2015;
 
     public static final int END_YEAR = 2016;
 

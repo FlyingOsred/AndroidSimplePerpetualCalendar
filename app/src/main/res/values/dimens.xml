@@ -3,4 +3,24 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="day_info_view_day_text_normal_size">24sp</dimen>
+    <dimen name="day_info_view_date_text_normal_size">6sp</dimen>
+    <dimen name="day_info_view_constellation_text_normal_size">6sp</dimen>
+    <dimen name="day_info_view_week_number_text_normal_size">6sp</dimen>
+    <dimen name="day_info_view_today_text_normal_size">6sp</dimen>
+    <dimen name="day_info_view_off_or_work_text_normal_size">6sp</dimen>
+    <dimen name="day_info_view_lunar_text_normal_size">6sp</dimen>
+    <dimen name="day_info_view_solar_term_text_normal_size">6sp</dimen>
+    <dimen name="day_info_view_holiday_text_normal_size">6sp</dimen>
+
+    <dimen name="day_info_view_day_text_large_size">64sp</dimen>
+    <dimen name="day_info_view_date_text_large_size">16sp</dimen>
+    <dimen name="day_info_view_constellation_text_large_size">16sp</dimen>
+    <dimen name="day_info_view_week_number_text_large_size">16sp</dimen>
+    <dimen name="day_info_view_today_text_large_size">16sp</dimen>
+    <dimen name="day_info_view_off_or_work_text_large_size">16sp</dimen>
+    <dimen name="day_info_view_lunar_text_large_size">16sp</dimen>
+    <dimen name="day_info_view_solar_term_text_large_size">16sp</dimen>
+    <dimen name="day_info_view_holiday_text_large_size">16sp</dimen>
 </resources>

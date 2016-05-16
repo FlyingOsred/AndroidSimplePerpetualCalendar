@@ -22,7 +22,7 @@
     <color name="colorLightGreenSecondaryText">#727272</color>
     <color name="colorLightGreenTextIcons">#212121</color>
     <color name="colorLightGreenDivider">#B6B6B6</color>
-    <color name="colorLightGreenBackgroundTransparent">#CC689F38</color>
+    <color name="colorLightGreenBackgroundTransparent">#CCFAFAFA</color>
     <color name="colorLightGreenSaturdayText">#7B1FA2</color>
     <color name="colorLightGreenSundayText">#7B1FA2</color>
 </resources>

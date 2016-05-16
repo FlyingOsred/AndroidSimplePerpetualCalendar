@@ -1,6 +1,12 @@
 package com.flyingosred.app.android.simpleperpetualcalendar;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.SharedPreferences;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -23,8 +29,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
@@ -33,6 +42,7 @@ import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalenda
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayAdapter;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayOfWeekAdapter;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.loader.ContentLoader;
+import com.flyingosred.app.android.simpleperpetualcalendar.view.DayInfoView;
 import com.flyingosred.app.android.simpleperpetualcalendar.view.DayRecyclerView;
 
 import java.text.DateFormat;
@@ -63,11 +73,15 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private GestureDetectorCompat mGestureDetector = null;
 
-    private boolean mScrollToToday = false;
+    private DayInfoView mDayInfoView;
 
-    private View mDetailView = null;
+    private CountDownTimer mDayInfoViewCountDownTimer = null;
 
-    private CountDownTimer mDetailViewCountDownTimer = null;
+    //private Animator mDayInfoAnimator = null;
+
+    //private View mDetailView = null;
+
+    //private CountDownTimer mDetailViewCountDownTimer = null;
 
     public MainActivityFragment() {
     }
@@ -85,7 +99,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mDayView = (DayRecyclerView) view.findViewById(R.id.day_recycler_view);
         mDayOfWeekView = (RecyclerView) view.findViewById(R.id.day_of_week_recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar_loading);
-        mDetailView = view.findViewById(R.id.day_detail_view);
+        mDayInfoView = (DayInfoView) view.findViewById(R.id.expend_day_info_view);
+        //mDetailView = view.findViewById(R.id.day_detail_view);
         return view;
     }
 
@@ -104,6 +119,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mDayView.setLayoutManager(layoutManager);
         mDayAdapter = new DayAdapter(getContext(), firstDayOfWeek, showWeekNumber, holidayRegion);
         mDayAdapter.registerAdapterDataObserver(new DayAdapterDataObserver());
+        mDayView.setHasFixedSize(true);
         mDayView.setAdapter(mDayAdapter);
         mDayView.addOnItemTouchListener(this);
         mDayView.addOnScrollListener(new DayViewOnScrollListener());
@@ -153,7 +169,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         if (mDayAdapter != null) {
             mDayAdapter.changeDatabase(database);
         }
-        mScrollToToday = true;
     }
 
     @Override
@@ -300,10 +315,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            if (mDetailView.getVisibility() == View.VISIBLE) {
-                mDetailViewCountDownTimer.cancel();
-                mDetailView.setVisibility(View.GONE);
+            if (mDayInfoView.getVisibility() == View.VISIBLE) {
+                mDayInfoViewCountDownTimer.cancel();
+                mDayInfoView.setVisibility(View.INVISIBLE);
             }
+//            if (mDetailView.getVisibility() == View.VISIBLE) {
+//                mDetailViewCountDownTimer.cancel();
+//                mDetailView.setVisibility(View.GONE);
+//            }
         }
 
         @Override
@@ -345,49 +364,189 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     private void activeItem(int position) {
-        showDetailView(mDayAdapter.get(position), true);
+        //showDetailView(mDayAdapter.get(position), true);
+        GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
+        showExpandDayInfoView(layoutManager.findViewByPosition(position), mDayAdapter.get(position), true);
         mDayAdapter.activateItem(position);
     }
 
-    private void showDetailView(PerpetualCalendar calendar, boolean show) {
-        if (!show || calendar == null) {
-            mDetailView.setVisibility(View.GONE);
+    private void showExpandDayInfoView(View view, PerpetualCalendar calendar, boolean show) {
+        if (!show || calendar == null || view == null || getView() == null) {
+            mDayInfoView.setVisibility(View.INVISIBLE);
         } else {
-            setDetailViewContent(calendar);
-            mDetailView.setVisibility(View.VISIBLE);
-            if (mDetailViewCountDownTimer == null) {
-                mDetailViewCountDownTimer = new CountDownTimer(3000, 1000) {
+            mDayInfoView.setData(calendar);
+            mDayInfoView.setVisibility(View.VISIBLE);
+
+//            final Rect parentBounds = new Rect();
+//            final Rect startBounds = new Rect();
+//            final Rect finalBounds = new Rect();
+//            final Point globalOffset = new Point();
+//
+//            getView().getGlobalVisibleRect(parentBounds, globalOffset);
+//            view.getGlobalVisibleRect(startBounds);
+//            mDayInfoView.getGlobalVisibleRect(finalBounds);
+//
+//            Log.d(LOG_TAG, "startBounds is  " + startBounds + " finalBounds is " + finalBounds
+//                    + " globalOffset is " + globalOffset);
+//
+//            startBounds.offset(-globalOffset.x, -globalOffset.y);
+//            finalBounds.offset(-globalOffset.x, -globalOffset.y);
+//
+//            if ((startBounds.left) <= parentBounds.width() / 2) {
+//                finalBounds.left = startBounds.right;
+//                finalBounds.right = finalBounds.left + finalBounds.width();
+//            } else {
+//                finalBounds.left = startBounds.left - finalBounds.width();
+//                finalBounds.right = finalBounds.left + finalBounds.width();
+//            }
+//            if ((startBounds.top) <= parentBounds.height() / 2) {
+//                finalBounds.top = startBounds.bottom;
+//                finalBounds.bottom = finalBounds.top + finalBounds.height();
+//            } else {
+//                finalBounds.top = startBounds.top - finalBounds.height();
+//                finalBounds.bottom = finalBounds.top + finalBounds.height();
+//            }
+//
+//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mDayInfoView.getLayoutParams();
+//            layoutParams.topMargin = finalBounds.top;
+//            layoutParams.leftMargin = finalBounds.left;
+//            mDayInfoView.setLayoutParams(layoutParams);
+//
+//            float startScale;
+//            if ((float) finalBounds.width() / finalBounds.height()
+//                    > (float) startBounds.width() / startBounds.height()) {
+//                startScale = (float) startBounds.height() / finalBounds.height();
+//                float startWidth = startScale * finalBounds.width();
+//                float deltaWidth = (startWidth - startBounds.width()) / 2;
+//                startBounds.left -= deltaWidth;
+//                startBounds.right += deltaWidth;
+//            } else {
+//                startScale = (float) startBounds.width() / finalBounds.width();
+//                float startHeight = startScale * finalBounds.height();
+//                float deltaHeight = (startHeight - startBounds.height()) / 2;
+//                startBounds.top -= deltaHeight;
+//                startBounds.bottom += deltaHeight;
+//            }
+//
+//            Log.d(LOG_TAG, "startBounds is  " + startBounds + " finalBounds is " + finalBounds
+//                    + " startScale is " + startScale);
+//
+//            AnimatorSet set = new AnimatorSet();
+//            set
+//                    .play(ObjectAnimator.ofFloat(mDayInfoView, View.X, startBounds.left,
+//                            finalBounds.left))
+//                    .with(ObjectAnimator.ofFloat(mDayInfoView, View.Y, startBounds.top,
+//                            finalBounds.top))
+//                    .with(ObjectAnimator.ofFloat(mDayInfoView, View.SCALE_X, startScale, 1f))
+//                    .with(ObjectAnimator.ofFloat(mDayInfoView, View.SCALE_Y, startScale, 1f));
+//            final int shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+//            set.setDuration(shortAnimationDuration);
+//            set.setInterpolator(new DecelerateInterpolator());
+//            set.addListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mDayInfoAnimator = null;
+//                }
+//
+//                @Override
+//                public void onAnimationCancel(Animator animation) {
+//                    mDayInfoAnimator = null;
+//                }
+//            });
+//            set.start();
+//            mDayInfoAnimator = set;
+//            final float startScaleFinal = startScale;
+//            mDayInfoView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (mDayInfoAnimator != null) {
+//                        mDayInfoAnimator.cancel();
+//                    }
+//
+//                    // Animate the four positioning/sizing properties in parallel, back to their
+//                    // original values.
+//                    AnimatorSet set = new AnimatorSet();
+//                    set
+//                            .play(ObjectAnimator.ofFloat(mDayInfoView, View.X, startBounds.left))
+//                            .with(ObjectAnimator.ofFloat(mDayInfoView, View.Y, startBounds.top))
+//                            .with(ObjectAnimator
+//                                    .ofFloat(mDayInfoView, View.SCALE_X, startScaleFinal))
+//                            .with(ObjectAnimator
+//                                    .ofFloat(mDayInfoView, View.SCALE_Y, startScaleFinal));
+//                    set.setDuration(shortAnimationDuration);
+//                    set.setInterpolator(new DecelerateInterpolator());
+//                    set.addListener(new AnimatorListenerAdapter() {
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            mDayInfoView.setVisibility(View.GONE);
+//                            mDayInfoAnimator = null;
+//                        }
+//
+//                        @Override
+//                        public void onAnimationCancel(Animator animation) {
+//                            mDayInfoView.setVisibility(View.GONE);
+//                            mDayInfoAnimator = null;
+//                        }
+//                    });
+//                    set.start();
+//                    mDayInfoAnimator = set;
+//                }
+//            });
+            if (mDayInfoViewCountDownTimer == null) {
+                mDayInfoViewCountDownTimer = new CountDownTimer(3000, 1000) {
 
                     public void onTick(long millisUntilFinished) {
                     }
 
                     public void onFinish() {
-                        mDetailView.setVisibility(View.GONE);
                     }
                 };
             } else {
-                mDetailViewCountDownTimer.cancel();
+                mDayInfoViewCountDownTimer.cancel();
             }
-            mDetailViewCountDownTimer.start();
+            mDayInfoViewCountDownTimer.start();
         }
     }
 
-    private void setDetailViewContent(PerpetualCalendar perpetualCalendar) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(perpetualCalendar.getSolar().getYear(),
-                perpetualCalendar.getSolar().getMonth() - 1,
-                perpetualCalendar.getSolar().getDay());
-        TextView dateTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_date_text_view);
-        String date = DateUtils.formatDateRange(getContext(), calendar.getTimeInMillis(),
-                calendar.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
-                        | DateUtils.FORMAT_SHOW_YEAR).toUpperCase(Locale.getDefault());
-        dateTextView.setText(date);
-        TextView dayTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_day_text_view);
-        dayTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
-        TextView lunarDateTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_lunar_date_text_view);
-        String lunarDate = Lunar.formatFullString(getContext(), perpetualCalendar.getLunar());
-        lunarDateTextView.setText(lunarDate);
-    }
+//    private void showDetailView(PerpetualCalendar calendar, boolean show) {
+//        if (!show || calendar == null) {
+//            mDetailView.setVisibility(View.GONE);
+//        } else {
+//            setDetailViewContent(calendar);
+//            mDetailView.setVisibility(View.VISIBLE);
+//            if (mDetailViewCountDownTimer == null) {
+//                mDetailViewCountDownTimer = new CountDownTimer(3000, 1000) {
+//
+//                    public void onTick(long millisUntilFinished) {
+//                    }
+//
+//                    public void onFinish() {
+//                        mDetailView.setVisibility(View.GONE);
+//                    }
+//                };
+//            } else {
+//                mDetailViewCountDownTimer.cancel();
+//            }
+//            mDetailViewCountDownTimer.start();
+//        }
+//    }
+
+//    private void setDetailViewContent(PerpetualCalendar perpetualCalendar) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(perpetualCalendar.getSolar().getYear(),
+//                perpetualCalendar.getSolar().getMonth() - 1,
+//                perpetualCalendar.getSolar().getDay());
+//        TextView dateTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_date_text_view);
+//        String date = DateUtils.formatDateRange(getContext(), calendar.getTimeInMillis(),
+//                calendar.getTimeInMillis(),
+//                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
+//                        | DateUtils.FORMAT_SHOW_YEAR).toUpperCase(Locale.getDefault());
+//        dateTextView.setText(date);
+//        TextView dayTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_day_text_view);
+//        dayTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
+//        TextView lunarDateTextView = (TextView) mDetailView.findViewById(R.id.day_detail_info_lunar_date_text_view);
+//        String lunarDate = Lunar.formatFullString(getContext(), perpetualCalendar.getLunar());
+//        lunarDateTextView.setText(lunarDate);
+//    }
 
 }

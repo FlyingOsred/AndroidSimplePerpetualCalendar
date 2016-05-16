@@ -25,6 +25,7 @@ import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
+import com.flyingosred.app.android.simpleperpetualcalendar.view.DayInfoView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -141,138 +142,75 @@ public class DayAdapter extends RecyclerView.Adapter {
 
         private final View mItemView;
         private final View mActivateAreaView;
-        private final TextView mConstellationTextView;
-        private final TextView mDateTextView;
-        private final TextView mLunarTextView;
-        private final TextView mSolarTermTextView;
-        private final TextView mTodayTextView;
-        private final TextView mOffOrWorkTextView;
         private final TextView mWeekNumberTextView;
+        private final DayInfoView mDayInfoView;
         //private final TextView mHolidayTextView;
-        private final LinearLayout mHolidayContainer;
+        //private final LinearLayout mHolidayContainer;
 
         public ViewHolder(View itemView, Context context) {
             super(itemView);
             mItemView = itemView;
-            mDateTextView = (TextView) itemView.findViewById(R.id.day_text_view);
-            mConstellationTextView = (TextView) itemView.findViewById(R.id.constellation_text_view);
-            mLunarTextView = (TextView) itemView.findViewById(R.id.lunar_text_view);
-            mSolarTermTextView = (TextView) itemView.findViewById(R.id.solar_term_text_view);
-            mTodayTextView = (TextView) itemView.findViewById(R.id.today_text_view);
-            mOffOrWorkTextView = (TextView) itemView.findViewById(R.id.off_or_work_text_view);
             mWeekNumberTextView = (TextView) itemView.findViewById(R.id.week_number_text_view);
-            mActivateAreaView = itemView.findViewById(R.id.activate_area_view);
+            mActivateAreaView = itemView.findViewById(R.id.day_info_view);
+            mDayInfoView = (DayInfoView) itemView.findViewById(R.id.day_info_view);
             //mHolidayTextView = (TextView) itemView.findViewById(R.id.holiday_text_view);
-            mHolidayContainer = (LinearLayout) itemView.findViewById(R.id.holiday_container_view);
+            //mHolidayContainer = (LinearLayout) itemView.findViewById(R.id.holiday_container_view);
         }
 
         public void bindData(PerpetualCalendar perpetualCalendar, boolean showWeekNumber, boolean active) {
             if (perpetualCalendar == null) {
                 return;
             }
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(perpetualCalendar.getSolar().getYear(),
-                    perpetualCalendar.getSolar().getMonth() - 1,
-                    perpetualCalendar.getSolar().getDay());
-            setDateText(calendar);
-            setLunarText(perpetualCalendar.getLunar());
-            setSolarTermText(perpetualCalendar.getSolarTermId());
-            setHolidayText(perpetualCalendar.getHolidayList());
-            setTodayText(perpetualCalendar.getSolar());
-            setConstellationText(perpetualCalendar.getConstellationId());
+            mDayInfoView.setData(perpetualCalendar);
             setWeekNumber(showWeekNumber, perpetualCalendar.getSolar());
-            setActive(active);
+            //setActive(active);
         }
 
-        private void setDateText(Calendar calendar) {
-            mDateTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
-            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-                TypedValue typedValue = new TypedValue();
-
-                TypedArray a = mContext.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorSaturdayText});
-                int color = a.getColor(0, 0);
-
-                a.recycle();
-
-                Log.d(LOG_TAG, " color is " + color);
-                mDateTextView.setTextColor(color);
-            }
-        }
-
-        private void setLunarText(Lunar lunar) {
-            String lunarText = Lunar.formatMonthDayString(mContext, lunar);
-            mLunarTextView.setText(lunarText);
-        }
-
-        private void setSolarTermText(int id) {
-            if (id != INVALID_ID) {
-                mSolarTermTextView.setVisibility(View.VISIBLE);
-                mSolarTermTextView.setText(mContext.getResources().getStringArray(R.array.solar_term_name)[id]);
-            } else {
-                mSolarTermTextView.setVisibility(View.GONE);
-            }
-        }
-
-        private void setHolidayText(List<Holiday> holidayList) {
-            List<Integer> holidayIdList = new ArrayList<>();
-            int offOrWorkResId = INVALID_ID;
-            if (mHolidayRegion != null && holidayList != null) {
-                for (Holiday holiday : holidayList) {
-                    if (!mHolidayRegion.equals(holiday.getRegion())) {
-                        continue;
-                    }
-                    int id = holiday.getId();
-                    if (id != INVALID_FIELD) {
-                        holidayIdList.add(id);
-                    }
-                    int offOrWork = holiday.getOffOrWork();
-                    if (offOrWork == Holiday.TYPE_WORK) {
-                        offOrWorkResId = R.string.holiday_type_work;
-                    } else if (offOrWork == Holiday.TYPE_OFF) {
-                        offOrWorkResId = R.string.holiday_type_off;
-                    }
-                }
-            }
-
-            if (offOrWorkResId != INVALID_ID) {
-                mOffOrWorkTextView.setText(offOrWorkResId);
-                mOffOrWorkTextView.setVisibility(View.VISIBLE);
-            } else {
-                mOffOrWorkTextView.setVisibility(View.GONE);
-            }
-
-            mHolidayContainer.removeAllViews();
-            if (holidayIdList.size() > 0) {
-                LayoutInflater inflater = LayoutInflater.from(mContext);
-                for (int i = 0; i < holidayIdList.size(); i++) {
-                    int holidayId = holidayIdList.get(i);
-                    View holidayItem = inflater.inflate(R.layout.holiday_item_view, null);
-                    AppCompatImageView imageView = (AppCompatImageView) holidayItem.findViewById(R.id.holiday_item_image_view);
-                    imageView.setImageResource(mHolidayNationFlagId);
-                    TextView textView = (TextView) holidayItem.findViewById(R.id.holiday_item_text_view);
-                    textView.setText(mHolidayNames[holidayId]);
-                    mHolidayContainer.addView(holidayItem, i);
-                }
-                mHolidayContainer.setVisibility(View.VISIBLE);
-            } else {
-                mHolidayContainer.setVisibility(View.GONE);
-            }
-        }
-
-        private void setTodayText(Solar solar) {
-            if (isToday(solar.getYear(), solar.getMonth() - 1, solar.getDay())) {
-                mTodayTextView.setVisibility(View.VISIBLE);
-                mTodayTextView.setText(R.string.month_day_today_text);
-            } else {
-                mTodayTextView.setVisibility(View.GONE);
-            }
-        }
-
-        private void setConstellationText(int constellationId) {
-            String constellationText = mContext.getResources().getStringArray(R.array.constellation_name)[constellationId];
-            String constellationSymbol = mContext.getResources().getStringArray(R.array.constellation_symbol)[constellationId];
-            mConstellationTextView.setText(constellationSymbol + constellationText);
-        }
+//        private void setHolidayText(List<Holiday> holidayList) {
+//            List<Integer> holidayIdList = new ArrayList<>();
+//            int offOrWorkResId = INVALID_ID;
+//            if (mHolidayRegion != null && holidayList != null) {
+//                for (Holiday holiday : holidayList) {
+//                    if (!mHolidayRegion.equals(holiday.getRegion())) {
+//                        continue;
+//                    }
+//                    int id = holiday.getId();
+//                    if (id != INVALID_FIELD) {
+//                        holidayIdList.add(id);
+//                    }
+//                    int offOrWork = holiday.getOffOrWork();
+//                    if (offOrWork == Holiday.TYPE_WORK) {
+//                        offOrWorkResId = R.string.holiday_type_work;
+//                    } else if (offOrWork == Holiday.TYPE_OFF) {
+//                        offOrWorkResId = R.string.holiday_type_off;
+//                    }
+//                }
+//            }
+//
+//            if (offOrWorkResId != INVALID_ID) {
+//                mOffOrWorkTextView.setText(offOrWorkResId);
+//                mOffOrWorkTextView.setVisibility(View.VISIBLE);
+//            } else {
+//                mOffOrWorkTextView.setVisibility(View.GONE);
+//            }
+//
+//            mHolidayContainer.removeAllViews();
+//            if (holidayIdList.size() > 0) {
+//                LayoutInflater inflater = LayoutInflater.from(mContext);
+//                for (int i = 0; i < holidayIdList.size(); i++) {
+//                    int holidayId = holidayIdList.get(i);
+//                    View holidayItem = inflater.inflate(R.layout.holiday_item_view, null);
+//                    AppCompatImageView imageView = (AppCompatImageView) holidayItem.findViewById(R.id.holiday_item_image_view);
+//                    imageView.setImageResource(mHolidayNationFlagId);
+//                    TextView textView = (TextView) holidayItem.findViewById(R.id.holiday_item_text_view);
+//                    textView.setText(mHolidayNames[holidayId]);
+//                    mHolidayContainer.addView(holidayItem, i);
+//                }
+//                mHolidayContainer.setVisibility(View.VISIBLE);
+//            } else {
+//                mHolidayContainer.setVisibility(View.GONE);
+//            }
+//        }
 
         private void setWeekNumber(boolean showWeekNumber, Solar solar) {
             if (showWeekNumber) {

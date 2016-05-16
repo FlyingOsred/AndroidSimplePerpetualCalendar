@@ -7,4 +7,11 @@
     <attr name="colorSundayText" format="reference|color" />
     <attr name="colorHolidayText" format="reference|color" />
 
+    <declare-styleable name="DayInfoView">
+        <attr name="viewSize" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="large" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -11,77 +12,10 @@
         android:layout_gravity="end|top"
         android:textSize="6sp" />
 
-    <LinearLayout
-        android:id="@+id/activate_area_view"
+    <com.flyingosred.app.android.simpleperpetualcalendar.view.DayInfoView
+        android:id="@+id/day_info_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?android:attr/activatedBackgroundIndicator"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/day_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/constellation_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/day_text_view"
-                android:textSize="6sp" />
-
-            <TextView
-                android:id="@+id/today_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/day_text_view"
-                android:layout_toLeftOf="@id/day_text_view"
-                android:layout_toStartOf="@id/day_text_view"
-                android:textSize="6sp" />
-
-            <TextView
-                android:id="@+id/off_or_work_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/today_text_view"
-                android:layout_toLeftOf="@id/day_text_view"
-                android:layout_toStartOf="@id/day_text_view"
-                android:gravity="start"
-                android:textSize="6sp" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/lunar_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:textSize="6sp" />
-
-        <TextView
-            android:id="@+id/solar_term_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="end"
-            android:maxLines="1"
-            android:textSize="6sp" />
-
-        <LinearLayout
-            android:id="@+id/holiday_container_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
-    </LinearLayout>
-
+        custom:viewSize="normal" />
 
 </LinearLayout>

@@ -28,11 +28,17 @@
         android:layout_height="match_parent"
         android:layout_below="@id/day_of_week_recycler_view" />
 
+    <RelativeLayout
+        android:id="@+id/expend_day_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"></RelativeLayout>
+
     <com.flyingosred.app.android.simpleperpetualcalendar.view.DayInfoView
         android:id="@+id/expend_day_info_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
         android:background="?popupTransparentBackgroundColor"
         android:visibility="invisible"
         custom:viewSize="large" />

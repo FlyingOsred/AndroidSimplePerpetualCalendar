@@ -41,20 +41,19 @@ public class LunarDatabase {
             index++;
         }
         if ((LUNAR_DATABASE[year - 1901] & (0x80000 >> (index - 1))) == 0) {
-            return 29;
+            return Lunar.DAYS_IN_SMALL_MONTH;
         }
-        return 30;
+        return Lunar.DAYS_IN_LARGE_MONTH;
     }
 
     public Lunar firstDay() {
-        return new LunarDatabaseItem(Lunar.LUNAR_YEAR_MIN, 1, 1, false, false);
+        return new LunarDatabaseItem(Lunar.LUNAR_YEAR_MIN, 1, 1, Lunar.DAYS_IN_SMALL_MONTH, false);
     }
 
     public Lunar nextDay(Lunar previous) {
         int day = previous.getDay();
         int month = previous.getMonth();
         int year = previous.getYear();
-        boolean isLastDayInMonth = false;
         boolean isLeapMonth = previous.isLeapMonth();
         int leapMonth = getLeapMonth(year);
         day++;
@@ -73,10 +72,7 @@ public class LunarDatabase {
             year++;
         }
         daysInMonth = getDaysInMonth(year, month, isLeapMonth);
-        if (day == daysInMonth) {
-            isLastDayInMonth = true;
-        }
 
-        return new LunarDatabaseItem(year, month, day, isLastDayInMonth, isLeapMonth);
+        return new LunarDatabaseItem(year, month, day, daysInMonth, isLeapMonth);
     }
 }

@@ -1,9 +1,12 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
 import com.flyingosred.app.android.simpleperpetualcalendar.util.Utils;
 
-public class SolarDatabaseItem implements Solar {
+public class SolarDatabaseItem implements Solar, Parcelable {
 
     private final int mYear;
 
@@ -16,6 +19,24 @@ public class SolarDatabaseItem implements Solar {
         mMonth = month;
         mDay = day;
     }
+
+    protected SolarDatabaseItem(Parcel in) {
+        mYear = in.readInt();
+        mMonth = in.readInt();
+        mDay = in.readInt();
+    }
+
+    public static final Creator<SolarDatabaseItem> CREATOR = new Creator<SolarDatabaseItem>() {
+        @Override
+        public SolarDatabaseItem createFromParcel(Parcel in) {
+            return new SolarDatabaseItem(in);
+        }
+
+        @Override
+        public SolarDatabaseItem[] newArray(int size) {
+            return new SolarDatabaseItem[size];
+        }
+    };
 
     @Override
     public int getYear() {
@@ -48,5 +69,17 @@ public class SolarDatabaseItem implements Solar {
     @Override
     public int hashCode() {
         return (mDay & 0x1F) | ((mMonth & 0xF) << 5) | (mYear << 9);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mYear);
+        dest.writeInt(mMonth);
+        dest.writeInt(mDay);
     }
 }

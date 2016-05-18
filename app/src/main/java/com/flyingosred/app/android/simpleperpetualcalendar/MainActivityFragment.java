@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -85,6 +86,19 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     //private CountDownTimer mDetailViewCountDownTimer = null;
 
     public MainActivityFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            OnDaySelectedListener listener = (OnDaySelectedListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnDaySelectedListener");
+        }
+
     }
 
     @Override
@@ -180,6 +194,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         if (mDayAdapter != null) {
             mDayAdapter.changeDatabase(null);
         }
+    }
+
+    public interface OnDaySelectedListener {
+        public void onDaySelected(PerpetualCalendar perpetualCalendar);
     }
 
     private int getPrefFirstDayOfWeek(SharedPreferences sharedPreferences) {
@@ -278,7 +296,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             View view = mDayView.findChildViewUnder(e.getX(), e.getY());
             int position = mDayView.getChildAdapterPosition(view);
             Log.d(LOG_TAG, "onSingleTapConfirmed position is " + position);
-            activeItem(position);
+            activeItem(position, true);
             return super.onSingleTapConfirmed(e);
         }
     }
@@ -294,7 +312,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             }
             Log.d(LOG_TAG, "Today position with offset is " + position);
             layoutManager.scrollToPositionWithOffset(position, offset);
-            activeItem(today);
+            activeItem(today, false);
         }
     }
 
@@ -359,9 +377,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         }
     }
 
-    private void activeItem(int position) {
-        GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
-        showExpandDayInfoView(layoutManager.findViewByPosition(position), mDayAdapter.get(position), true);
+    private void activeItem(int position, boolean showCard) {
+        if (showCard) {
+            OnDaySelectedListener listener = (OnDaySelectedListener) getActivity();
+            listener.onDaySelected(mDayAdapter.get(position));
+        }
+        //GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
+        //showExpandDayInfoView(layoutManager.findViewByPosition(position), mDayAdapter.get(position), true);
         mDayAdapter.activateItem(position);
     }
 

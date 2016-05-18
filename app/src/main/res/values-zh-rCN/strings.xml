@@ -34,4 +34,7 @@
     <string name="pref_header_general">通用</string>
     <string name="pref_show_week_num_title">显示周数</string>
     <string name="week_number_text">周</string>
+
+    <string name="day_card_today_text">今天</string>
+
 </resources>

@@ -1,9 +1,11 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data;
 
+import android.os.Parcelable;
+
 import java.util.Calendar;
 import java.util.List;
 
-public interface PerpetualCalendar {
+public interface PerpetualCalendar extends Parcelable {
 
     public static final int INVALID_ID = -1;
 

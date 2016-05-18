@@ -1,23 +1,47 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 
-public class LunarDatabaseItem extends Lunar {
+public class LunarDatabaseItem extends Lunar implements Parcelable {
 
     private final int mYear;
     private final int mMonth;
     private final int mDay;
 
-    private final boolean mLastDayInMonth;
+    private final int mDaysInMonth;
+
     private final boolean mLeapMonth;
 
-    public LunarDatabaseItem(int year, int month, int day, boolean isLastDayInMonth, boolean isLeapMonth) {
+    public LunarDatabaseItem(int year, int month, int day, int daysInMonth, boolean isLeapMonth) {
         mYear = year;
         mMonth = month;
         mDay = day;
-        mLastDayInMonth = isLastDayInMonth;
+        mDaysInMonth = daysInMonth;
         mLeapMonth = isLeapMonth;
     }
+
+    protected LunarDatabaseItem(Parcel in) {
+        mYear = in.readInt();
+        mMonth = in.readInt();
+        mDay = in.readInt();
+        mDaysInMonth = in.readInt();
+        mLeapMonth = in.readByte() != 0;
+    }
+
+    public static final Creator<LunarDatabaseItem> CREATOR = new Creator<LunarDatabaseItem>() {
+        @Override
+        public LunarDatabaseItem createFromParcel(Parcel in) {
+            return new LunarDatabaseItem(in);
+        }
+
+        @Override
+        public LunarDatabaseItem[] newArray(int size) {
+            return new LunarDatabaseItem[size];
+        }
+    };
 
     @Override
     public int getYear() {
@@ -35,12 +59,26 @@ public class LunarDatabaseItem extends Lunar {
     }
 
     @Override
-    public boolean isLastDayInMonth() {
-        return mLastDayInMonth;
+    public int getDaysInMonth() {
+        return mDaysInMonth;
     }
 
     @Override
     public boolean isLeapMonth() {
         return mLeapMonth;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mYear);
+        dest.writeInt(mMonth);
+        dest.writeInt(mDay);
+        dest.writeInt(mDaysInMonth);
+        dest.writeByte((byte) (mLeapMonth ? 1 : 0));
     }
 }

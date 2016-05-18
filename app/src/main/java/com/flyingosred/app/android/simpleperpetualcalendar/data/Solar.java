@@ -1,22 +1,24 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data;
 
-public interface Solar {
+import android.os.Parcelable;
 
-    public static final int START_YEAR = 1901;
+public interface Solar extends Parcelable {
 
-    public static final int START_MONTH = 2;
+    int START_YEAR = 1901;
 
-    public static final int START_DAY = 19;
+    int START_MONTH = 2;
 
-    public static final int END_YEAR = 2099;
+    int START_DAY = 19;
 
-    public static final int END_MONTH = 12;
+    int END_YEAR = 2099;
 
-    public static final int END_DAY = 31;
+    int END_MONTH = 12;
 
-    public int getYear();
+    int END_DAY = 31;
 
-    public int getMonth();
+    int getYear();
 
-    public int getDay();
+    int getMonth();
+
+    int getDay();
 }

@@ -1,6 +1,8 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data;
 
-public interface Holiday {
+import android.os.Parcelable;
+
+public interface Holiday extends Parcelable {
 
     int INVALID_FIELD = -1;
 

@@ -2,7 +2,11 @@ package com.flyingosred.app.android.simpleperpetualcalendar.util;
 
 import java.util.Calendar;
 
-public class Utils {
+public final class Utils {
+
+    public static final String EMPTY_STRING = "";
+
+    public static final String NEW_LINE = "\n";
 
     public static final String LOG_TAG = "SimplePerpetualCalendar";
 
@@ -82,6 +86,11 @@ public class Utils {
 
     public static int dateHash(int year, int month, int day) {
         return (day & 0x1F) | ((month & 0xF) << 5) | (year << 9);
+    }
+
+    public static boolean isToday(Calendar calendar) {
+        Calendar today = Calendar.getInstance();
+        return isSameDay(today, calendar);
     }
 
 }

@@ -28,7 +28,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
         MainActivityFragment fragment = (MainActivityFragment)
-                getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment);
+                getActivity().getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         fragment.scrollToDate(year, monthOfYear, dayOfMonth);
 
     }

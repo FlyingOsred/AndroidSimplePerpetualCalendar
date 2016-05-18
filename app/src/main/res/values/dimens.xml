@@ -24,6 +24,7 @@
     <dimen name="day_info_view_solar_term_text_large_size">16sp</dimen>
     <dimen name="day_info_view_holiday_text_large_size">16sp</dimen>
 
+    <dimen name="day_card_text_view_margin">6dp</dimen>
     <dimen name="day_card_margin">16dp</dimen>
     <dimen name="day_card_day_text_size">128sp</dimen>
     <dimen name="day_card_day_of_week_text_size">32sp</dimen>

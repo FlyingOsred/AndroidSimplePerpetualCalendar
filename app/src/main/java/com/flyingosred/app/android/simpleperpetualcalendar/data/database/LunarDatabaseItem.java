@@ -1,11 +1,10 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 
-public class LunarDatabaseItem extends Lunar implements Parcelable {
+public class LunarDatabaseItem implements Lunar {
 
     private final int mYear;
     private final int mMonth;

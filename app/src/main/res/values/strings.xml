@@ -5,11 +5,8 @@
     <string name="action_today">Today</string>
     <string name="action_select_date">Select date</string>
 
-    <string name="month_day_today_text">TODAY</string>
-
     <string name="week_number_text">WEEK</string>
 
-    <string name="constellation_name">Constellation</string>
     <string name="constellation_aquarius_name">Aquarius</string>
     <string name="constellation_pisces_name">Pisces</string>
     <string name="constellation_aries_name">Aries</string>
@@ -62,5 +59,7 @@
 
     <string name="day_card_today_text">Today</string>
 
+    <string name="day_card_days_after_today_text">%1$05d days after today</string>
+    <string name="day_card_days_before_today_text">%1$05d days before today</string>
 
 </resources>

@@ -34,5 +34,6 @@
     <string name="pref_first_day_of_week_title">一週起始日</string>
     <string name="pref_header_general">通用</string>
     <string name="pref_holiday_region_title">節假日</string>
-    <string name="month_day_today_text">今</string>
+    <string name="day_card_days_after_today_text">距離今天%1$05d天</string>
+    <string name="day_card_days_before_today_text">距離今天%1$05d天</string>
 </resources>

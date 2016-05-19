@@ -14,4 +14,6 @@
     <string name="holiday_type_work">Work</string>
     <string name="holiday_type_off">Off</string>
 
+    <string name="holiday_type_work_long">Work Day</string>
+    <string name="holiday_type_off_long">Off Day</string>
 </resources>

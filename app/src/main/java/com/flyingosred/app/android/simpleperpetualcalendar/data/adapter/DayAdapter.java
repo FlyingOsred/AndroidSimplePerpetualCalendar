@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.flyingosred.app.android.simpleperpetualcalendar.DisplayCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.R;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
@@ -81,7 +82,7 @@ public class DayAdapter extends RecyclerView.Adapter {
             return;
         }
         if (mDatabase != null) {
-            viewHolder.bindData(mDatabase.get(position - mFrontOffset),
+            viewHolder.bindData(position, mDatabase.get(position - mFrontOffset),
                     mShowWeekNumber && (position % PerpetualCalendar.DAYS_IN_WEEK == 0),
                     position == mActivatedItem);
         }
@@ -140,6 +141,7 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        private DisplayCalendar mDisplayCalendar = null;
         private final View mItemView;
         private final View mActivateAreaView;
         private final TextView mWeekNumberTextView;
@@ -157,13 +159,19 @@ public class DayAdapter extends RecyclerView.Adapter {
             //mHolidayContainer = (LinearLayout) itemView.findViewById(R.id.holiday_container_view);
         }
 
-        public void bindData(PerpetualCalendar perpetualCalendar, boolean showWeekNumber, boolean active) {
+        public void bindData(int position, PerpetualCalendar perpetualCalendar, boolean showWeekNumber, boolean active) {
             if (perpetualCalendar == null) {
                 return;
             }
-            mDayInfoView.setData(perpetualCalendar);
+            mDisplayCalendar = new DisplayCalendar(mContext, perpetualCalendar,
+                    position - getTodayPosition(), mHolidayRegion);
+            mDayInfoView.setData(mDisplayCalendar);
             setWeekNumber(showWeekNumber, perpetualCalendar.getSolar());
             //setActive(active);
+        }
+
+        public DisplayCalendar getDisplayCalendar() {
+            return mDisplayCalendar;
         }
 
 //        private void setHolidayText(List<Holiday> holidayList) {

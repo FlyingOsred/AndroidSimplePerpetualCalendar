@@ -4,8 +4,6 @@
     <string name="action_settings">设置</string>
     <string name="action_today">今</string>
 
-    <string name="month_day_today_text">今</string>
-
     <string name="chinese_first_month_prefix">正</string>
     <string name="chinese_last_month_prefix">腊</string>
     <string name="chinese_month_name">月</string>
@@ -36,5 +34,8 @@
     <string name="week_number_text">周</string>
 
     <string name="day_card_today_text">今天</string>
+
+    <string name="day_card_days_after_today_text">距离今天%1$05d天</string>
+    <string name="day_card_days_before_today_text">距离今天%1$05d天</string>
 
 </resources>

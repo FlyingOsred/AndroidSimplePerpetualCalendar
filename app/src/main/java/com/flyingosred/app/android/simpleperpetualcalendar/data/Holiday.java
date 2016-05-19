@@ -15,5 +15,4 @@ public interface Holiday extends Parcelable {
     int getId();
 
     int getOffOrWork();
-
 }

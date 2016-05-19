@@ -11,11 +11,6 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/constellation_name" />
-
-        <TextView
             android:id="@+id/day_extra_info_constellation_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -6,7 +6,7 @@ public final class Utils {
 
     public static final String EMPTY_STRING = "";
 
-    public static final String NEW_LINE = "\n";
+    public static final String WHITESPACE = " ";
 
     public static final String LOG_TAG = "SimplePerpetualCalendar";
 

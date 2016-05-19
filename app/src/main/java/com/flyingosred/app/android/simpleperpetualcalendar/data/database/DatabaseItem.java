@@ -3,6 +3,7 @@ package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Constellation;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
@@ -20,19 +21,19 @@ public class DatabaseItem implements PerpetualCalendar {
 
     private final int mSolarTermId;
 
-    private final int mConstellationId;
+    private final Constellation mConstellation;
 
     private final int mPosition;
 
     private final List<Holiday> mHolidayList;
 
     public DatabaseItem(int position, Solar solar, Lunar lunar, int solarTermId,
-                        int constellationId, List<Holiday> holidayList) {
+                        Constellation constellation, List<Holiday> holidayList) {
         mPosition = position;
         mSolar = solar;
         mLunar = lunar;
         mSolarTermId = solarTermId;
-        mConstellationId = constellationId;
+        mConstellation = constellation;
         mHolidayList = holidayList;
     }
 
@@ -40,7 +41,7 @@ public class DatabaseItem implements PerpetualCalendar {
         mSolar = in.readParcelable(Solar.class.getClassLoader());
         mLunar = in.readParcelable(Lunar.class.getClassLoader());
         mSolarTermId = in.readInt();
-        mConstellationId = in.readInt();
+        mConstellation = in.readParcelable(Constellation.class.getClassLoader());
         mPosition = in.readInt();
         mHolidayList = new ArrayList<>();
         in.readList(mHolidayList, Holiday.class.getClassLoader());
@@ -74,8 +75,8 @@ public class DatabaseItem implements PerpetualCalendar {
     }
 
     @Override
-    public int getConstellationId() {
-        return mConstellationId;
+    public Constellation getConstellation() {
+        return mConstellation;
     }
 
     @Override
@@ -97,7 +98,7 @@ public class DatabaseItem implements PerpetualCalendar {
         dest.writeParcelable(mSolar, flags);
         dest.writeParcelable(mLunar, flags);
         dest.writeInt(mSolarTermId);
-        dest.writeInt(mConstellationId);
+        dest.writeParcelable(mConstellation, flags);
         dest.writeInt(mPosition);
         dest.writeList(mHolidayList);
     }

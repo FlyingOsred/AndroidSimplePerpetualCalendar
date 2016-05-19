@@ -3,7 +3,6 @@ package com.flyingosred.app.android.simpleperpetualcalendar.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -12,15 +11,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.flyingosred.app.android.simpleperpetualcalendar.DisplayCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.R;
-import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
-import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
-import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
 
 import java.util.Calendar;
-import java.util.Locale;
 
-import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.INVALID_ID;
 import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
 
 public class DayInfoView extends LinearLayout {
@@ -78,21 +73,15 @@ public class DayInfoView extends LinearLayout {
         initViews();
     }
 
-    public void setData(PerpetualCalendar perpetualCalendar) {
-        if (perpetualCalendar == null) {
+    public void setData(DisplayCalendar displayCalendar) {
+        if (displayCalendar == null) {
             return;
         }
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(perpetualCalendar.getSolar().getYear(),
-                perpetualCalendar.getSolar().getMonth() - 1,
-                perpetualCalendar.getSolar().getDay());
-        Log.d(LOG_TAG, "setData for calendar " + calendar.getTime());
-        setDateText(calendar);
-        setDayText(calendar);
-        setLunarText(perpetualCalendar.getLunar());
-        setSolarTermText(perpetualCalendar.getSolarTermId());
-        setTodayText(perpetualCalendar.getSolar());
-        setConstellationText(perpetualCalendar.getConstellationId());
+        mDateTextHolder.setText(displayCalendar.getDate());
+        mDayTextHolder.setText(displayCalendar.getDay());
+        mLunarTextHolder.setText(displayCalendar.getLunarShort());
+        setSolarTermText(displayCalendar.getSolarTerm());
+        mConstellationTextHolder.setText(displayCalendar.getConstellation());
     }
 
     private void initViews() {
@@ -110,54 +99,13 @@ public class DayInfoView extends LinearLayout {
         }
     }
 
-    private void setDayText(Calendar calendar) {
-        mDayTextHolder.setText(String.valueOf(calendar.get(Calendar.DATE)));
-    }
-
-    private void setDateText(Calendar calendar) {
-        String date = DateUtils.formatDateRange(getContext(), calendar.getTimeInMillis(),
-                calendar.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
-                        | DateUtils.FORMAT_SHOW_YEAR).toUpperCase(Locale.getDefault());
-        mDateTextHolder.setText(date);
-    }
-
-    private void setLunarText(Lunar lunar) {
-        String lunarText;
-        if (mSizeType == SIZE_TYPE_LARGE) {
-            lunarText = Lunar.formatFullString(getContext(), lunar);
-
-        } else {
-            lunarText = Lunar.formatMonthDayString(getContext(), lunar);
-        }
-        mLunarTextHolder.setText(lunarText);
-    }
-
-    private void setSolarTermText(int id) {
-        if (id != INVALID_ID) {
+    private void setSolarTermText(String text) {
+        if (text != null) {
             mSolarTermTextHolder.setVisibility(View.VISIBLE);
-            mSolarTermTextHolder.setText(
-                    getContext().getResources().getStringArray(R.array.solar_term_name)[id]);
+            mSolarTermTextHolder.setText(text);
         } else {
             mSolarTermTextHolder.setVisibility(View.GONE);
         }
-    }
-
-    private void setTodayText(Solar solar) {
-        if (isToday(solar.getYear(), solar.getMonth() - 1, solar.getDay())) {
-            mTodayTextHolder.setVisibility(View.VISIBLE);
-            mTodayTextHolder.setText(R.string.month_day_today_text);
-        } else {
-            mTodayTextHolder.setVisibility(View.GONE);
-        }
-    }
-
-    private void setConstellationText(int constellationId) {
-        String constellationText = getContext().getResources()
-                .getStringArray(R.array.constellation_name)[constellationId];
-        String constellationSymbol = getContext().getResources()
-                .getStringArray(R.array.constellation_symbol)[constellationId];
-        mConstellationTextHolder.setText(constellationSymbol + constellationText);
     }
 
     private boolean isToday(int year, int month, int day) {

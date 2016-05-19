@@ -9,4 +9,6 @@
     <string name="holiday_type_work">班</string>
     <string name="holiday_type_off">休</string>
 
+    <string name="holiday_type_work_long">工作日</string>
+    <string name="holiday_type_off_long">休息日</string>
 </resources>

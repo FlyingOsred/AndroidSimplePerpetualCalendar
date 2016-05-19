@@ -4,6 +4,7 @@ import android.content.Context;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.flyingosred.app.android.simpleperpetualcalendar.data.Constellation;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
@@ -72,17 +73,17 @@ public class DatabaseContainer implements Database {
                 mHolidayDatabase.init(context);
 
                 int solarTermId;
-                int constellationId;
+                Constellation constellation;
                 Solar solar = mSolarDatabase.firstDay();
                 Lunar lunar = mLunarDatabase.firstDay();
                 int position = 0;
                 List<Holiday> holidayList;
                 while (true) {
                     solarTermId = mSolarTermDatabase.get(solar);
-                    constellationId = mConstellationDatabase.get(solar);
+                    constellation = mConstellationDatabase.get(solar);
                     holidayList = mHolidayDatabase.get(solar);
                     DatabaseItem item = new DatabaseItem(position, solar, lunar, solarTermId,
-                            constellationId, holidayList);
+                            constellation, holidayList);
                     DatabaseKey keyPosition = new DatabaseKey(position);
                     mDatabaseMap.put(keyPosition, item);
                     DatabaseKey keyDate = new DatabaseKey(solar);

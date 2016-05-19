@@ -1,11 +1,16 @@
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 
-public class HolidayDatabaseItem implements Holiday, Parcelable {
+public class HolidayDatabaseItem implements Holiday {
+
+    private static final String PREFIX_FLAG = "ic_flag_";
+
+    private static final String PREFIX_NAME_ARRAY = "holiday_";
 
     private String mRegion = null;
 

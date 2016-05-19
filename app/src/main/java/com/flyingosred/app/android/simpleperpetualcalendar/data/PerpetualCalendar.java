@@ -7,35 +7,35 @@ import java.util.List;
 
 public interface PerpetualCalendar extends Parcelable {
 
-    public static final int INVALID_ID = -1;
+    int INVALID_ID = -1;
 
-    public static final int INVALID_POSITION = -1;
+    int INVALID_POSITION = -1;
 
-    public static final int START_YEAR = 1901;
+    int START_YEAR = 1901;
 
-    public static final int START_MONTH = 2;
+    int START_MONTH = 2;
 
-    public static final int START_DAY = 19;
+    int START_DAY = 19;
 
-    public static final int START_DAY_OF_WEEK = Calendar.TUESDAY;
+    int START_DAY_OF_WEEK = Calendar.TUESDAY;
 
-    public static final int END_YEAR = 2099;
+    int END_YEAR = 2099;
 
-    public static final int END_MONTH = 12;
+    int END_MONTH = 12;
 
-    public static final int END_DAY = 31;
+    int END_DAY = 31;
 
-    public static final int MONTHS_IN_YEAR = 12;
+    int MONTHS_IN_YEAR = 12;
 
-    public static final int DAYS_IN_WEEK = 7;
+    int DAYS_IN_WEEK = 7;
 
-    public Solar getSolar();
+    Solar getSolar();
 
-    public Lunar getLunar();
+    Lunar getLunar();
 
-    public int getSolarTermId();
+    int getSolarTermId();
 
-    public int getConstellationId();
+    Constellation getConstellation();
 
-    public List<Holiday> getHolidayList();
+    List<Holiday> getHolidayList();
 }

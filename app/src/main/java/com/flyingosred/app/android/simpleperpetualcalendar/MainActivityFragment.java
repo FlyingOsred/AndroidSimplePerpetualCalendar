@@ -1,15 +1,11 @@
 package com.flyingosred.app.android.simpleperpetualcalendar;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -30,28 +26,17 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Database;
-import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayAdapter;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.adapter.DayOfWeekAdapter;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.loader.ContentLoader;
-import com.flyingosred.app.android.simpleperpetualcalendar.view.DayInfoView;
-import com.flyingosred.app.android.simpleperpetualcalendar.view.DayInfoViewAnimator;
 import com.flyingosred.app.android.simpleperpetualcalendar.view.DayRecyclerView;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
@@ -75,15 +60,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private GestureDetectorCompat mGestureDetector = null;
 
-    private DayInfoView mDayInfoView;
-
-    private DayInfoViewAnimator mDayInfoViewAnimator;
-
-    //private Animator mDayInfoAnimator = null;
-
-    //private View mDetailView = null;
-
-    //private CountDownTimer mDetailViewCountDownTimer = null;
+    private DateChangeReceiver mDateChangeReceiver = new DateChangeReceiver();
 
     public MainActivityFragment() {
     }
@@ -98,6 +75,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             throw new ClassCastException(getActivity().toString()
                     + " must implement OnDaySelectedListener");
         }
+
+        getContext().registerReceiver(mDateChangeReceiver, new IntentFilter(Intent.ACTION_DATE_CHANGED));
 
     }
 
@@ -114,10 +93,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mDayView = (DayRecyclerView) view.findViewById(R.id.day_recycler_view);
         mDayOfWeekView = (RecyclerView) view.findViewById(R.id.day_of_week_recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar_loading);
-        mDayInfoView = (DayInfoView) view.findViewById(R.id.expend_day_info_view);
-        mDayInfoViewAnimator = new DayInfoViewAnimator(getContext(), view,
-                mDayInfoView);
-        //mDetailView = view.findViewById(R.id.day_detail_view);
         return view;
     }
 
@@ -146,6 +121,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mDayOfWeekView.setAdapter(mDayOfWeekAdapter);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
         getActivity().getSupportLoaderManager().initLoader(CONTENT_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getContext().unregisterReceiver(mDateChangeReceiver);
     }
 
     @Override
@@ -197,7 +178,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     public interface OnDaySelectedListener {
-        public void onDaySelected(PerpetualCalendar perpetualCalendar);
+        void onDaySelected(DisplayCalendar displayCalendar);
     }
 
     private int getPrefFirstDayOfWeek(SharedPreferences sharedPreferences) {
@@ -336,7 +317,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            mDayInfoViewAnimator.stop();
         }
 
         @Override
@@ -380,21 +360,18 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private void activeItem(int position, boolean showCard) {
         if (showCard) {
             OnDaySelectedListener listener = (OnDaySelectedListener) getActivity();
-            listener.onDaySelected(mDayAdapter.get(position));
+            int today = mDayAdapter.getTodayPosition();
+            DayAdapter.ViewHolder viewHolder = (DayAdapter.ViewHolder) mDayView.findViewHolderForAdapterPosition(position);
+            listener.onDaySelected(viewHolder.getDisplayCalendar());
         }
-        //GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
-        //showExpandDayInfoView(layoutManager.findViewByPosition(position), mDayAdapter.get(position), true);
         mDayAdapter.activateItem(position);
     }
 
-    private void showExpandDayInfoView(View view, PerpetualCalendar calendar, boolean show) {
-        if (calendar != null) {
-            mDayInfoView.setData(calendar);
-        }
-        if (!show || calendar == null || view == null || getView() == null) {
-            mDayInfoViewAnimator.stop();
-        } else {
-            mDayInfoViewAnimator.start(view);
+    private class DateChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(LOG_TAG, "onReceive date change");
         }
     }
 }

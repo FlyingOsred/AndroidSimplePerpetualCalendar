@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data.adapter;
 
 import android.support.v7.widget.RecyclerView;
@@ -27,8 +31,7 @@ public class DayOfWeekAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.day_of_week_recycler_view_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(v);
-        return viewHolder;
+        return new ViewHolder(v);
     }
 
     @Override

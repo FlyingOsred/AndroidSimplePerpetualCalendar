@@ -1,11 +1,13 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,31 +16,19 @@ import android.widget.TextView;
 import com.flyingosred.app.android.simpleperpetualcalendar.DisplayCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.R;
 
-import java.util.Calendar;
-
-import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
-
 public class DayInfoView extends LinearLayout {
 
-    private static final int SIZE_TYPE_NORMAL = 0;
+    private TextView mDayTextView;
 
-    private static final int SIZE_TYPE_LARGE = 1;
+    private TextView mConstellationTextView;
 
-    private final int mSizeType;
+    private TextView mTodayTextView;
 
-    private TextViewHolder mDateTextHolder;
+    private TextView mOffWorkTextView;
 
-    private TextViewHolder mDayTextHolder;
+    private TextView mLunarTextView;
 
-    private TextViewHolder mConstellationTextHolder;
-
-    private TextViewHolder mTodayTextHolder;
-
-    private TextViewHolder mOffWorkTextHolder;
-
-    private TextViewHolder mLunarTextHolder;
-
-    private TextViewHolder mSolarTermTextHolder;
+    private TextView mSolarTermTextView;
 
     private LinearLayout mHolidayContainer;
 
@@ -54,17 +44,6 @@ public class DayInfoView extends LinearLayout {
         super(context, attrs, defStyleAttr);
         LayoutInflater mInflater = LayoutInflater.from(context);
         mInflater.inflate(R.layout.day_info_view, this, true);
-
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.DayInfoView,
-                0, 0);
-        try {
-            mSizeType = a.getInteger(R.styleable.DayInfoView_viewSize, SIZE_TYPE_NORMAL);
-        } finally {
-            a.recycle();
-        }
-        Log.d(LOG_TAG, "Size type is " + mSizeType);
     }
 
     @Override
@@ -77,89 +56,53 @@ public class DayInfoView extends LinearLayout {
         if (displayCalendar == null) {
             return;
         }
-        mDateTextHolder.setText(displayCalendar.getDate());
-        mDayTextHolder.setText(displayCalendar.getDay());
-        mLunarTextHolder.setText(displayCalendar.getLunarShort());
-        setSolarTermText(displayCalendar.getSolarTerm());
-        mConstellationTextHolder.setText(displayCalendar.getConstellation());
+        mDayTextView.setText(displayCalendar.getDay());
+        mDayTextView.setTextColor(displayCalendar.getDayTextColor());
+        mLunarTextView.setText(displayCalendar.getLunarShort());
+        mConstellationTextView.setText(displayCalendar.getConstellation());
+        setText(mSolarTermTextView, displayCalendar.getSolarTerm());
+        setText(mOffWorkTextView, displayCalendar.getOffWork());
+        setText(mTodayTextView, displayCalendar.getToday());
+        setHoliday(displayCalendar);
     }
 
     private void initViews() {
-        mDayTextHolder = new TextViewHolder("day", mSizeType);
-        mDateTextHolder = new TextViewHolder("date", mSizeType);
-        mConstellationTextHolder = new TextViewHolder("constellation", mSizeType);
-        mTodayTextHolder = new TextViewHolder("today", mSizeType);
-        mOffWorkTextHolder = new TextViewHolder("off_or_work", mSizeType);
-        mLunarTextHolder = new TextViewHolder("lunar", mSizeType);
-        mSolarTermTextHolder = new TextViewHolder("solar_term", mSizeType);
+        mDayTextView = (TextView) findViewById(R.id.day_info_day_text_view);
+        mConstellationTextView = (TextView) findViewById(R.id.day_info_constellation_text_view);
+        mTodayTextView = (TextView) findViewById(R.id.day_info_today_text_view);
+        mOffWorkTextView = (TextView) findViewById(R.id.day_info_off_or_work_text_view);
+        mLunarTextView = (TextView) findViewById(R.id.day_info_lunar_text_view);
+        mSolarTermTextView = (TextView) findViewById(R.id.day_info_solar_term_text_view);
         mHolidayContainer = (LinearLayout) findViewById(R.id.day_info_holiday_container_view);
-        if (mSizeType == SIZE_TYPE_NORMAL) {
-            mDateTextHolder.setVisibility(GONE);
-            mConstellationTextHolder.setVisibility(GONE);
-        }
     }
 
-    private void setSolarTermText(String text) {
+    private void setText(TextView textView, String text) {
         if (text != null) {
-            mSolarTermTextHolder.setVisibility(View.VISIBLE);
-            mSolarTermTextHolder.setText(text);
+            textView.setVisibility(VISIBLE);
+            textView.setText(text);
         } else {
-            mSolarTermTextHolder.setVisibility(View.GONE);
+            textView.setVisibility(GONE);
         }
     }
 
-    private boolean isToday(int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        if (year == calendar.get(Calendar.YEAR)
-                && month == calendar.get(Calendar.MONTH)
-                && day == calendar.get(Calendar.DATE)) {
-            return true;
+    private void setHoliday(DisplayCalendar displayCalendar) {
+        String[] holidays = displayCalendar.getHolidays();
+        mHolidayContainer.removeAllViews();
+        if (holidays == null || holidays.length == 0) {
+            mHolidayContainer.setVisibility(GONE);
+            return;
         }
-        return false;
-    }
-
-    private final class TextViewHolder {
-
-        private final TextView mTextView;
-
-        public TextViewHolder(String name, int type) {
-            String viewIdName = "day_info_" + name + "_text_view";
-            int resViewId = getContext().getResources().getIdentifier(viewIdName, "id",
-                    getContext().getPackageName());
-            mTextView = (TextView) getRootView().findViewById(resViewId);
-            String dimensIdName = "day_info_view_" + name;
-            if (type == SIZE_TYPE_LARGE) {
-                dimensIdName += "_text_large_size";
-            } else {
-                dimensIdName += "_text_normal_size";
-            }
-            int textSizeId = getContext().getResources().getIdentifier(dimensIdName, "dimen",
-                    getContext().getPackageName());
-            if (textSizeId != 0) {
-                float textSize = getContext().getResources().getDimension(textSizeId);
-                mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-            }
-            Log.d(LOG_TAG, "text dimens name " + dimensIdName + " with textSizeId " + textSizeId);
-        }
-
-        public void setText(String text) {
-            mTextView.setText(text);
-        }
-
-        public void setText(int id) {
-            mTextView.setText(id);
-        }
-
-        public void setVisibility(int visibility) {
-            mTextView.setVisibility(visibility);
-        }
-
-        public String getText() {
-            return mTextView.getText().toString();
-        }
-
-        public Drawable getDrawableLeft() {
-            return mTextView.getCompoundDrawables()[0];
+        mHolidayContainer.setVisibility(VISIBLE);
+        int flagId = displayCalendar.getRegionFlag();
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        for (int i = 0; i < holidays.length; i++) {
+            String holiday = holidays[i];
+            @SuppressLint("InflateParams") View holidayItem = inflater.inflate(R.layout.holiday_item_view, null);
+            AppCompatImageView imageView = (AppCompatImageView) holidayItem.findViewById(R.id.holiday_item_image_view);
+            imageView.setImageResource(flagId);
+            TextView textView = (TextView) holidayItem.findViewById(R.id.holiday_item_text_view);
+            textView.setText(holiday);
+            mHolidayContainer.addView(holidayItem, i);
         }
     }
 }

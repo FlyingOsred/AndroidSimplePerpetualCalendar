@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar;
 
 import android.content.Intent;
@@ -7,8 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 
 import static com.flyingosred.app.android.simpleperpetualcalendar.util.Utils.LOG_TAG;
 

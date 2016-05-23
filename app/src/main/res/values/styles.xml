@@ -50,7 +50,8 @@
         <item name="popupTextColor">@color/colorLightGreenTextIcons</item>
         <item name="colorSaturdayText">@color/colorLightGreenSaturdayText</item>
         <item name="colorSundayText">@color/colorLightGreenSaturdayText</item>
-        <item name="colorHolidayText">@color/colorLightGreenSundayText</item>
+        <item name="colorHolidayText">@color/colorLightGreenHolidayText</item>
+        <item name="colorHolidayWorkText">@color/colorLightGreenHolidayWorkText</item>
     </style>
 
     <style name="LightGreenTheme.NoActionBar">

@@ -52,14 +52,14 @@
 
     <string name="lunar_era_year">年</string>
     <string name="lunar_leap">闰</string>
-    <string name="title_activity_day_card">DayCardActivity</string>
+    <string name="title_activity_day_card" translatable="false">DayCardActivity</string>
 
     <string name="lunar_large_month">大</string>
     <string name="lunar_small_month">小</string>
 
     <string name="day_card_today_text">Today</string>
 
-    <string name="day_card_days_after_today_text">%1$05d days after today</string>
-    <string name="day_card_days_before_today_text">%1$05d days before today</string>
+    <string name="day_card_days_after_today_text">%1$d days after today</string>
+    <string name="day_card_days_before_today_text">%1$d days before today</string>
 
 </resources>

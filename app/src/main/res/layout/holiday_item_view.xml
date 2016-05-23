@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="right"
+    android:gravity="end"
     android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatImageView
@@ -16,10 +16,10 @@
         android:id="@+id/holiday_item_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="6sp" />
+        android:textSize="@dimen/day_info_view_holiday_text_size" />
 
 </LinearLayout>
 

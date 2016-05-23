@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.util;
 
 import java.util.Calendar;
@@ -16,47 +20,6 @@ public final class Utils {
                 day1.get(Calendar.DATE) == day2.get(Calendar.DATE);
     }
 
-    public static boolean isDayBefore(Calendar calendar, Calendar baseCalendar) {
-
-        if (calendar.get(Calendar.YEAR) < baseCalendar.get(Calendar.YEAR)) {
-            return true;
-        } else if (calendar.get(Calendar.YEAR) > baseCalendar.get(Calendar.YEAR)) {
-            return false;
-        }
-
-        if (calendar.get(Calendar.MONTH) < baseCalendar.get(Calendar.MONTH)) {
-            return true;
-        } else if (calendar.get(Calendar.MONTH) > baseCalendar.get(Calendar.MONTH)) {
-            return false;
-        }
-
-        if (calendar.get(Calendar.DATE) < baseCalendar.get(Calendar.DATE)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean isDayAfter(Calendar calendar, Calendar baseCalendar) {
-        if (calendar.get(Calendar.YEAR) > baseCalendar.get(Calendar.YEAR)) {
-            return true;
-        } else if (calendar.get(Calendar.YEAR) < baseCalendar.get(Calendar.YEAR)) {
-            return false;
-        }
-
-        if (calendar.get(Calendar.MONTH) > baseCalendar.get(Calendar.MONTH)) {
-            return true;
-        } else if (calendar.get(Calendar.MONTH) < baseCalendar.get(Calendar.MONTH)) {
-            return false;
-        }
-
-        if (calendar.get(Calendar.DATE) > baseCalendar.get(Calendar.DATE)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public static boolean isDayAfter(int year, int month, int day, int endYear, int endMonth, int endDay) {
         if (year > endYear) {
             return true;
@@ -70,18 +33,11 @@ public final class Utils {
             return false;
         }
 
-        if (day > endDay) {
-            return true;
-        } else {
-            return false;
-        }
+        return day > endDay;
     }
 
     public static boolean isSameDay(int year1, int month1, int day1, int year2, int month2, int day2) {
-        if (year1 <= 0 || year2 <= 0) {
-            return false;
-        }
-        return year1 == year2 && month1 == month2 && day1 == day2;
+        return !(year1 <= 0 || year2 <= 0) && year1 == year2 && month1 == month2 && day1 == day2;
     }
 
     public static int dateHash(int year, int month, int day) {

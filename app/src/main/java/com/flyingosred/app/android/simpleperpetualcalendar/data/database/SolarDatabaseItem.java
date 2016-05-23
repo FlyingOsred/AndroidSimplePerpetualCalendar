@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
 import android.os.Parcel;
@@ -60,10 +64,7 @@ public class SolarDatabaseItem implements Solar, Parcelable {
         if (o == this)
             return true;
         SolarDatabaseItem item = (SolarDatabaseItem) o;
-        if (Utils.isSameDay(mYear, mMonth, mDay, item.mYear, item.mMonth, item.mDay)) {
-            return true;
-        }
-        return false;
+        return Utils.isSameDay(mYear, mMonth, mDay, item.mYear, item.mMonth, item.mDay);
     }
 
     @Override

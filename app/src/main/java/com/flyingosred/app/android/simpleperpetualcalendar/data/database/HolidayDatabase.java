@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
 import android.content.Context;
@@ -81,10 +85,10 @@ public class HolidayDatabase {
                     Log.w(LOG_TAG, "No off work for region" + region + " year " + year);
                 } else {
                     String[] yearOffOrWorkArray = res.getStringArray(yearOffOrWorkArrayId);
-                    for (int i = 0; i < yearOffOrWorkArray.length; i++) {
-                        String[] strings = yearOffOrWorkArray[i].split(":");
+                    for (String aYearOffOrWorkArray : yearOffOrWorkArray) {
+                        String[] strings = aYearOffOrWorkArray.split(":");
                         if (strings.length != 2) {
-                            Log.w(LOG_TAG, "Invalid off work format for " + yearOffOrWorkArray[i]);
+                            Log.w(LOG_TAG, "Invalid off work format for " + aYearOffOrWorkArray);
                             continue;
                         }
                         try {
@@ -95,12 +99,16 @@ public class HolidayDatabase {
                                     calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE));
                             String offOrWorkString = strings[1];
                             int offOrWork = Holiday.INVALID_FIELD;
-                            if (offOrWorkString.equals("work")) {
-                                offOrWork = Holiday.TYPE_WORK;
-                            } else if (offOrWorkString.equals("off")) {
-                                offOrWork = Holiday.TYPE_OFF;
-                            } else {
-                                Log.w(LOG_TAG, "Unknown type format " + offOrWorkString);
+                            switch (offOrWorkString) {
+                                case "work":
+                                    offOrWork = Holiday.TYPE_WORK;
+                                    break;
+                                case "off":
+                                    offOrWork = Holiday.TYPE_OFF;
+                                    break;
+                                default:
+                                    Log.w(LOG_TAG, "Unknown type format " + offOrWorkString);
+                                    break;
                             }
                             Log.d(LOG_TAG, "Found off work " + offOrWorkString + " type "
                                     + offOrWork + " of " + region
@@ -130,12 +138,6 @@ public class HolidayDatabase {
 
     public List<Holiday> get(Solar solar) {
         Integer hash = Utils.dateHash(solar.getYear(), solar.getMonth(), solar.getDay());
-        if (mDatabase.containsKey(hash)) {
-            Log.d(LOG_TAG, "Found holiday for " + " year " + solar.getYear()
-                    + " month " + solar.getMonth()
-                    + " day " + solar.getDay());
-            HolidayDatabaseItem item = new HolidayDatabaseItem();
-        }
         return mDatabase.get(hash);
     }
 }

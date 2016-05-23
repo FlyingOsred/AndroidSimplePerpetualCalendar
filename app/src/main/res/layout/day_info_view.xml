@@ -5,11 +5,6 @@
     android:background="?android:attr/activatedBackgroundIndicator"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/day_info_date_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,7 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/day_info_view_day_text_size" />
 
         <TextView
             android:id="@+id/day_info_constellation_text_view"
@@ -27,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/day_info_day_text_view" />
+            android:layout_below="@id/day_info_day_text_view"
+            android:textSize="@dimen/day_info_view_constellation_text_size" />
 
         <TextView
             android:id="@+id/day_info_today_text_view"
@@ -35,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/day_info_day_text_view"
             android:layout_toLeftOf="@id/day_info_day_text_view"
-            android:layout_toStartOf="@id/day_info_day_text_view" />
+            android:layout_toStartOf="@id/day_info_day_text_view"
+            android:textSize="@dimen/day_info_view_today_text_size" />
 
         <TextView
             android:id="@+id/day_info_off_or_work_text_view"
@@ -44,7 +42,8 @@
             android:layout_below="@id/day_info_today_text_view"
             android:layout_toLeftOf="@id/day_info_day_text_view"
             android:layout_toStartOf="@id/day_info_day_text_view"
-            android:gravity="start" />
+            android:gravity="start"
+            android:textSize="@dimen/day_info_view_off_or_work_text_size" />
     </RelativeLayout>
 
     <TextView
@@ -52,7 +51,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:textSize="@dimen/day_info_view_lunar_text_size" />
 
     <TextView
         android:id="@+id/day_info_solar_term_text_view"
@@ -60,7 +60,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="end"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:textSize="@dimen/day_info_view_solar_term_text_size" />
 
     <LinearLayout
         android:id="@+id/day_info_holiday_container_view"

@@ -1,14 +1,22 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateUtils;
+import android.util.TypedValue;
+import android.widget.TextView;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Constellation;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
+import com.flyingosred.app.android.simpleperpetualcalendar.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +34,8 @@ public final class DisplayCalendar implements Parcelable {
     private static final String PREFIX_HOLIDAY_NAME_ARRAY = "holiday_";
 
     private final String mDay;
+
+    private final int mDayTextColor;
 
     private final String mDate;
 
@@ -45,6 +55,8 @@ public final class DisplayCalendar implements Parcelable {
 
     private final String mOffWorkLong;
 
+    private final String mToday;
+
     private final String[] mHolidays;
 
     public DisplayCalendar(Context context, PerpetualCalendar perpetualCalendar, int offset,
@@ -54,6 +66,7 @@ public final class DisplayCalendar implements Parcelable {
                 perpetualCalendar.getSolar().getMonth() - 1,
                 perpetualCalendar.getSolar().getDay());
         mDay = String.valueOf(calendar.get(Calendar.DATE));
+
         mDate = DateUtils.formatDateRange(context, calendar.getTimeInMillis(),
                 calendar.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
@@ -88,7 +101,15 @@ public final class DisplayCalendar implements Parcelable {
         }
 
         String flagName = PREFIX_FLAG + region;
-        mRegionFlag = context.getResources().getIdentifier(flagName, "mipmap", context.getPackageName());
+        mRegionFlag = context.getResources().getIdentifier(flagName, "drawable", context.getPackageName());
+
+        if (Utils.isToday(calendar)) {
+            mToday = context.getString(R.string.action_today);
+        } else {
+            mToday = null;
+        }
+
+        int dayTextColorResId = 0;
 
         List<Holiday> holidayList = perpetualCalendar.getHolidayList();
         List<Integer> holidayIdList = new ArrayList<>();
@@ -107,9 +128,11 @@ public final class DisplayCalendar implements Parcelable {
                 if (offOrWork == Holiday.TYPE_WORK) {
                     offOrWorkResId = R.string.holiday_type_work;
                     offOrWorkLongResId = R.string.holiday_type_work_long;
+                    dayTextColorResId = R.attr.colorHolidayWorkText;
                 } else if (offOrWork == Holiday.TYPE_OFF) {
                     offOrWorkResId = R.string.holiday_type_off;
                     offOrWorkLongResId = R.string.holiday_type_off_long;
+                    dayTextColorResId = R.attr.colorHolidayText;
                 }
             }
         }
@@ -141,10 +164,34 @@ public final class DisplayCalendar implements Parcelable {
         } else {
             mHolidays = null;
         }
+
+        int dayTextColor = 0;
+        if (dayTextColorResId == 0) {
+            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+                dayTextColorResId = R.attr.colorSaturdayText;
+            } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                dayTextColorResId = R.attr.colorSundayText;
+            }
+        }
+
+        if (dayTextColorResId != 0 && dayTextColorResId != R.attr.colorHolidayWorkText) {
+            TypedValue typedValue = new TypedValue();
+            TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{dayTextColorResId});
+            dayTextColor = a.getColor(0, 0);
+            a.recycle();
+        }
+
+        if (dayTextColor != 0) {
+            mDayTextColor = dayTextColor;
+        } else {
+            TextView tempTextView = new TextView(context);
+            mDayTextColor = tempTextView.getCurrentTextColor();
+        }
     }
 
     protected DisplayCalendar(Parcel in) {
         mDay = in.readString();
+        mDayTextColor = in.readInt();
         mDate = in.readString();
         mDaysOffset = in.readString();
         mLunarShort = in.readString();
@@ -154,6 +201,7 @@ public final class DisplayCalendar implements Parcelable {
         mRegionFlag = in.readInt();
         mOffWork = in.readString();
         mOffWorkLong = in.readString();
+        mToday = in.readString();
         mHolidays = in.createStringArray();
     }
 
@@ -171,6 +219,10 @@ public final class DisplayCalendar implements Parcelable {
 
     public String getDay() {
         return mDay;
+    }
+
+    public int getDayTextColor() {
+        return mDayTextColor;
     }
 
     public String getDate() {
@@ -209,6 +261,10 @@ public final class DisplayCalendar implements Parcelable {
         return mOffWorkLong;
     }
 
+    public String getToday() {
+        return mToday;
+    }
+
     public String[] getHolidays() {
         return mHolidays;
     }
@@ -225,7 +281,8 @@ public final class DisplayCalendar implements Parcelable {
             sb.append(WHITESPACE);
             sb.append(day);
         } else {
-            sb.append(lunar.getYear() + "/" + lunar.getMonth() + "/" + lunar.getDay());
+            sb.append(lunar.getYear()).append("/").append(lunar.getMonth())
+                    .append("/").append(lunar.getDay());
         }
         return sb.toString();
     }
@@ -305,13 +362,10 @@ public final class DisplayCalendar implements Parcelable {
 
     private boolean isChineseLocale() {
         Locale locale = Locale.getDefault();
-        if (locale.equals(Locale.CHINESE) || locale.equals(Locale.CHINA)
+        return locale.equals(Locale.CHINESE) || locale.equals(Locale.CHINA)
                 || locale.equals(Locale.SIMPLIFIED_CHINESE)
                 || locale.equals(Locale.TRADITIONAL_CHINESE)
-                || locale.equals(locale.TAIWAN)) {
-            return true;
-        }
-        return false;
+                || locale.equals(Locale.TAIWAN);
     }
 
     private String formatDayString(Context context, Lunar lunar) {
@@ -328,15 +382,13 @@ public final class DisplayCalendar implements Parcelable {
 
     private static String formatChineseEraYear(Context context, int year) {
         int i = (year - Lunar.ERA_YEAR_START) % 60;
-        StringBuilder sb = new StringBuilder();
-        sb.append(context.getResources().getStringArray(R.array.era_stem)[i % 10]);
-        sb.append(context.getResources().getStringArray(R.array.era_branch)[i % 12]);
-        sb.append(context.getString(R.string.lunar_era_year));
-        sb.append("【");
-        sb.append(context.getResources().getStringArray(R.array.animal_sign)[(year - Lunar.ERA_ANIMAL_YEAR_START) % 12]);
-        sb.append(context.getString(R.string.lunar_era_year));
-        sb.append("】");
-        return sb.toString();
+        return context.getResources().getStringArray(R.array.era_stem)[i % 10] +
+                context.getResources().getStringArray(R.array.era_branch)[i % 12] +
+                context.getString(R.string.lunar_era_year) +
+                "【" +
+                context.getResources().getStringArray(R.array.animal_sign)[(year - Lunar.ERA_ANIMAL_YEAR_START) % 12] +
+                context.getString(R.string.lunar_era_year) +
+                "】";
     }
 
     @Override
@@ -347,6 +399,7 @@ public final class DisplayCalendar implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mDay);
+        dest.writeInt(mDayTextColor);
         dest.writeString(mDate);
         dest.writeString(mDaysOffset);
         dest.writeString(mLunarShort);
@@ -356,6 +409,7 @@ public final class DisplayCalendar implements Parcelable {
         dest.writeInt(mRegionFlag);
         dest.writeString(mOffWork);
         dest.writeString(mOffWorkLong);
+        dest.writeString(mToday);
         dest.writeStringArray(mHolidays);
     }
 }

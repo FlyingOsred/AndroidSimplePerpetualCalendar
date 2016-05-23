@@ -19,11 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/action_settings" />
         <activity
             android:name=".DayCardActivity"
             android:label="@string/title_activity_day_card"
-            android:theme="@style/LightGreenTheme.NoActionBar"></activity>
+            android:theme="@style/LightGreenTheme.NoActionBar" />
     </application>
 
 </manifest>

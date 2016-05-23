@@ -1,6 +1,9 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
-import android.content.Context;
 import android.os.Parcel;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Constellation;

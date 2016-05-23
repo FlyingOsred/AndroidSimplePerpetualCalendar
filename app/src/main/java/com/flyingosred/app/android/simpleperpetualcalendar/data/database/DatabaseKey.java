@@ -1,6 +1,9 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
-import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
 
 import static com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalendar.INVALID_POSITION;
@@ -31,11 +34,8 @@ final class DatabaseKey {
         if (o == this)
             return true;
         DatabaseKey key = (DatabaseKey) o;
-        if ((mSolar != null && mSolar.equals(key.mSolar))
-                || (mPosition != INVALID_POSITION && mPosition == key.mPosition)) {
-            return true;
-        }
-        return false;
+        return (mSolar != null && mSolar.equals(key.mSolar))
+                || (mPosition != INVALID_POSITION && mPosition == key.mPosition);
     }
 
     @Override

@@ -1,7 +1,10 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Constellation;
@@ -136,17 +139,4 @@ public class DatabaseContainer implements Database {
     public int getCount() {
         return mDatabaseMap.size() / 2;
     }
-
-    private int getDaysInMonth(int year, int month) {
-        int n = DAYS_PER_MONTH[month - 1];
-        if (n != 28) {
-            return n;
-        }
-        return isLeapYear(year) ? 29 : 28;
-    }
-
-    private boolean isLeapYear(int year) {
-        return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
-    }
-
 }

@@ -1,15 +1,19 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data;
 
 import java.util.Calendar;
 
 public interface Database {
 
-    public int getCount();
+    int getCount();
 
-    public PerpetualCalendar get(int position);
+    PerpetualCalendar get(int position);
 
-    public int getPosition(Calendar calendar);
+    int getPosition(Calendar calendar);
 
-    public int getPosition(int year, int month, int day);
+    int getPosition(int year, int month, int day);
 
 }

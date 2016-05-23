@@ -34,6 +34,14 @@
     <string name="pref_first_day_of_week_title">一週起始日</string>
     <string name="pref_header_general">通用</string>
     <string name="pref_holiday_region_title">節假日</string>
-    <string name="day_card_days_after_today_text">距離今天%1$05d天</string>
-    <string name="day_card_days_before_today_text">距離今天%1$05d天</string>
+    <string name="day_card_days_after_today_text">距離今天 %1$05d 天</string>
+    <string name="day_card_days_before_today_text">距離今天 %1$05d 天</string>
+    <string name="day_card_today_text">今天</string>
+    <string name="holiday_type_off_long">休息日</string>
+    <string name="holiday_type_work_long">工作日</string>
+    <string name="lunar_era_year">年</string>
+    <string name="lunar_large_month">大</string>
+    <string name="lunar_leap">閏</string>
+    <string name="lunar_small_month">小</string>
+    <string name="solar_term_name">節氣</string>
 </resources>

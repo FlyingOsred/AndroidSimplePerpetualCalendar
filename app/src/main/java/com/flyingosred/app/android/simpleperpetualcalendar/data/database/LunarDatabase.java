@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Lunar;
@@ -30,8 +34,7 @@ public class LunarDatabase {
 
     private int getLeapMonth(int year) {
         long data = LUNAR_DATABASE[year - PerpetualCalendar.START_YEAR];
-        int month = (int) (data >> 20) & 0xF;
-        return month;
+        return (int) (data >> 20) & 0xF;
     }
 
     private int getDaysInMonth(int year, int month, boolean isLeapMonth) {

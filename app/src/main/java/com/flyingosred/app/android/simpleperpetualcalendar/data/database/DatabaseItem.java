@@ -1,7 +1,10 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar.data.database;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Constellation;
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Holiday;
@@ -10,7 +13,6 @@ import com.flyingosred.app.android.simpleperpetualcalendar.data.PerpetualCalenda
 import com.flyingosred.app.android.simpleperpetualcalendar.data.Solar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class DatabaseItem implements PerpetualCalendar {

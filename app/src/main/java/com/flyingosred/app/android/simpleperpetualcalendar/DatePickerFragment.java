@@ -1,8 +1,13 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 
@@ -10,6 +15,7 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar c = Calendar.getInstance();
@@ -29,7 +35,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         MainActivityFragment fragment = (MainActivityFragment)
                 getActivity().getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-        fragment.scrollToDate(year, monthOfYear, dayOfMonth);
+        fragment.scrollToDate(year, monthOfYear + 1, dayOfMonth);
 
     }
 

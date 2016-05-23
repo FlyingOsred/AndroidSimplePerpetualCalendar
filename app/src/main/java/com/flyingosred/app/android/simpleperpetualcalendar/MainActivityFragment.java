@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+ */
+
 package com.flyingosred.app.android.simpleperpetualcalendar;
 
 import android.content.BroadcastReceiver;
@@ -56,11 +60,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private DayOfWeekAdapter mDayOfWeekAdapter = null;
 
-    private SharedPreferences mSharedPreferences = null;
-
     private GestureDetectorCompat mGestureDetector = null;
 
     private DateChangeReceiver mDateChangeReceiver = new DateChangeReceiver();
+
+    private OnDaySelectedListener mOnDaySelectedListener = null;
 
     public MainActivityFragment() {
     }
@@ -70,7 +74,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         super.onAttach(context);
 
         try {
-            OnDaySelectedListener listener = (OnDaySelectedListener) getActivity();
+            mOnDaySelectedListener = (OnDaySelectedListener) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement OnDaySelectedListener");
@@ -100,7 +104,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(LOG_TAG, "onActivityCreated");
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         int firstDayOfWeek = getPrefFirstDayOfWeek(mSharedPreferences);
         boolean showWeekNumber = getPrefShowWeekNumber(mSharedPreferences);
@@ -119,7 +123,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         mDayOfWeekView.setLayoutManager(dayOfWeekLayout);
         mDayOfWeekAdapter = new DayOfWeekAdapter(firstDayOfWeek, showWeekNumber);
         mDayOfWeekView.setAdapter(mDayOfWeekAdapter);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
+        ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("");
+        }
         getActivity().getSupportLoaderManager().initLoader(CONTENT_LOADER_ID, null, this);
     }
 
@@ -227,15 +234,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private boolean getPrefShowWeekNumber(SharedPreferences sharedPreferences) {
         String key = getString(R.string.pref_key_show_week_number);
-        boolean showWeekNumber = sharedPreferences.getBoolean(key, false);
-        return showWeekNumber;
+        return sharedPreferences.getBoolean(key, false);
     }
 
     private String getPrefHolidayRegion(SharedPreferences sharedPreferences) {
         String key = getString(R.string.pref_key_holiday_region);
         String defaultRegion = getString(R.string.pref_holiday_region_default);
-        String region = sharedPreferences.getString(key, defaultRegion);
-        return region;
+        return sharedPreferences.getString(key, defaultRegion);
     }
 
     @Override
@@ -359,10 +364,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private void activeItem(int position, boolean showCard) {
         if (showCard) {
-            OnDaySelectedListener listener = (OnDaySelectedListener) getActivity();
-            int today = mDayAdapter.getTodayPosition();
-            DayAdapter.ViewHolder viewHolder = (DayAdapter.ViewHolder) mDayView.findViewHolderForAdapterPosition(position);
-            listener.onDaySelected(viewHolder.getDisplayCalendar());
+            DayAdapter.ViewHolder viewHolder =
+                    (DayAdapter.ViewHolder) mDayView.findViewHolderForAdapterPosition(position);
+            mOnDaySelectedListener.onDaySelected(viewHolder.getDisplayCalendar());
         }
         mDayAdapter.activateItem(position);
     }

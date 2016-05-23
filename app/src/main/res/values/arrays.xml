@@ -29,7 +29,7 @@
         <item>@string/constellation_capricorn_name</item>
     </string-array>
 
-    <string-array name="constellation_symbol">
+    <string-array name="constellation_symbol" translatable="false">
         <item>\u2652</item>
         <item>\u2653</item>
         <item>\u2648</item>
@@ -58,7 +58,7 @@
         <item>"7"</item>
     </string-array>
 
-    <string-array name="era_stem">
+    <string-array name="era_stem" translatable="false">
         <item>甲</item>
         <item>乙</item>
         <item>丙</item>
@@ -70,7 +70,7 @@
         <item>壬</item>
         <item>癸</item>
     </string-array>
-    <string-array name="era_branch">
+    <string-array name="era_branch" translatable="false">
         <item>子</item>
         <item>丑</item>
         <item>寅</item>
@@ -84,7 +84,7 @@
         <item>戌</item>
         <item>亥</item>
     </string-array>
-    <string-array name="animal_sign">
+    <string-array name="animal_sign" translatable="false">
         <item>鼠</item>
         <item>牛</item>
         <item>虎</item>

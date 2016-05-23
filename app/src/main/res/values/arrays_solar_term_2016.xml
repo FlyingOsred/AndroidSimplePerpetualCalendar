@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="solar_term_date_2016">
+    <string-array name="solar_term_date_2016" translatable="false">
         <item>2016-01-06 06:08</item>
         <item>2016-01-20 23:27</item>
         <item>2016-02-04 17:46</item>

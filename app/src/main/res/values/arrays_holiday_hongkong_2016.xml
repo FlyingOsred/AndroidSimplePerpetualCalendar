@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="holiday_hongkong_2016">
+    <string-array name="holiday_hongkong_2016" translatable="false">
         <!--新曆新年-->
         <item>2016-01-01</item>
         <!--除夕-->
@@ -67,7 +67,7 @@
         <!--聖誕節後第二個周日-->
         <item>2016-12-27</item>
     </string-array>
-    <string-array name="holiday_hongkong_off_work_2016">
+    <string-array name="holiday_hongkong_off_work_2016" translatable="false">
         <!--新曆新年-->
         <item>2016-01-01:off</item>
         <!--農曆年初一-->

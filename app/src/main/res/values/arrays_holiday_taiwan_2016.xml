@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="holiday_taiwan_2016">
+    <string-array name="holiday_taiwan_2016" translatable="false">
         <!--元旦-->
         <item>2016-01-01</item>
         <!--中華民國開國紀念日-->
@@ -101,7 +101,7 @@
         <!--聖誕節-->
         <item>2016-12-25</item>
     </string-array>
-    <string-array name="holiday_taiwan_off_work_2016">
+    <string-array name="holiday_taiwan_off_work_2016" translatable="false">
         <!--元旦-->
         <item>2016-01-01:off</item>
         <!--春節-->

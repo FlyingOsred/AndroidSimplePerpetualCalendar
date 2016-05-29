@@ -6,7 +6,7 @@
     android:paddingLeft="2dp"
     android:paddingRight="2dp"
     android:paddingTop="2dp"
-    tools:context="com.flyingosred.app.android.simpleperpetualcalendar.MainActivityFragment"
+    tools:context="com.flyingosred.app.android.perpetualcalendar.MainActivityFragment"
     tools:showIn="@layout/activity_main">
 
     <android.support.v4.widget.ContentLoadingProgressBar
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.flyingosred.app.android.simpleperpetualcalendar.view.DayRecyclerView
+    <com.flyingosred.app.android.perpetualcalendar.view.DayRecyclerView
         android:id="@+id/day_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

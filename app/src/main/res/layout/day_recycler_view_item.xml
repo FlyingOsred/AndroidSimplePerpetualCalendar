@@ -11,7 +11,7 @@
         android:layout_gravity="end|top"
         android:textSize="@dimen/day_info_view_week_number_text_size" />
 
-    <com.flyingosred.app.android.simpleperpetualcalendar.view.DayInfoView
+    <com.flyingosred.app.android.perpetualcalendar.view.DayInfoView
         android:id="@+id/day_info_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

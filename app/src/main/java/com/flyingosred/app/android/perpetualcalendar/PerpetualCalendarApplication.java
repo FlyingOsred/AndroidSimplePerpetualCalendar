@@ -12,6 +12,5 @@ public class PerpetualCalendarApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        DatabaseContainer.getInstance().init(getApplicationContext());
     }
 }

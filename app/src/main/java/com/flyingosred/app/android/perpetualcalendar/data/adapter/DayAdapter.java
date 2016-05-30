@@ -18,16 +18,48 @@ import com.flyingosred.app.android.perpetualcalendar.R;
 import com.flyingosred.app.android.perpetualcalendar.data.Database;
 import com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.perpetualcalendar.data.Solar;
+import com.flyingosred.app.android.perpetualcalendar.data.provider.ConstellationProvider;
+import com.flyingosred.app.android.perpetualcalendar.data.provider.HolidayProvider;
+import com.flyingosred.app.android.perpetualcalendar.data.provider.LunarProvider;
+import com.flyingosred.app.android.perpetualcalendar.data.provider.SolarTermProvider;
+import com.flyingosred.app.android.perpetualcalendar.util.Utils;
 import com.flyingosred.app.android.perpetualcalendar.view.DayInfoView;
 
 import java.util.Calendar;
 
 import static com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar.DAYS_IN_WEEK;
 import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
+import static com.flyingosred.app.android.perpetualcalendar.util.Utils.daysBetween;
 
 public class DayAdapter extends RecyclerView.Adapter {
 
+    private static final int YEAR_MIN = 1901;
+
+    private static final int MONTH_MIN = 2;
+
+    private static final int DAY_MIN = 19;
+
+    private static final int YEAR_MAX = 2099;
+
+    private static final int MONTH_MAX = 12;
+
+    private static final int DAY_MAX = 31;
+
     private final Context mContext;
+
+    private final int mCount;
+
+    private final Calendar mMinDate;
+
+    private final Calendar mMaxDate;
+
+    private final SolarTermProvider mSolarTermProvider;
+
+    private final LunarProvider mLunarProvider;
+
+    private final ConstellationProvider mConstellationProvider;
+
+    private final HolidayProvider mHolidayProvider;
 
     private Database mDatabase = null;
 
@@ -43,6 +75,15 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     public DayAdapter(Context context, int firstDayOfWeek, boolean showWeekNumber, String region) {
         mContext = context;
+        mSolarTermProvider = new SolarTermProvider(context);
+        mLunarProvider = new LunarProvider(context);
+        mConstellationProvider = new ConstellationProvider(context);
+        mHolidayProvider = new HolidayProvider(context);
+        mMinDate = Calendar.getInstance();
+        mMinDate.set(YEAR_MIN, MONTH_MIN - 1, DAY_MIN);
+        mMaxDate = Calendar.getInstance();
+        mMaxDate.set(YEAR_MAX, MONTH_MAX - 1, DAY_MAX);
+        mCount = daysBetween(mMinDate, mMaxDate) + 1;
         mShowWeekNumber = showWeekNumber;
         mFirstDayOfWeek = firstDayOfWeek;
         mHolidayRegion = region;
@@ -62,25 +103,21 @@ public class DayAdapter extends RecyclerView.Adapter {
         if (position < mFrontOffset) {
             return;
         }
-        if (mDatabase != null) {
-            viewHolder.bindData(position, mDatabase.get(position - mFrontOffset),
-                    mShowWeekNumber && (position % PerpetualCalendar.DAYS_IN_WEEK == 0),
-                    position == mActivatedItem);
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(mMinDate.getTimeInMillis());
+        calendar.add(Calendar.DATE, position - mFrontOffset);
+
+        viewHolder.bindData(position, mDatabase.get(position - mFrontOffset),
+                mShowWeekNumber && (position % PerpetualCalendar.DAYS_IN_WEEK == 0),
+                position == mActivatedItem);
     }
 
     @Override
     public int getItemCount() {
-        if (mDatabase != null) {
-            return mDatabase.getCount() + mFrontOffset;
-        }
-        return 0;
+        return mCount;
     }
 
     public void changeDatabase(Database database) {
-        mDatabase = database;
-        computeOffset();
-        notifyDataSetChanged();
     }
 
     public void activateItem(int position) {
@@ -171,16 +208,7 @@ public class DayAdapter extends RecyclerView.Adapter {
     }
 
     public void computeOffset(int firstDayOfWeek) {
-        if (mDatabase != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(mDatabase.get(0).getSolar().getYear(),
-                    mDatabase.get(0).getSolar().getMonth() - 1,
-                    mDatabase.get(0).getSolar().getDay());
-            mFrontOffset = findDayOffset(calendar.get(Calendar.DAY_OF_WEEK), firstDayOfWeek,
-                    DAYS_IN_WEEK);
-        } else {
-            mFrontOffset = 0;
-        }
+        mFrontOffset = findDayOffset(mMinDate.get(Calendar.DAY_OF_WEEK), firstDayOfWeek, DAYS_IN_WEEK);
         Log.d(LOG_TAG, "Front offset is " + mFrontOffset);
     }
 
@@ -193,13 +221,7 @@ public class DayAdapter extends RecyclerView.Adapter {
     }
 
     public int getTodayPosition() {
-        int position = AdapterView.INVALID_POSITION;
-        if (mDatabase != null) {
-            Calendar calendar = Calendar.getInstance();
-            int today = mDatabase.getPosition(calendar);
-            position = today + mFrontOffset;
-        }
-        return position;
+        return daysBetween(Calendar.getInstance(), mMinDate) + mFrontOffset;
     }
 
     public PerpetualCalendar get(int position) {

@@ -77,46 +77,26 @@ public final class Utils {
         return isSameDay(today, calendar);
     }
 
-    public static long daysBetween(Calendar start, Calendar end) {
-        if (isSameDay(start, end)) {
-            return 0;
-        }
-        int startYear;
-        int startMonth;
-        int endYear;
-        int endMonth;
-        boolean isNegative = false;
-        if (isDayBefore(start, end)) {
-            startYear = start.get(Calendar.YEAR);
-            endYear = end.get(Calendar.YEAR);
-            startMonth
-        } else {
-            startYear = end.get(Calendar.YEAR);
-            endYear = start.get(Calendar.YEAR);
-            isNegative = true;
-        }
-        long dayCount = 0;
-        for (int i = startYear; i < endYear; i++) {
-            dayCount += getDaysInYear(i);
-        }
+    public static int daysBetween(Calendar start, Calendar end) {
+        return daysBetween(start.get(Calendar.YEAR), start.get(Calendar.MONTH) + 1,
+                start.get(Calendar.DATE), end.get(Calendar.YEAR), end.get(Calendar.MONTH) + 1,
+                end.get(Calendar.DATE));
     }
 
-    private static long daysBetweenOrdered(int startYear, int startMonth, int startDay,
-                                           int endYear, int endMonth, int endDay) {
-        if (isSameDay(startYear, startMonth, startDay, endYear, endMonth, endDay)) {
-            return 0;
-        }
-        long dayCount = 0;
-        for (int i = startYear; i < endYear; i++) {
-            if (i == startYear) {
-                dayCount += daysBetweenOrdered(i, startMonth, startDay, i, 12, 31);
-                startMonth = 1;
-                startDay = 1;
-            } else {
-                dayCount += getDaysInYear(i);
-            }
-        }
+    public static int daysBetween(int startYear, int startMonth, int startDay, int endYear, int endMonth,
+                                  int endDay) {
+        int y2, m2, d2;
+        int y1, m1, d1;
 
+        m1 = (startMonth + 9) % 12;
+        y1 = startYear - m1 / 10;
+        d1 = 365 * y1 + y1 / 4 - y1 / 100 + y1 / 400 + (m1 * 306 + 5) / 10 + (startDay - 1);
+
+        m2 = (endMonth + 9) % 12;
+        y2 = endYear - m2 / 10;
+        d2 = 365 * y2 + y2 / 4 - y2 / 100 + y2 / 400 + (m2 * 306 + 5) / 10 + (endDay - 1);
+
+        return (d2 - d1);
     }
 
     public static boolean isLeapYear(int year) {

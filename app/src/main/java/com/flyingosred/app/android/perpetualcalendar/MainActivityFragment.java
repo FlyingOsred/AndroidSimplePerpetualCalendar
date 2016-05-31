@@ -9,13 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,11 +32,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 
-import com.flyingosred.app.android.perpetualcalendar.data.Database;
+import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract;
 import com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.perpetualcalendar.data.adapter.DayAdapter;
 import com.flyingosred.app.android.perpetualcalendar.data.adapter.DayOfWeekAdapter;
-import com.flyingosred.app.android.perpetualcalendar.data.loader.ContentLoader;
 import com.flyingosred.app.android.perpetualcalendar.view.DayRecyclerView;
 
 import java.util.Calendar;
@@ -45,10 +43,8 @@ import java.util.Locale;
 
 import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
 
-public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Database>,
+public class MainActivityFragment extends Fragment implements
         SharedPreferences.OnSharedPreferenceChangeListener, RecyclerView.OnItemTouchListener {
-
-    private static final int CONTENT_LOADER_ID = 1;
 
     private ProgressBar mProgressBar = null;
 
@@ -65,6 +61,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private DateChangeReceiver mDateChangeReceiver = new DateChangeReceiver();
 
     private OnDaySelectedListener mOnDaySelectedListener = null;
+
+    private int mFirstDayOfWeek;
 
     public MainActivityFragment() {
     }
@@ -106,28 +104,28 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         Log.d(LOG_TAG, "onActivityCreated");
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        int firstDayOfWeek = getPrefFirstDayOfWeek(mSharedPreferences);
+        mFirstDayOfWeek = getPrefFirstDayOfWeek(mSharedPreferences);
         boolean showWeekNumber = getPrefShowWeekNumber(mSharedPreferences);
         String holidayRegion = getPrefHolidayRegion(mSharedPreferences);
         Log.d(LOG_TAG, "Holiday region is " + holidayRegion);
         mGestureDetector = new GestureDetectorCompat(getActivity(), new DayViewOnGestureListener());
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         mDayView.setLayoutManager(layoutManager);
-        mDayAdapter = new DayAdapter(getContext(), firstDayOfWeek, showWeekNumber, holidayRegion);
+        mDayAdapter = new DayAdapter(getContext(), mFirstDayOfWeek, showWeekNumber, holidayRegion);
         mDayAdapter.registerAdapterDataObserver(new DayAdapterDataObserver());
         mDayView.setHasFixedSize(true);
         mDayView.setAdapter(mDayAdapter);
         mDayView.addOnItemTouchListener(this);
         mDayView.addOnScrollListener(new DayViewOnScrollListener());
+        scrollToDate(Calendar.getInstance());
         GridLayoutManager dayOfWeekLayout = new GridLayoutManager(getContext(), 7);
         mDayOfWeekView.setLayoutManager(dayOfWeekLayout);
-        mDayOfWeekAdapter = new DayOfWeekAdapter(firstDayOfWeek, showWeekNumber);
+        mDayOfWeekAdapter = new DayOfWeekAdapter(mFirstDayOfWeek, showWeekNumber);
         mDayOfWeekView.setAdapter(mDayOfWeekAdapter);
         ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("");
         }
-        getActivity().getSupportLoaderManager().initLoader(CONTENT_LOADER_ID, null, this);
     }
 
     @Override
@@ -149,7 +147,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         Log.d(LOG_TAG, "option selected " + id);
 
         if (id == R.id.action_today) {
-            scrollToToday();
+            scrollToDate(Calendar.getInstance());
             return true;
         } else if (id == R.id.action_select_date) {
             DialogFragment newFragment = new DatePickerFragment();
@@ -157,31 +155,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public Loader<Database> onCreateLoader(int id, Bundle args) {
-        Log.d(LOG_TAG, "onCreateLoader");
-        return new ContentLoader(getContext());
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Database> loader, Database database) {
-        Log.d(LOG_TAG, "onLoadFinished");
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.GONE);
-        }
-        if (mDayAdapter != null) {
-            mDayAdapter.changeDatabase(database);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Database> loader) {
-        Log.d(LOG_TAG, "onLoaderReset");
-        if (mDayAdapter != null) {
-            mDayAdapter.changeDatabase(null);
-        }
     }
 
     public interface OnDaySelectedListener {
@@ -287,29 +260,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         }
     }
 
-    private void scrollToToday() {
-        int today = mDayAdapter.getTodayPosition();
-        if (today != AdapterView.INVALID_POSITION) {
-            GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
-            int offset = PerpetualCalendar.DAYS_IN_WEEK * 2;
-            int position = today - offset;
-            if (position < 0) {
-                position = 0;
-            }
-            Log.d(LOG_TAG, "Today position with offset is " + position);
-            layoutManager.scrollToPositionWithOffset(position, offset);
-            activeItem(today, false);
-        }
-    }
-
     private void updateTitle(int position) {
         ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
-        PerpetualCalendar perpetualCalendar = mDayAdapter.get(position);
-        if (perpetualCalendar != null && actionBar != null) {
+        DayAdapter.ViewHolder viewHolder = (DayAdapter.ViewHolder) mDayView.findViewHolderForAdapterPosition(position);
+        Cursor cursor = viewHolder.getData();
+        if (cursor != null && actionBar != null) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(perpetualCalendar.getSolar().getYear(),
-                    perpetualCalendar.getSolar().getMonth() - 1,
-                    perpetualCalendar.getSolar().getDay());
+            calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS)));
             String date = DateUtils.formatDateRange(getContext(), calendar.getTimeInMillis(),
                     calendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_MONTH_DAY
@@ -326,15 +283,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            View view = recyclerView.findChildViewUnder(dx, dy);
-            int position = recyclerView.getChildAdapterPosition(view);
-            Log.d(LOG_TAG, "onScrolled position is " + position);
-            GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
-            int firstItem = layoutManager.findFirstCompletelyVisibleItemPosition();
-            int lastItem = layoutManager.findLastCompletelyVisibleItemPosition();
-            final int count = (lastItem - firstItem) / 2;
-            int center = firstItem + count;
-            updateTitle(center);
+            if ((dx != 0 || dy != 0) && recyclerView.getScrollState() != RecyclerView.SCROLL_STATE_DRAGGING) {
+                View view = recyclerView.findChildViewUnder(dx, dy);
+                int position = recyclerView.getChildAdapterPosition(view);
+                Log.d(LOG_TAG, "onScrolled position is " + position);
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                int firstItem = layoutManager.findFirstCompletelyVisibleItemPosition();
+                int lastItem = layoutManager.findLastCompletelyVisibleItemPosition();
+                final int count = (lastItem - firstItem) / 2;
+                int center = firstItem + count;
+                updateTitle(center);
+            }
         }
     }
 
@@ -342,31 +301,28 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         public void onChanged() {
             Log.d(LOG_TAG, "DayAdapterDataObserver onChanged");
-            scrollToToday();
         }
     }
 
-    public void scrollToDate(int year, int month, int day) {
-        int position = mDayAdapter.getPosition(year, month, day);
-        Log.d(LOG_TAG, "scrollToDate year " + year + " month " + month + " day " + day
-                + " position " + position);
-        if (position != AdapterView.INVALID_POSITION) {
-            GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
-            int offset = PerpetualCalendar.DAYS_IN_WEEK * 2;
-            int innerPosition = position - offset;
-            if (innerPosition < 0) {
-                innerPosition = 0;
-            }
-            Log.d(LOG_TAG, "Today position with offset is " + innerPosition);
-            layoutManager.scrollToPositionWithOffset(innerPosition, offset);
+    public void scrollToDate(Calendar calendar) {
+        int position = mDayAdapter.getPosition(calendar);
+        Log.d(LOG_TAG, "scrollToDate " + calendar.getTime() + " position " + position);
+        GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
+        int offset = PerpetualCalendar.DAYS_IN_WEEK * 2 + findDayOffset(calendar);
+        int innerPosition = position - offset;
+        if (innerPosition < 0) {
+            innerPosition = 0;
         }
+        Log.d(LOG_TAG, "scrollToDate position with offset is " + innerPosition);
+        layoutManager.scrollToPositionWithOffset(innerPosition, offset);
+        mDayAdapter.activateItem(position);
     }
 
     private void activeItem(int position, boolean showCard) {
         if (showCard) {
             DayAdapter.ViewHolder viewHolder =
                     (DayAdapter.ViewHolder) mDayView.findViewHolderForAdapterPosition(position);
-            mOnDaySelectedListener.onDaySelected(viewHolder.getDisplayCalendar());
+            //mOnDaySelectedListener.onDaySelected(viewHolder.getDisplayCalendar());
         }
         mDayAdapter.activateItem(position);
     }
@@ -377,5 +333,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         public void onReceive(Context context, Intent intent) {
             Log.d(LOG_TAG, "onReceive date change");
         }
+    }
+
+    private int findDayOffset(Calendar calendar) {
+        int dayOfWeekStart = calendar.get(Calendar.DAY_OF_WEEK);
+        final int offset = dayOfWeekStart - mFirstDayOfWeek;
+        if (dayOfWeekStart < mFirstDayOfWeek) {
+            return offset + PerpetualCalendar.DAYS_IN_WEEK;
+        }
+        return offset;
     }
 }

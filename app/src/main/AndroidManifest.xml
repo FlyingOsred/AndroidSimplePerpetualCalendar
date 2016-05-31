@@ -29,9 +29,9 @@
 
         <provider
             android:name=".data.provider.PerpetualCalendarContentProvider"
-            android:authorities="com.flyingosred.app.android.perpetualcalendar.api"
+            android:authorities="com.flyingosred.app.android.perpetualcalendar.provider"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -10,6 +10,15 @@
     <dimen name="day_info_view_solar_term_text_size">6sp</dimen>
     <dimen name="day_info_view_holiday_text_size">6sp</dimen>
 
+    <dimen name="day_recycler_item_day_text_size">24sp</dimen>
+    <dimen name="day_recycler_item_constellation_text_size">6sp</dimen>
+    <dimen name="day_recycler_item_week_number_text_size">6sp</dimen>
+    <dimen name="day_recycler_item_today_text_size">6sp</dimen>
+    <dimen name="day_recycler_item_off_work_text_size">6sp</dimen>
+    <dimen name="day_recycler_item_lunar_text_size">6sp</dimen>
+    <dimen name="day_recycler_item_solar_term_text_size">6sp</dimen>
+    <dimen name="day_recycler_item_holiday_text_size">6sp</dimen>
+
     <dimen name="day_card_text_view_margin">6dp</dimen>
 
     <dimen name="day_card_margin">16dp</dimen>

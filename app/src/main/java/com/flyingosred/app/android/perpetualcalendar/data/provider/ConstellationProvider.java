@@ -20,7 +20,7 @@ public final class ConstellationProvider extends BaseProvider {
 
     public String getName(Calendar calendar) {
         int id = getId(calendar);
-        if (id != PerpetualCalendarContract.Constellation.INVALID) {
+        if (id != -1) {
             String[] nameArray = getContext().getResources().getStringArray(R.array.constellation_name);
             if (nameArray != null && nameArray.length > id) {
                 return nameArray[id];
@@ -30,7 +30,7 @@ public final class ConstellationProvider extends BaseProvider {
     }
 
     private int getId(Calendar calendar) {
-        int id = PerpetualCalendarContract.Constellation.INVALID;
+        int id = -1;
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DATE);
         for (int i = 0; i < ConstellationDatabase.CONSTELLATION_DATE.length; i++) {

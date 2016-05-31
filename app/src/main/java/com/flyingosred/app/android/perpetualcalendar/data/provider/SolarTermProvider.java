@@ -28,7 +28,7 @@ public final class SolarTermProvider extends BaseProvider {
     }
 
     public String getName(Calendar calendar) {
-        int id = PerpetualCalendarContract.SolarTerm.INVALID;
+        int id = -1;
         int year = calendar.get(Calendar.YEAR);
         String arrayName = ARRAYS_PREFIX + year;
         int resId = getContext().getResources().getIdentifier(arrayName, "array",
@@ -54,7 +54,7 @@ public final class SolarTermProvider extends BaseProvider {
                 }
             }
         }
-        if (id != PerpetualCalendarContract.SolarTerm.INVALID) {
+        if (id >= 0) {
             String[] nameArray = getContext().getResources().getStringArray(R.array.solar_term_name);
             if (nameArray != null && nameArray.length > id) {
                 return nameArray[id];

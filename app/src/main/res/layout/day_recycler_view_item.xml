@@ -5,15 +5,83 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/week_number_text_view"
+        android:id="@+id/day_recycler_item_week_number_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|top"
-        android:textSize="@dimen/day_info_view_week_number_text_size" />
+        android:textSize="@dimen/day_recycler_item_week_number_text_size" />
 
-    <com.flyingosred.app.android.perpetualcalendar.view.DayInfoView
-        android:id="@+id/day_info_view"
+    <LinearLayout
+        android:id="@+id/day_recycler_item_date_info_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/day_recycler_item_day_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/day_recycler_item_day_text_size" />
+
+            <TextView
+                android:id="@+id/day_recycler_item_constellation_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/day_recycler_item_day_text_view"
+                android:textSize="@dimen/day_recycler_item_constellation_text_size" />
+
+            <TextView
+                android:id="@+id/day_recycler_item_today_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/day_recycler_item_day_text_view"
+                android:layout_toLeftOf="@id/day_recycler_item_day_text_view"
+                android:layout_toStartOf="@id/day_recycler_item_day_text_view"
+                android:textSize="@dimen/day_recycler_item_today_text_size" />
+
+            <TextView
+                android:id="@+id/day_recycler_item_off_work_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/day_recycler_item_today_text_view"
+                android:layout_toLeftOf="@id/day_recycler_item_day_text_view"
+                android:layout_toStartOf="@id/day_recycler_item_day_text_view"
+                android:gravity="start"
+                android:textSize="@dimen/day_recycler_item_off_work_text_size" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/day_recycler_item_lunar_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textSize="@dimen/day_recycler_item_lunar_text_size" />
+
+        <TextView
+            android:id="@+id/day_recycler_item_solar_term_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textSize="@dimen/day_recycler_item_solar_term_text_size" />
+
+        <LinearLayout
+            android:id="@+id/day_recycler_item_holiday_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
 
 </LinearLayout>

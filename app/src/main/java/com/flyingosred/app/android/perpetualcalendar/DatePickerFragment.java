@@ -35,7 +35,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         MainActivityFragment fragment = (MainActivityFragment)
                 getActivity().getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-        fragment.scrollToDate(year, monthOfYear + 1, dayOfMonth);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth);
+        fragment.scrollToDate(calendar);
 
     }
 

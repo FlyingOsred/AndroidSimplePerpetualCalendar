@@ -1,10 +1,13 @@
 package com.flyingosred.app.android.perpetualcalendar.data.provider;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.flyingosred.app.android.perpetualcalendar.util.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,12 +30,22 @@ public final class HolidayProvider extends BaseProvider {
         super(context);
     }
 
-    public int getFlagId(String region) {
+    public byte[] getFlagImage(String region) {
         String flagName = PREFIX_FLAG + region;
-        return getContext().getResources().getIdentifier(flagName, "drawable", getContext().getPackageName());
+        int id = getContext().getResources().getIdentifier(flagName, "drawable",
+                getContext().getPackageName());
+
+        if (id != 0) {
+            Bitmap bmp = BitmapFactory.decodeResource(getContext().getResources(), id);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            return stream.toByteArray();
+        }
+
+        return null;
     }
 
-    public String[] getHolidayNames(String region, Calendar calendar) {
+    public List<String> getHolidayNames(String region, Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
         int yearDateArrayId = getContext().getResources().getIdentifier(
                 PREFIX_DATE + region + "_" + year, "array", getContext().getPackageName());
@@ -63,10 +76,7 @@ public final class HolidayProvider extends BaseProvider {
             }
         }
 
-        if (nameList.size() > 0) {
-            return nameList.toArray(new String[nameList.size()]);
-        }
-        return null;
+        return nameList;
     }
 
     private String[] getRegionHolidayNames(String region) {

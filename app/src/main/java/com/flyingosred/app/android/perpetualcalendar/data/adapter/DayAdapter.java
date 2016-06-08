@@ -4,10 +4,16 @@
 
 package com.flyingosred.app.android.perpetualcalendar.data.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +26,12 @@ import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalen
 import com.flyingosred.app.android.perpetualcalendar.data.Database;
 import com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar.DAYS_IN_WEEK;
 import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
@@ -73,9 +84,9 @@ public class DayAdapter extends RecyclerView.Adapter {
         mContext = context;
         mMinDate = Calendar.getInstance();
         mMinDate.set(YEAR_MIN, MONTH_MIN - 1, DAY_MIN);
-        Calendar maxdate = Calendar.getInstance();
-        maxdate.set(YEAR_MAX, MONTH_MAX - 1, DAY_MAX);
-        mCount = daysBetween(mMinDate, maxdate) + 1;
+        Calendar maxDate = Calendar.getInstance();
+        maxDate.set(YEAR_MAX, MONTH_MAX - 1, DAY_MAX);
+        mCount = daysBetween(mMinDate, maxDate) + 1;
         mShowWeekNumber = showWeekNumber;
         mFirstDayOfWeek = firstDayOfWeek;
         mHolidayRegion = region;
@@ -113,6 +124,7 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        Log.d(LOG_TAG, "onViewRecycled holder " + holder);
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.unbindData();
     }
@@ -167,6 +179,7 @@ public class DayAdapter extends RecyclerView.Adapter {
         private final LinearLayout mHolidayContainerView;
         private Cursor mCursor = null;
         private boolean mIsActivated = false;
+        private final int mDefaultTextColor;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -179,6 +192,7 @@ public class DayAdapter extends RecyclerView.Adapter {
             mLunarTextView = (TextView) itemView.findViewById(R.id.day_recycler_item_lunar_text_view);
             mSolarTermTextView = (TextView) itemView.findViewById(R.id.day_recycler_item_solar_term_text_view);
             mHolidayContainerView = (LinearLayout) itemView.findViewById(R.id.day_recycler_item_holiday_container_view);
+            mDefaultTextColor = mDayTextView.getCurrentTextColor();
         }
 
         public void bindData(Cursor cursor) {
@@ -197,7 +211,9 @@ public class DayAdapter extends RecyclerView.Adapter {
             if (mCursor != null) {
                 mCursor.moveToFirst();
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(mCursor.getLong(mCursor.getColumnIndex(PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS)));
+                calendar.setTimeInMillis(
+                        mCursor.getLong(mCursor.getColumnIndex(
+                                PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS)));
                 boolean showWeekNumber = mShowWeekNumber
                         && (getAdapterPosition() % PerpetualCalendar.DAYS_IN_WEEK == 0);
                 setWeekNumber(showWeekNumber, calendar);
@@ -208,7 +224,33 @@ public class DayAdapter extends RecyclerView.Adapter {
                 setText(mSolarTermTextView,
                         mCursor.getString(mCursor.getColumnIndex(
                                 PerpetualCalendarContract.PerpetualCalendar.SOLAR_TERM_NAME)));
+                setText(mConstellationTextView,
+                        mCursor.getString(mCursor.getColumnIndex(
+                                PerpetualCalendarContract.PerpetualCalendar.CONSTELLATION_NAME)));
                 mDateContainerView.setActivated(mIsActivated);
+                setTextColor(mDayTextView, calendar);
+                byte[] holidayArray = mCursor.getBlob(mCursor.getColumnIndex(
+                        PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_NAMES));
+                byte[] holidayFlagArray = mCursor.getBlob(mCursor.getColumnIndex(
+                        PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_REGION_FLAG_IMG));
+                ObjectInputStream ois = null;
+                ArrayList<String> list = null;
+                try {
+                    ois = new ObjectInputStream(new ByteArrayInputStream(holidayArray));
+                    //noinspection unchecked
+                    list = (ArrayList<String>) ois.readObject();
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (ois != null) {
+                        try {
+                            ois.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                setHoliday(list, holidayFlagArray);
             }
         }
 
@@ -236,6 +278,51 @@ public class DayAdapter extends RecyclerView.Adapter {
                 textView.setVisibility(View.VISIBLE);
             } else {
                 textView.setVisibility(View.GONE);
+            }
+        }
+
+        private void setTextColor(TextView textView, Calendar calendar) {
+            int textColor = 0;
+            int textColorResId = 0;
+            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+                textColorResId = R.attr.colorSaturdayText;
+            } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                textColorResId = R.attr.colorSundayText;
+            }
+            if (textColorResId != 0) {
+                TypedValue typedValue = new TypedValue();
+                TypedArray a = mContext.obtainStyledAttributes(typedValue.data, new int[]{textColorResId});
+                textColor = a.getColor(0, 0);
+                a.recycle();
+            }
+
+            if (textColor != 0) {
+                textView.setTextColor(textColor);
+            } else {
+                textView.setTextColor(mDefaultTextColor);
+            }
+        }
+
+        private void setHoliday(List<String> names, byte[] imgArray) {
+            mHolidayContainerView.removeAllViews();
+            if (names == null || names.size() == 0) {
+                mHolidayContainerView.setVisibility(View.GONE);
+                return;
+            }
+            mHolidayContainerView.setVisibility(View.VISIBLE);
+            Bitmap bmp = null;
+            if (imgArray != null) {
+                bmp = BitmapFactory.decodeByteArray(imgArray, 0, imgArray.length);
+            }
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            for (int i = 0; i < names.size(); i++) {
+                String holiday = names.get(i);
+                @SuppressLint("InflateParams") View holidayItem = inflater.inflate(R.layout.holiday_item_view, null);
+                AppCompatImageView imageView = (AppCompatImageView) holidayItem.findViewById(R.id.holiday_item_image_view);
+                imageView.setImageBitmap(bmp);
+                TextView textView = (TextView) holidayItem.findViewById(R.id.holiday_item_text_view);
+                textView.setText(holiday);
+                mHolidayContainerView.addView(holidayItem, i);
             }
         }
     }

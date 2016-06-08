@@ -16,8 +16,12 @@ import android.util.Log;
 import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract;
 import com.flyingosred.app.android.perpetualcalendar.data.Lunar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class PerpetualCalendarContentProvider extends ContentProvider {
 
@@ -124,6 +128,22 @@ public class PerpetualCalendarContentProvider extends ContentProvider {
                 row.add(mLunarProvider.getLunarLongName(lunar));
             } else if (column.equals(PerpetualCalendarContract.PerpetualCalendar.SOLAR_TERM_NAME)) {
                 row.add(mSolarTermProvider.getName(calendar));
+            } else if (column.equals(PerpetualCalendarContract.PerpetualCalendar.CONSTELLATION_NAME)) {
+                row.add(mConstellationProvider.getName(calendar));
+            } else if (column.equals(PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_REGION_FLAG_IMG)) {
+                row.add(mHolidayProvider.getFlagImage(holidayRegion));
+            } else if (column.equals(PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_NAMES)) {
+                List<String> list = mHolidayProvider.getHolidayNames(holidayRegion, calendar);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = null;
+                try {
+                    oos = new ObjectOutputStream(bos);
+                    oos.writeObject(list);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                byte[] bytes = bos.toByteArray();
+                row.add(bytes);
             } else {
                 row.add(null);
             }

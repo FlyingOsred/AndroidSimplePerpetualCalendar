@@ -1,6 +1,7 @@
 package com.flyingosred.app.android.perpetualcalendar.data.provider;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.flyingosred.app.android.perpetualcalendar.R;
 import com.flyingosred.app.android.perpetualcalendar.data.Lunar;
@@ -41,7 +42,6 @@ public final class LunarProvider extends BaseProvider {
             }
 
             int leapMonth = LunarDatabase.getLeapMonth(lunarYear);
-
             for (int lunarMonthIndex = 1, bit = 0; lunarMonthIndex <= 12; lunarMonthIndex++, bit++) {
                 if (leapMonth > 0 && (lunarMonthIndex == leapMonth + 1) && !isLeapMonth) {
                     lunarMonthIndex--;
@@ -49,7 +49,7 @@ public final class LunarProvider extends BaseProvider {
                 } else {
                     isLeapMonth = false;
                 }
-                daysInMonth = LunarDatabase.getDaysInMonth(lunarYear, bit, isLeapMonth);
+                daysInMonth = LunarDatabase.getDaysInMonth(lunarYear, bit);
                 calendar.add(Calendar.DATE, daysInMonth);
                 if (Utils.isDayAfter(calendar, solarCalendar)) {
                     calendar.add(Calendar.DATE, 0 - daysInMonth);
@@ -67,6 +67,31 @@ public final class LunarProvider extends BaseProvider {
             } while (true);
         }
         return new LunarDate(lunarYear, lunarMonth, lunarDay, daysInMonth, isLeapMonth);
+    }
+
+    public Lunar nextDay(Lunar previous) {
+        int day = previous.getDay();
+        int month = previous.getMonth();
+        int year = previous.getYear();
+        boolean isLeapMonth = previous.isLeapMonth();
+        int leapMonth = LunarDatabase.getLeapMonth(year);
+        day++;
+        int daysInMonth = LunarDatabase.getDaysInMonth(year, month, isLeapMonth);
+        if (day > daysInMonth) {
+            day = 1;
+            if (month == leapMonth && !previous.isLeapMonth()) {
+                isLeapMonth = true;
+            } else {
+                isLeapMonth = false;
+                month++;
+            }
+        }
+        if (month > Lunar.MONTHS_IN_YEAR) {
+            month = 1;
+            year++;
+        }
+        daysInMonth = LunarDatabase.getDaysInMonth(year, month, isLeapMonth);
+        return new LunarDate(year, month, day, daysInMonth, isLeapMonth);
     }
 
     public String getLunarLongName(Lunar lunar) {

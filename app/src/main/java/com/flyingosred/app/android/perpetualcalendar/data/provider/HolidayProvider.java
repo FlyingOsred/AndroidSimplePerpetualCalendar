@@ -51,11 +51,7 @@ public final class HolidayProvider extends BaseProvider {
                 PREFIX_DATE + region + "_" + year, "array", getContext().getPackageName());
         List<String> nameList = new ArrayList<>();
         String[] regionHolidays = getRegionHolidayNames(region);
-        if (yearDateArrayId <= 0) {
-            Log.w(LOG_TAG, "No holiday data for region" + region + " year " + year);
-        } else if (regionHolidays == null || regionHolidays.length == 0) {
-            Log.w(LOG_TAG, "No holiday names for region" + region + " year " + year);
-        } else {
+        if (yearDateArrayId > 0 && regionHolidays != null && regionHolidays.length != 0) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
             String[] yearDateArray = getContext().getResources().getStringArray(yearDateArrayId);
             for (int i = 0; i < yearDateArray.length; i++) {
@@ -68,7 +64,6 @@ public final class HolidayProvider extends BaseProvider {
                     }
                     if (Utils.isSameDay(calendar, tempCalendar)) {
                         nameList.add(regionHolidays[i]);
-                        Log.d(LOG_TAG, "Found holiday " + regionHolidays[i] + " for " + calendar.getTime());
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();

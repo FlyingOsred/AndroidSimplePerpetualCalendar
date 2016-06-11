@@ -10,11 +10,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
@@ -44,7 +48,9 @@ import java.util.Locale;
 import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
 
 public class MainActivityFragment extends Fragment implements
-        SharedPreferences.OnSharedPreferenceChangeListener, RecyclerView.OnItemTouchListener {
+        SharedPreferences.OnSharedPreferenceChangeListener, RecyclerView.OnItemTouchListener, LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int CONTENT_LOADER_ID = 1;
 
     private ProgressBar mProgressBar = null;
 
@@ -61,6 +67,8 @@ public class MainActivityFragment extends Fragment implements
     private DateChangeReceiver mDateChangeReceiver = new DateChangeReceiver();
 
     private OnDaySelectedListener mOnDaySelectedListener = null;
+
+    private String mHolidayRegion;
 
     private int mFirstDayOfWeek;
 
@@ -106,12 +114,12 @@ public class MainActivityFragment extends Fragment implements
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         mFirstDayOfWeek = getPrefFirstDayOfWeek(mSharedPreferences);
         boolean showWeekNumber = getPrefShowWeekNumber(mSharedPreferences);
-        String holidayRegion = getPrefHolidayRegion(mSharedPreferences);
-        Log.d(LOG_TAG, "Holiday region is " + holidayRegion);
+        mHolidayRegion = getPrefHolidayRegion(mSharedPreferences);
+        Log.d(LOG_TAG, "Holiday region is " + mHolidayRegion);
         mGestureDetector = new GestureDetectorCompat(getActivity(), new DayViewOnGestureListener());
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         mDayView.setLayoutManager(layoutManager);
-        mDayAdapter = new DayAdapter(getContext(), mFirstDayOfWeek, showWeekNumber, holidayRegion);
+        mDayAdapter = new DayAdapter(getContext(), mFirstDayOfWeek, showWeekNumber, mHolidayRegion);
         mDayAdapter.registerAdapterDataObserver(new DayAdapterDataObserver());
         mDayView.setHasFixedSize(true);
         mDayView.setAdapter(mDayAdapter);
@@ -126,6 +134,7 @@ public class MainActivityFragment extends Fragment implements
         if (actionBar != null) {
             actionBar.setTitle("");
         }
+        getActivity().getSupportLoaderManager().initLoader(CONTENT_LOADER_ID, null, this);
     }
 
     @Override
@@ -155,6 +164,38 @@ public class MainActivityFragment extends Fragment implements
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri uri = PerpetualCalendarContract.PerpetualCalendar.getUri(
+                PerpetualCalendarContract.MIN_DATE, PerpetualCalendarContract.MAX_DATE);
+        Log.d(LOG_TAG, "onCreateLoader uri is " + uri.toString());
+        String[] projection = {
+                PerpetualCalendarContract.PerpetualCalendar._ID,
+                PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS,
+                PerpetualCalendarContract.PerpetualCalendar.LUNAR_SHORT_NAME,
+                PerpetualCalendarContract.PerpetualCalendar.LUNAR_FULL_NAME,
+                PerpetualCalendarContract.PerpetualCalendar.SOLAR_TERM_NAME,
+                PerpetualCalendarContract.PerpetualCalendar.CONSTELLATION_NAME,
+                PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_REGION_FLAG_IMG,
+                PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_NAMES,
+        };
+        return new CursorLoader(getContext(), uri, projection,
+                PerpetualCalendarContract.PerpetualCalendar.getSelection(mHolidayRegion),
+                PerpetualCalendarContract.PerpetualCalendar.getSelectionArgs(mHolidayRegion), null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(LOG_TAG, "onLoadFinished");
+        mDayAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        Log.d(LOG_TAG, "onLoaderReset");
+        mDayAdapter.swapCursor(null);
     }
 
     public interface OnDaySelectedListener {

@@ -20,6 +20,15 @@ public final class PerpetualCalendarContract {
 
     public static final String DEFAULT_SORT_ORDER = "_id ASC";
 
+    public static final Calendar MAX_DATE = Calendar.getInstance();
+
+    public static final Calendar MIN_DATE = Calendar.getInstance();
+
+    static {
+        MIN_DATE.set(1901, 1, 19);
+        MAX_DATE.set(2099, 11, 31);
+    }
+
     private PerpetualCalendarContract() {
     }
 
@@ -48,6 +57,42 @@ public final class PerpetualCalendarContract {
             Uri.Builder builder = CONTENT_URI.buildUpon();
             ContentUris.appendId(builder, calendar.getTimeInMillis());
             return cr.query(builder.build(), projection, selection, selectionArgs, DEFAULT_SORT_ORDER);
+        }
+
+        public static Cursor query(ContentResolver cr, Calendar startDate, Calendar endDate,
+                                   String holidayRegion, String[] projection) {
+            String selection = null;
+            String[] selectionArgs = null;
+            if (holidayRegion != null) {
+                selection = Holiday.HOLIDAY_REGION_WHERE + "=?";
+                selectionArgs = new String[]{holidayRegion};
+            }
+            Uri uri = Uri.withAppendedPath(CONTENT_URI, "from");
+            uri = Uri.withAppendedPath(uri, String.valueOf(startDate.getTimeInMillis()));
+            uri = Uri.withAppendedPath(uri, "to");
+            uri = Uri.withAppendedPath(uri, String.valueOf(endDate.getTimeInMillis()));
+            return cr.query(uri, projection, selection, selectionArgs, DEFAULT_SORT_ORDER);
+        }
+
+        public static Uri getUri(Calendar startDate, Calendar endDate) {
+            Uri.Builder builder = CONTENT_URI.buildUpon();
+            ContentUris.appendId(builder, startDate.getTimeInMillis());
+            ContentUris.appendId(builder, endDate.getTimeInMillis());
+            return builder.build();
+        }
+
+        public static String getSelection(String holidayRegion) {
+            if (holidayRegion != null) {
+                return Holiday.HOLIDAY_REGION_WHERE + "=?";
+            }
+            return null;
+        }
+
+        public static String[] getSelectionArgs(String holidayRegion) {
+            if (holidayRegion != null) {
+                return new String[]{holidayRegion};
+            }
+            return null;
         }
 
     }

@@ -62,6 +62,13 @@ public class LunarDatabase {
         return Lunar.DAYS_IN_LARGE_MONTH;
     }
 
+    public static int getDaysInMonth(int year, int bit) {
+        if ((LUNAR_DATABASE[year - PerpetualCalendar.START_YEAR] & (0x80000 >> (bit))) == 0) {
+            return Lunar.DAYS_IN_SMALL_MONTH;
+        }
+        return Lunar.DAYS_IN_LARGE_MONTH;
+    }
+
     public Lunar firstDay() {
         return new LunarDatabaseItem(Lunar.LUNAR_YEAR_MIN, 1, 1, Lunar.DAYS_IN_SMALL_MONTH, false);
     }

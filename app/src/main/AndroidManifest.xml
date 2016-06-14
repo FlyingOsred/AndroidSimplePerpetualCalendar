@@ -12,13 +12,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/LightGreenTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/LightGreenTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/action_settings" />
@@ -32,6 +26,17 @@
             android:authorities="com.flyingosred.app.android.perpetualcalendar.provider"
             android:enabled="true"
             android:exported="true" />
+
+        <activity
+            android:name=".DatabaseUpdateActivity"
+            android:label="@string/title_activity_database_update"
+            android:theme="@style/LightGreenTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -30,5 +30,8 @@
     <dimen name="day_card_constellation_text_size">24sp</dimen>
     <dimen name="day_card_off_work_text_size">24sp</dimen>
     <dimen name="day_card_holiday_text_size">24sp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
 </resources>

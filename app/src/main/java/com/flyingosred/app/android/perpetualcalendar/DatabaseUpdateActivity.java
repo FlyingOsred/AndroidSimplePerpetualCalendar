@@ -36,14 +36,17 @@ public class DatabaseUpdateActivity extends AppCompatActivity {
 
     private void updateDatabase() {
         String databaseVersion = getString(R.string.database_version_name);
-        Log.d(LOG_TAG, "New database version " + databaseVersion);
+        Log.i(LOG_TAG, "New database version " + databaseVersion);
         String versionPrefKey = getString(R.string.pref_key_database_version);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String prefDatabaseVersion = prefs.getString(versionPrefKey, null);
         Log.d(LOG_TAG, "Old database version " + prefDatabaseVersion);
-        if (!compareVersion(prefDatabaseVersion, databaseVersion)) {
+        if (compareVersion(prefDatabaseVersion, databaseVersion)) {
             new DatabaseUpdateTask(this).execute();
             prefs.edit().putString(versionPrefKey, databaseVersion).apply();
+        } else {
+            Log.i(LOG_TAG, "Database is up to date with version " + prefDatabaseVersion);
+            databaseUpdated();
         }
     }
 
@@ -69,6 +72,7 @@ public class DatabaseUpdateActivity extends AppCompatActivity {
 
     private void databaseUpdated() {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     private final class DatabaseUpdateTask extends AsyncTask<Void, Void, Void> {
@@ -83,11 +87,15 @@ public class DatabaseUpdateActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            DatabaseHelper helper = new DatabaseHelper(mContext);
-            String dbName = helper.getDatabaseName();
-            helper.close();
-            File dbFile = mContext.getDatabasePath(dbName);
-            Log.d(LOG_TAG, "DatabaseUpdateTask dbFile is " + dbFile.getAbsolutePath());
+            File dbFile = mContext.getDatabasePath(DatabaseHelper.DATABASE_NAME);
+            String dbPath = dbFile.getParent();
+            Log.d(LOG_TAG, "DatabaseUpdateTask dbFile is " + dbFile.getAbsolutePath() + " dbPath is " + dbPath);
+            File dbPathFile = new File(dbPath);
+            if (!dbPathFile.exists()) {
+                if (dbPathFile.mkdirs()) {
+                    Log.d(LOG_TAG, dbPathFile + " is created.");
+                }
+            }
             InputStream in = null;
             try {
                 in = mContext.getAssets().open(ZIP_FILE_NAME);
@@ -95,10 +103,12 @@ public class DatabaseUpdateActivity extends AppCompatActivity {
                 ZipEntry ze = null;
                 while ((ze = zin.getNextEntry()) != null
                         && !ze.isDirectory()
-                        && ze.getName().equals(dbName)) {
+                        && ze.getName().equals(DatabaseHelper.DATABASE_NAME)) {
                     Log.d(LOG_TAG, "DatabaseUpdateTask unzipping " + ze.getName());
                     if (!dbFile.exists()) {
-                        dbFile.createNewFile();
+                        if (dbFile.createNewFile()) {
+                            Log.d(LOG_TAG, dbFile + " is created.");
+                        }
                     }
                     FileOutputStream fileOutput = new FileOutputStream(dbFile);
                     for (int c = zin.read(); c != -1; c = zin.read()) {
@@ -109,6 +119,7 @@ public class DatabaseUpdateActivity extends AppCompatActivity {
                     }
                 }
                 zin.close();
+                Log.d(LOG_TAG, "DatabaseUpdateTask unzip done");
             } catch (IOException e) {
                 e.printStackTrace();
             }

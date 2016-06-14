@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="FlyingOsred">
+    <module2copyright>
+      <element module="All" copyright="FlyingOsred" />
+    </module2copyright>
+  </settings>
 </component>

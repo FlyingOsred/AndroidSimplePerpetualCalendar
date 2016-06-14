@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract;
 import com.flyingosred.app.android.perpetualcalendar.data.Lunar;
+import com.flyingosred.app.android.perpetualcalendar.data.database.DatabaseHelper;
 import com.flyingosred.app.android.perpetualcalendar.util.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -44,6 +45,8 @@ public class PerpetualCalendarContentProvider extends ContentProvider {
     private ConstellationProvider mConstellationProvider;
 
     private HolidayProvider mHolidayProvider;
+
+    private DatabaseHelper mDbHelper;
 
     static {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
@@ -83,6 +86,7 @@ public class PerpetualCalendarContentProvider extends ContentProvider {
         mSolarTermProvider = new SolarTermProvider(getContext());
         mConstellationProvider = new ConstellationProvider(getContext());
         mHolidayProvider = new HolidayProvider(getContext());
+        mDbHelper = new DatabaseHelper(getContext());
         return true;
     }
 

@@ -8,8 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,7 +27,6 @@ import com.flyingosred.app.android.perpetualcalendar.data.resource.Resource;
 import com.flyingosred.app.android.perpetualcalendar.util.Utils;
 
 import java.util.Calendar;
-import java.util.List;
 
 import static com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar.DAYS_IN_WEEK;
 import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
@@ -140,7 +138,6 @@ public class DayAdapter extends RecyclerView.Adapter {
         private final TextView mLunarTextView;
         private final TextView mSolarTermTextView;
         private final LinearLayout mHolidayContainerView;
-        private boolean mIsActivated = false;
         private final int mDefaultTextColor;
 
         public ViewHolder(View itemView) {
@@ -177,12 +174,14 @@ public class DayAdapter extends RecyclerView.Adapter {
             }
             setText(mTodayTextView, todayText);
             mDayTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
-//            setText(mLunarTextView, cursor.getString(cursor.getColumnIndex(
-//                    PerpetualCalendarContract.PerpetualCalendar.LUNAR_SHORT_NAME)));
+            setText(mLunarTextView, mResource.getLunarShortName(cursor));
             setText(mSolarTermTextView, mResource.getSolarTermName(cursor));
             setText(mConstellationTextView, mResource.getConstellationName(cursor));
+            setHoliday(cursor);
+            int offWork = mResource.getHolidayOffWork(cursor, mHolidayRegion);
+            setText(mOffWorkTextView, mResource.getHolidayOffWorkString(cursor, mHolidayRegion));
             mDateContainerView.setActivated(getAdapterPosition() == mActivatedItem);
-            setTextColor(mDayTextView, calendar);
+            setTextColor(mDayTextView, calendar, offWork);
         }
 
         public Cursor getData() {
@@ -199,10 +198,6 @@ public class DayAdapter extends RecyclerView.Adapter {
             }
         }
 
-        private void setActive(boolean active) {
-            mIsActivated = active;
-        }
-
         private void setText(TextView textView, String text) {
             if (text != null) {
                 textView.setText(text);
@@ -212,13 +207,18 @@ public class DayAdapter extends RecyclerView.Adapter {
             }
         }
 
-        private void setTextColor(TextView textView, Calendar calendar) {
+        private void setTextColor(TextView textView, Calendar calendar, int offWork) {
             int textColor = 0;
             int textColorResId = 0;
             if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                 textColorResId = R.attr.colorSaturdayText;
             } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
                 textColorResId = R.attr.colorSundayText;
+            }
+            if (offWork == 1) {
+                textColorResId = R.attr.colorHolidayText;
+            } else if (offWork == 0) {
+                textColorResId = 0;
             }
             if (textColorResId != 0) {
                 TypedValue typedValue = new TypedValue();
@@ -234,26 +234,24 @@ public class DayAdapter extends RecyclerView.Adapter {
             }
         }
 
-        private void setHoliday(List<String> names, byte[] imgArray) {
+        private void setHoliday(Cursor cursor) {
+            Drawable flagDrawable = mResource.getRegionFlag(mHolidayRegion);
             mHolidayContainerView.removeAllViews();
-            if (names == null || names.size() == 0) {
+            String[] holidayNames = mResource.getHolidayName(cursor, mHolidayRegion);
+            if (holidayNames.length > 0) {
+                mHolidayContainerView.setVisibility(View.VISIBLE);
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+                for (int i = 0; i < holidayNames.length; i++) {
+                    String holidayName = holidayNames[i];
+                    @SuppressLint("InflateParams") View holidayItem = inflater.inflate(R.layout.holiday_item_view, null);
+                    AppCompatImageView imageView = (AppCompatImageView) holidayItem.findViewById(R.id.holiday_item_image_view);
+                    imageView.setImageDrawable(flagDrawable);
+                    TextView textView = (TextView) holidayItem.findViewById(R.id.holiday_item_text_view);
+                    textView.setText(holidayName);
+                    mHolidayContainerView.addView(holidayItem, i);
+                }
+            } else {
                 mHolidayContainerView.setVisibility(View.GONE);
-                return;
-            }
-            mHolidayContainerView.setVisibility(View.VISIBLE);
-            Bitmap bmp = null;
-            if (imgArray != null) {
-                bmp = BitmapFactory.decodeByteArray(imgArray, 0, imgArray.length);
-            }
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            for (int i = 0; i < names.size(); i++) {
-                String holiday = names.get(i);
-                @SuppressLint("InflateParams") View holidayItem = inflater.inflate(R.layout.holiday_item_view, null);
-                AppCompatImageView imageView = (AppCompatImageView) holidayItem.findViewById(R.id.holiday_item_image_view);
-                imageView.setImageBitmap(bmp);
-                TextView textView = (TextView) holidayItem.findViewById(R.id.holiday_item_text_view);
-                textView.setText(holiday);
-                mHolidayContainerView.addView(holidayItem, i);
             }
         }
     }
@@ -261,10 +259,7 @@ public class DayAdapter extends RecyclerView.Adapter {
     public void computeOffset(int firstDayOfWeek) {
         if (mCursor != null) {
             mCursor.moveToFirst();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(
-                    mCursor.getLong(mCursor.getColumnIndex(
-                            PerpetualCalendarContract.PerpetualCalendar.SOLAR)));
+            Calendar calendar = mResource.getCalendar(mCursor);
             mFrontOffset = findDayOffset(calendar.get(Calendar.DAY_OF_WEEK), firstDayOfWeek,
                     DAYS_IN_WEEK);
         } else {

@@ -115,6 +115,7 @@ public class MainActivityFragment extends Fragment implements
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         mFirstDayOfWeek = getPrefFirstDayOfWeek(mSharedPreferences);
+        Log.d(LOG_TAG, "mFirstDayOfWeek is " + mFirstDayOfWeek);
         boolean showWeekNumber = getPrefShowWeekNumber(mSharedPreferences);
         mHolidayRegion = getPrefHolidayRegion(mSharedPreferences);
         Log.d(LOG_TAG, "Holiday region is " + mHolidayRegion);
@@ -181,6 +182,7 @@ public class MainActivityFragment extends Fragment implements
         Log.d(LOG_TAG, "onLoadFinished");
         mDayAdapter.swapCursor(data);
         scrollToDate(Calendar.getInstance());
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -259,6 +261,7 @@ public class MainActivityFragment extends Fragment implements
             setShowWeekNumber(showWeekNumber);
         } else if (key.equals(getString(R.string.pref_key_holiday_region))) {
             String holidayRegion = getPrefHolidayRegion(sharedPreferences);
+            getLoaderManager().getLoader(CONTENT_LOADER_ID).forceLoad();
             setHolidayRegion(holidayRegion);
         }
     }
@@ -315,10 +318,9 @@ public class MainActivityFragment extends Fragment implements
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            if ((dx != 0 || dy != 0) && recyclerView.getScrollState() != RecyclerView.SCROLL_STATE_DRAGGING) {
+            if ((dx != 0 || dy != 0)
+                    && recyclerView.getScrollState() != RecyclerView.SCROLL_STATE_DRAGGING) {
                 View view = recyclerView.findChildViewUnder(dx, dy);
-                int position = recyclerView.getChildAdapterPosition(view);
-                Log.d(LOG_TAG, "onScrolled position is " + position);
                 GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
                 int firstItem = layoutManager.findFirstCompletelyVisibleItemPosition();
                 int lastItem = layoutManager.findLastCompletelyVisibleItemPosition();

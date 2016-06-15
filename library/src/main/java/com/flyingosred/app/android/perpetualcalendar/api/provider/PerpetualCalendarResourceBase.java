@@ -6,9 +6,11 @@ package com.flyingosred.app.android.perpetualcalendar.api.provider;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -18,7 +20,11 @@ import static com.flyingosred.app.android.perpetualcalendar.api.provider.Perpetu
 
 public abstract class PerpetualCalendarResourceBase {
 
-    public static final String WHITESPACE = " ";
+    protected static final String PREFIX_FLAG = "ic_flag_";
+
+    private static final String WHITESPACE = " ";
+
+    private static final String NAME_SUFFIX = "_name";
 
     private final Context mContext;
 
@@ -93,6 +99,54 @@ public abstract class PerpetualCalendarResourceBase {
         return null;
     }
 
+    public String[] getHolidayName(Cursor cursor, String region) {
+        String columnName = PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_PREFIX + region;
+        String holidayString = getStringValue(cursor, columnName);
+        ArrayList<String> mHolidayNameList = new ArrayList<>();
+        if (holidayString != null) {
+            String[] tempArray = holidayString.split("#");
+            if (tempArray.length >= 1) {
+                String tempString = tempArray[0];
+                if (tempString.length() > 0) {
+                    String[] holidays = tempString.split(",");
+                    for (String holidayPattern : holidays) {
+                        String[] festivals = holidayPattern.split(":");
+                        String festivalArrayName = festivals[0] + NAME_SUFFIX;
+                        int id = Integer.parseInt(festivals[1]);
+                        int resId = mContext.getResources().getIdentifier(festivalArrayName,
+                                "array", mContext.getPackageName());
+                        if (resId == 0) {
+                            continue;
+                        }
+                        String[] festivalNames = mContext.getResources().getStringArray(resId);
+                        mHolidayNameList.add(festivalNames[id - 1]);
+                    }
+                }
+            }
+        }
+        return mHolidayNameList.toArray(new String[mHolidayNameList.size()]);
+    }
+
+    public int getHolidayOffWork(Cursor cursor, String region) {
+        String columnName = PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_PREFIX + region;
+        String holidayString = getStringValue(cursor, columnName);
+        if (holidayString != null) {
+            String[] tempArray = holidayString.split("#");
+            if (tempArray.length == 2) {
+                return Integer.parseInt(tempArray[1]);
+            }
+        }
+        return PerpetualCalendarContract.INVALID_ID;
+    }
+
+    public String getHolidayOffWorkString(Cursor cursor, String region) {
+        return getOffWorkString(mContext, getHolidayOffWork(cursor, region));
+    }
+
+    public abstract Drawable getRegionFlag(String region);
+
+    public abstract String getOffWorkString(Context context, int offWork);
+
     protected abstract String[] getChineseNumber(Context context);
 
     protected abstract String getLunarLeapMonthPrefix(Context context);
@@ -118,6 +172,10 @@ public abstract class PerpetualCalendarResourceBase {
     protected abstract String[] getSolarTermNameArray(Context context);
 
     protected abstract String[] getConstellationNameArray(Context context);
+
+    protected Context getContext() {
+        return mContext;
+    }
 
     private String formatLunarChineseLong(Context context, int year, int month, int day,
                                           boolean isLeapMonth, int daysInMonth) {
@@ -170,6 +228,14 @@ public abstract class PerpetualCalendarResourceBase {
             }
         }
         return value;
+    }
+
+    private String getStringValue(Cursor cursor, String columnName) {
+        int index = cursor.getColumnIndex(columnName);
+        if (index >= 0) {
+            return cursor.getString(index);
+        }
+        return null;
     }
 
     private String formatLunarChineseMonth(Context context, int month, boolean isLeapMonth,

@@ -18,8 +18,8 @@
     <ListPreference
         android:defaultValue="@string/pref_holiday_region_default"
         android:dialogTitle="@string/pref_holiday_region_title"
-        android:entries="@array/region_value"
-        android:entryValues="@array/region_name"
+        android:entries="@array/region_name"
+        android:entryValues="@array/region_value"
         android:key="@string/pref_key_holiday_region"
         android:summary="%s"
         android:title="@string/pref_holiday_region_title" />

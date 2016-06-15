@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string-array name="international_festival_name" translatable="false">
+        <item>@string/international_festival_new_years_day_name</item>
+        <item>@string/international_festival_valentine_day_name</item>
+        <item>@string/international_festival_womens_day_name</item>
+        <item>@string/international_festival_world_consumer_rights_day_name</item>
+        <item>@string/international_festival_april_fools_day_name</item>
+        <item>@string/international_festival_arbor_day_name</item>
+        <item>@string/international_festival_labour_day_name</item>
+        <item>@string/international_festival_mothers_day_name</item>
+        <item>@string/international_festival_childrens_day_name</item>
+        <item>@string/international_festival_youth_day_name</item>
+        <item>@string/international_festival_fathers_day_name</item>
+        <item>@string/international_festival_teachers_day_name</item>
+        <item>@string/international_festival_christmas_eve_name</item>
+        <item>@string/international_festival_national_day_name</item>
+        <item>@string/international_festival_christmas_name</item>
+        <item>@string/international_festival_good_friday_name</item>
+        <item>@string/international_festival_holy_saturday_name</item>
+        <item>@string/international_festival_easter_sunday_name</item>
+        <item>@string/international_festival_easter_monday_name</item>
+        <item>@string/international_festival_matsus_birthday_name</item>
+        <item>@string/international_festival_buddhas_birthday_name</item>
+        <item>@string/international_festival_reporter_festival_name</item>
+        <item>@string/international_festival_army_day_name</item>
+        <item>@string/international_festival_armed_forces_day_name</item>
+    </string-array>
+    <string-array name="international_festival_value" translatable="false">
+        <item>new_years_day</item>
+        <item>valentine_day</item>
+        <item>womens_day</item>
+        <item>world_consumer_rights_day</item>
+        <item>april_fools_day</item>
+        <item>arbor_day</item>
+        <item>labour_day</item>
+        <item>mothers_day</item>
+        <item>childrens_day</item>
+        <item>youth_day</item>
+        <item>fathers_day</item>
+        <item>teachers_day</item>
+        <item>christmas_eve</item>
+        <item>national_day</item>
+        <item>christmas</item>
+        <item>good_friday</item>
+        <item>holy_saturday</item>
+        <item>easter_sunday</item>
+        <item>easter_monday</item>
+        <item>matsus_birthday</item>
+        <item>buddhas_birthday</item>
+        <item>reporter_festival</item>
+        <item>army_day</item>
+        <item>armed_forces_day</item>
+    </string-array>
+</resources>

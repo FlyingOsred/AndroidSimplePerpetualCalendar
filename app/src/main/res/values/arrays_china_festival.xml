@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string-array name="china_festival_name" translatable="false">
+        <item>@string/china_festival_youth_volunteer_service_day_name</item>
+        <item>@string/china_festival_chinese_communist_party_day_name</item>
+        <item>@string/china_festival_macao_memorial_day_name</item>
+        <item>@string/china_festival_nanjing_massacre_anniversary_name</item>
+        <item>@string/china_festival_hong_kong_reunification_day_name</item>
+    </string-array>
+    <string-array name="china_festival_value" translatable="false">
+        <item>youth_volunteer_service_day</item>
+        <item>chinese_communist_party_day</item>
+        <item>macao_memorial_day</item>
+        <item>nanjing_massacre_anniversary</item>
+        <item>hong_kong_reunification_day</item>
+    </string-array>
+</resources>

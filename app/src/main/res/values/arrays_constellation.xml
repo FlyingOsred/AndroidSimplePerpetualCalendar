@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string-array name="constellation_name" translatable="false">
+        <item>@string/constellation_aquarius_name</item>
+        <item>@string/constellation_pisces_name</item>
+        <item>@string/constellation_aries_name</item>
+        <item>@string/constellation_taurus_name</item>
+        <item>@string/constellation_gemini_name</item>
+        <item>@string/constellation_cancer_name</item>
+        <item>@string/constellation_leo_name</item>
+        <item>@string/constellation_virgo_name</item>
+        <item>@string/constellation_libra_name</item>
+        <item>@string/constellation_scorpio_name</item>
+        <item>@string/constellation_sagittarius_name</item>
+        <item>@string/constellation_capricorn_name</item>
+    </string-array>
+    <string-array name="constellation_value" translatable="false">
+        <item>aquarius</item>
+        <item>pisces</item>
+        <item>aries</item>
+        <item>taurus</item>
+        <item>gemini</item>
+        <item>cancer</item>
+        <item>leo</item>
+        <item>virgo</item>
+        <item>libra</item>
+        <item>scorpio</item>
+        <item>sagittarius</item>
+        <item>capricorn</item>
+    </string-array>
+</resources>

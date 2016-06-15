@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string name="international_festival_new_years_day_name">元旦</string>
+    <string name="international_festival_valentine_day_name">情人节</string>
+    <string name="international_festival_womens_day_name">妇女节</string>
+    <string name="international_festival_world_consumer_rights_day_name">消费者权益保护日</string>
+    <string name="international_festival_april_fools_day_name">愚人节</string>
+    <string name="international_festival_arbor_day_name">植树节</string>
+    <string name="international_festival_labour_day_name">劳动节</string>
+    <string name="international_festival_mothers_day_name">母亲节</string>
+    <string name="international_festival_childrens_day_name">儿童节</string>
+    <string name="international_festival_youth_day_name">青年节</string>
+    <string name="international_festival_fathers_day_name">父亲节</string>
+    <string name="international_festival_teachers_day_name">教师节</string>
+    <string name="international_festival_christmas_eve_name">平安夜</string>
+    <string name="international_festival_national_day_name">国庆节</string>
+    <string name="international_festival_christmas_name">圣诞节</string>
+    <string name="international_festival_good_friday_name">耶稣受难节</string>
+    <string name="international_festival_holy_saturday_name">耶稣受难节翌日</string>
+    <string name="international_festival_easter_sunday_name">复活节</string>
+    <string name="international_festival_easter_monday_name">复活节星期一</string>
+    <string name="international_festival_matsus_birthday_name">妈祖诞辰</string>
+    <string name="international_festival_buddhas_birthday_name">佛诞</string>
+    <string name="international_festival_reporter_festival_name">记者节</string>
+    <string name="international_festival_army_day_name">建军节</string>
+    <string name="international_festival_armed_forces_day_name">军人节</string>
+</resources>

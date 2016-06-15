@@ -14,21 +14,6 @@
         <item>@string/chinese_number_ten</item>
     </string-array>
 
-    <string-array name="constellation_name">
-        <item>@string/constellation_aquarius_name</item>
-        <item>@string/constellation_pisces_name</item>
-        <item>@string/constellation_aries_name</item>
-        <item>@string/constellation_taurus_name</item>
-        <item>@string/constellation_gemini_name</item>
-        <item>@string/constellation_cancer_name</item>
-        <item>@string/constellation_leo_name</item>
-        <item>@string/constellation_virgo_name</item>
-        <item>@string/constellation_libra_name</item>
-        <item>@string/constellation_scorpio_name</item>
-        <item>@string/constellation_sagittarius_name</item>
-        <item>@string/constellation_capricorn_name</item>
-    </string-array>
-
     <string-array name="constellation_symbol" translatable="false">
         <item>\u2652</item>
         <item>\u2653</item>

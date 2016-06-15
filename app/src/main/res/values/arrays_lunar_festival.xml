@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string-array name="lunar_festival_name" translatable="false">
+        <item>@string/lunar_festival_spring_festival_name</item>
+        <item>@string/lunar_festival_lantern_festival_name</item>
+        <item>@string/lunar_festival_dragon_head_raising_festival_name</item>
+        <item>@string/lunar_festival_shangsi_festival_name</item>
+        <item>@string/lunar_festival_cold_food_festival_name</item>
+        <item>@string/lunar_festival_tomb_sweeping_day_name</item>
+        <item>@string/lunar_festival_dragon_boat_festival_name</item>
+        <item>@string/lunar_festival_double_seventh_day_name</item>
+        <item>@string/lunar_festival_ghost_festival_name</item>
+        <item>@string/lunar_festival_obon_name</item>
+        <item>@string/lunar_festival_mid_autumn_festival_name</item>
+        <item>@string/lunar_festival_double_ninth_festival_name</item>
+        <item>@string/lunar_festival_winter_clothing_festival_name</item>
+        <item>@string/lunar_festival_xiayuan_festival_name</item>
+        <item>@string/lunar_festival_laba_festival_name</item>
+        <item>@string/lunar_festival_kitchen_god_festival_name</item>
+        <item>@string/lunar_festival_chinese_new_years_eve_name</item>
+    </string-array>
+    <string-array name="lunar_festival_value" translatable="false">
+        <item>spring_festival</item>
+        <item>lantern_festival</item>
+        <item>dragon_head_raising_festival</item>
+        <item>shangsi_festival</item>
+        <item>cold_food_festival</item>
+        <item>tomb_sweeping_day</item>
+        <item>dragon_boat_festival</item>
+        <item>double_seventh_day</item>
+        <item>ghost_festival</item>
+        <item>obon</item>
+        <item>mid_autumn_festival</item>
+        <item>double_ninth_festival</item>
+        <item>winter_clothing_festival</item>
+        <item>xiayuan_festival</item>
+        <item>laba_festival</item>
+        <item>kitchen_god_festival</item>
+        <item>chinese_new_years_eve</item>
+    </string-array>
+</resources>

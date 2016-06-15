@@ -33,7 +33,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 
 import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract;
@@ -45,6 +44,9 @@ import com.flyingosred.app.android.perpetualcalendar.view.DayRecyclerView;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract.MAX_DATE;
+import static com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract.MIN_DATE;
+import static com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract.PerpetualCalendar.getDefaultProjection;
 import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
 
 public class MainActivityFragment extends Fragment implements
@@ -168,28 +170,17 @@ public class MainActivityFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri uri = PerpetualCalendarContract.PerpetualCalendar.getUri(
-                PerpetualCalendarContract.MIN_DATE, PerpetualCalendarContract.MAX_DATE);
+        Uri uri = PerpetualCalendarContract.PerpetualCalendar.getUri(MIN_DATE, MAX_DATE);
         Log.d(LOG_TAG, "onCreateLoader uri is " + uri.toString());
-        String[] projection = {
-                PerpetualCalendarContract.PerpetualCalendar._ID,
-                PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS,
-                PerpetualCalendarContract.PerpetualCalendar.LUNAR_SHORT_NAME,
-                PerpetualCalendarContract.PerpetualCalendar.LUNAR_FULL_NAME,
-                PerpetualCalendarContract.PerpetualCalendar.SOLAR_TERM_NAME,
-                PerpetualCalendarContract.PerpetualCalendar.CONSTELLATION_NAME,
-                PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_REGION_FLAG_IMG,
-                PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_NAMES,
-        };
-        return new CursorLoader(getContext(), uri, projection,
-                PerpetualCalendarContract.PerpetualCalendar.getSelection(mHolidayRegion),
-                PerpetualCalendarContract.PerpetualCalendar.getSelectionArgs(mHolidayRegion), null);
+        String[] projection = getDefaultProjection(mHolidayRegion);
+        return new CursorLoader(getContext(), uri, projection, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d(LOG_TAG, "onLoadFinished");
         mDayAdapter.swapCursor(data);
+        scrollToDate(Calendar.getInstance());
     }
 
     @Override
@@ -307,7 +298,7 @@ public class MainActivityFragment extends Fragment implements
         Cursor cursor = viewHolder.getData();
         if (cursor != null && actionBar != null) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS)));
+            calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(PerpetualCalendarContract.PerpetualCalendar.SOLAR)));
             String date = DateUtils.formatDateRange(getContext(), calendar.getTimeInMillis(),
                     calendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_MONTH_DAY

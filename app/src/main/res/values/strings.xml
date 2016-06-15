@@ -7,19 +7,6 @@
 
     <string name="week_number_text">WEEK</string>
 
-    <string name="constellation_aquarius_name">Aquarius</string>
-    <string name="constellation_pisces_name">Pisces</string>
-    <string name="constellation_aries_name">Aries</string>
-    <string name="constellation_taurus_name">Taurus</string>
-    <string name="constellation_gemini_name">Gemini</string>
-    <string name="constellation_cancer_name">Cancer</string>
-    <string name="constellation_leo_name">Leo</string>
-    <string name="constellation_virgo_name">Virgo</string>
-    <string name="constellation_libra_name">Libra</string>
-    <string name="constellation_scorpio_name">Scorpio</string>
-    <string name="constellation_sagittarius_name">Sagittarius</string>
-    <string name="constellation_capricorn_name">Capricorn</string>
-
     <string name="chinese_first_month_prefix">正</string>
     <string name="chinese_last_month_prefix">腊</string>
     <string name="chinese_month_name">月</string>

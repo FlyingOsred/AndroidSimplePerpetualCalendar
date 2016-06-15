@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string name="constellation_aquarius_name">水瓶座</string>
+    <string name="constellation_pisces_name">双鱼座</string>
+    <string name="constellation_aries_name">白羊座</string>
+    <string name="constellation_taurus_name">金牛座</string>
+    <string name="constellation_gemini_name">双子座</string>
+    <string name="constellation_cancer_name">巨蟹座</string>
+    <string name="constellation_leo_name">狮子座</string>
+    <string name="constellation_virgo_name">处女座</string>
+    <string name="constellation_libra_name">天秤座</string>
+    <string name="constellation_scorpio_name">天蝎座</string>
+    <string name="constellation_sagittarius_name">射手座</string>
+    <string name="constellation_capricorn_name">摩羯座</string>
+</resources>

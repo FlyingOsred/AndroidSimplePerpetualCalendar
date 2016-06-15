@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string-array name="taiwan_festival_name" translatable="false">
+        <item>@string/taiwan_festival_republic_day_name</item>
+        <item>@string/taiwan_festival_beano_name</item>
+        <item>@string/taiwan_festival_farmers_day_name</item>
+        <item>@string/taiwan_festival_taoist_day_name</item>
+        <item>@string/taiwan_festival_peace_memorial_day_name</item>
+        <item>@string/taiwan_festival_army_day_children_name</item>
+        <item>@string/taiwan_festival_sun_yat_sens_passing_day_name</item>
+        <item>@string/taiwan_festival_japanese_aggression_name</item>
+        <item>@string/taiwan_festival_art_festival_name</item>
+        <item>@string/taiwan_festival_day_martyrs_name</item>
+        <item>@string/taiwan_festival_joint_service_day_name</item>
+        <item>@string/taiwan_festival_tomb_sweeping_day_name</item>
+        <item>@string/taiwan_festival_army_day_name</item>
+        <item>@string/taiwan_festival_martial_law_anniversary_name</item>
+        <item>@string/taiwan_festival_air_force_day_name</item>
+        <item>@string/taiwan_festival_navy_day_name</item>
+        <item>@string/taiwan_festival_confucius_birthday_name</item>
+        <item>@string/taiwan_festival_overseas_chinese_day_name</item>
+        <item>@string/taiwan_festival_united_nations_day_name</item>
+        <item>@string/taiwan_festival_taiwan_retrocession_day_name</item>
+        <item>@string/taiwan_festival_sun_yat_sens_birthday_name</item>
+        <item>@string/taiwan_festival_cultural_renaissance_day_name</item>
+        <item>@string/taiwan_festival_gendarmerie_section_day_name</item>
+        <item>@string/taiwan_festival_constitution_day_name</item>
+    </string-array>
+    <string-array name="taiwan_festival_value" translatable="false">
+        <item>republic_day</item>
+        <item>beano</item>
+        <item>farmers_day</item>
+        <item>taoist_day</item>
+        <item>peace_memorial_day</item>
+        <item>army_day_children</item>
+        <item>sun_yat_sens_passing_day</item>
+        <item>japanese_aggression</item>
+        <item>art_festival</item>
+        <item>day_martyrs</item>
+        <item>joint_service_day</item>
+        <item>tomb_sweeping_day</item>
+        <item>army_day</item>
+        <item>martial_law_anniversary</item>
+        <item>air_force_day</item>
+        <item>navy_day</item>
+        <item>confucius_birthday</item>
+        <item>overseas_chinese_day</item>
+        <item>united_nations_day</item>
+        <item>taiwan_retrocession_day</item>
+        <item>sun_yat_sens_birthday</item>
+        <item>cultural_renaissance_day</item>
+        <item>gendarmerie_section_day</item>
+        <item>constitution_day</item>
+    </string-array>
+</resources>

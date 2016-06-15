@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string name="taiwan_festival_republic_day_name">Republic Day</string>
+    <string name="taiwan_festival_beano_name">Beano</string>
+    <string name="taiwan_festival_farmers_day_name">Farmer\'s Day</string>
+    <string name="taiwan_festival_taoist_day_name">Taoist Day</string>
+    <string name="taiwan_festival_peace_memorial_day_name">Peace Memorial Day</string>
+    <string name="taiwan_festival_army_day_children_name">Army Day Children</string>
+    <string name="taiwan_festival_sun_yat_sens_passing_day_name">Sun Yat-sen\'s Passing Day</string>
+    <string name="taiwan_festival_japanese_aggression_name">Japanese Aggression</string>
+    <string name="taiwan_festival_art_festival_name">Art Festival</string>
+    <string name="taiwan_festival_day_martyrs_name">Day Martyrs</string>
+    <string name="taiwan_festival_joint_service_day_name">Joint Service Day</string>
+    <string name="taiwan_festival_tomb_sweeping_day_name">Tomb-sweeping Day</string>
+    <string name="taiwan_festival_army_day_name">Army Day</string>
+    <string name="taiwan_festival_martial_law_anniversary_name">Martial law anniversary</string>
+    <string name="taiwan_festival_air_force_day_name">Air Force Day</string>
+    <string name="taiwan_festival_navy_day_name">Navy Day</string>
+    <string name="taiwan_festival_confucius_birthday_name">Confucius\' Birthday</string>
+    <string name="taiwan_festival_overseas_chinese_day_name">Overseas Chinese Day</string>
+    <string name="taiwan_festival_united_nations_day_name">United Nations Day</string>
+    <string name="taiwan_festival_taiwan_retrocession_day_name">Taiwan Retrocession Day</string>
+    <string name="taiwan_festival_sun_yat_sens_birthday_name">Sun Yat-sen\'s Birthday</string>
+    <string name="taiwan_festival_cultural_renaissance_day_name">Cultural Renaissance Day</string>
+    <string name="taiwan_festival_gendarmerie_section_day_name">Gendarmerie Section Day</string>
+    <string name="taiwan_festival_constitution_day_name">Constitution Day</string>
+</resources>

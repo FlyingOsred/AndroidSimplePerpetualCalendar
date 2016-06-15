@@ -24,11 +24,9 @@ import android.widget.TextView;
 import com.flyingosred.app.android.perpetualcalendar.R;
 import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract;
 import com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar;
+import com.flyingosred.app.android.perpetualcalendar.data.resource.Resource;
+import com.flyingosred.app.android.perpetualcalendar.util.Utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,6 +36,8 @@ import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
 public class DayAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
+
+    private final Resource mResource;
 
     private int mFrontOffset = 0;
 
@@ -53,6 +53,7 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     public DayAdapter(Context context, int firstDayOfWeek, boolean showWeekNumber, String region) {
         mContext = context;
+        mResource = new Resource(context);
         mShowWeekNumber = showWeekNumber;
         mFirstDayOfWeek = firstDayOfWeek;
         mHolidayRegion = region;
@@ -76,10 +77,11 @@ public class DayAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        int count = 0;
         if (mCursor != null) {
-            return mCursor.getCount() + mFrontOffset;
+            count = mCursor.getCount() + mFrontOffset;
         }
-        return 0;
+        return count;
     }
 
     public void swapCursor(Cursor cursor) {
@@ -160,68 +162,27 @@ public class DayAdapter extends RecyclerView.Adapter {
                 return;
             }
             cursor.moveToPosition(getAdapterPosition() - mFrontOffset);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(
-                    PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS)));
+            Calendar calendar = mResource.getCalendar(cursor);
+            if (calendar == null) {
+                return;
+            }
             boolean showWeekNumber = mShowWeekNumber
                     && (getAdapterPosition() % PerpetualCalendar.DAYS_IN_WEEK == 0);
             setWeekNumber(showWeekNumber, calendar);
-            mDayTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
-            setText(mLunarTextView, cursor.getString(cursor.getColumnIndex(
-                    PerpetualCalendarContract.PerpetualCalendar.LUNAR_SHORT_NAME)));
-            setText(mSolarTermTextView, cursor.getString(cursor.getColumnIndex(
-                    PerpetualCalendarContract.PerpetualCalendar.SOLAR_TERM_NAME)));
-            setText(mConstellationTextView, cursor.getString(cursor.getColumnIndex(
-                    PerpetualCalendarContract.PerpetualCalendar.CONSTELLATION_NAME)));
-            mDateContainerView.setActivated(mIsActivated);
-            setTextColor(mDayTextView, calendar);
-        }
-
-        public void compute() {
-            if (mCursor != null) {
-                mCursor.moveToFirst();
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(
-                        mCursor.getLong(mCursor.getColumnIndex(
-                                PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS)));
-                boolean showWeekNumber = mShowWeekNumber
-                        && (getAdapterPosition() % PerpetualCalendar.DAYS_IN_WEEK == 0);
-                setWeekNumber(showWeekNumber, calendar);
-                mDayTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
-                setText(mLunarTextView,
-                        mCursor.getString(mCursor.getColumnIndex(
-                                PerpetualCalendarContract.PerpetualCalendar.LUNAR_SHORT_NAME)));
-                setText(mSolarTermTextView,
-                        mCursor.getString(mCursor.getColumnIndex(
-                                PerpetualCalendarContract.PerpetualCalendar.SOLAR_TERM_NAME)));
-                setText(mConstellationTextView,
-                        mCursor.getString(mCursor.getColumnIndex(
-                                PerpetualCalendarContract.PerpetualCalendar.CONSTELLATION_NAME)));
-                mDateContainerView.setActivated(mIsActivated);
-                setTextColor(mDayTextView, calendar);
-                byte[] holidayArray = mCursor.getBlob(mCursor.getColumnIndex(
-                        PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_NAMES));
-                byte[] holidayFlagArray = mCursor.getBlob(mCursor.getColumnIndex(
-                        PerpetualCalendarContract.PerpetualCalendar.HOLIDAY_REGION_FLAG_IMG));
-                ObjectInputStream ois = null;
-                ArrayList<String> list = null;
-                try {
-                    ois = new ObjectInputStream(new ByteArrayInputStream(holidayArray));
-                    //noinspection unchecked
-                    list = (ArrayList<String>) ois.readObject();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (ois != null) {
-                        try {
-                            ois.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                setHoliday(list, holidayFlagArray);
+            String todayText;
+            if (Utils.isToday(calendar)) {
+                todayText = mContext.getString(R.string.action_today);
+            } else {
+                todayText = null;
             }
+            setText(mTodayTextView, todayText);
+            mDayTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
+//            setText(mLunarTextView, cursor.getString(cursor.getColumnIndex(
+//                    PerpetualCalendarContract.PerpetualCalendar.LUNAR_SHORT_NAME)));
+            setText(mSolarTermTextView, mResource.getSolarTermName(cursor));
+            setText(mConstellationTextView, mResource.getConstellationName(cursor));
+            mDateContainerView.setActivated(getAdapterPosition() == mActivatedItem);
+            setTextColor(mDayTextView, calendar);
         }
 
         public Cursor getData() {
@@ -303,7 +264,7 @@ public class DayAdapter extends RecyclerView.Adapter {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(
                     mCursor.getLong(mCursor.getColumnIndex(
-                            PerpetualCalendarContract.PerpetualCalendar.SOLAR_TIME_MILLIS)));
+                            PerpetualCalendarContract.PerpetualCalendar.SOLAR)));
             mFrontOffset = findDayOffset(calendar.get(Calendar.DAY_OF_WEEK), firstDayOfWeek,
                     DAYS_IN_WEEK);
         } else {
@@ -320,11 +281,11 @@ public class DayAdapter extends RecyclerView.Adapter {
         return offset;
     }
 
-    public PerpetualCalendar get(int position) {
-        return null;
-    }
-
     public int getPosition(Calendar calendar) {
-        return 0;
+        int position = 0;
+        if (mCursor != null) {
+            position = Utils.daysBetween(PerpetualCalendarContract.MIN_DATE, calendar) + mFrontOffset;
+        }
+        return position;
     }
 }

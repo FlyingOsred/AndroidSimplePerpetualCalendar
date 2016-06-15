@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
 <resources>
-
-    <string name="solar_term_name">Solar term</string>
-
     <string name="solar_term_minor_cold_name">Minor Cold</string>
     <string name="solar_term_major_cold_name">Major Cold</string>
     <string name="solar_term_start_of_spring_name">Start of Spring</string>
@@ -20,7 +21,7 @@
     <string name="solar_term_start_of_autumn_name">Start of Autumn</string>
     <string name="solar_term_limit_of_heat_name">Limit of Heat</string>
     <string name="solar_term_white_dew_name">White Dew</string>
-    <string name="solar_term_autumnal_eqinox_name">Autumnal Equinox</string>
+    <string name="solar_term_autumnal_equinox_name">Autumnal Equinox</string>
     <string name="solar_term_cold_dew_name">Cold Dew</string>
     <string name="solar_term_frost_descent_name">Frost Descent</string>
     <string name="solar_term_start_of_winter_name">Start of Winter</string>

@@ -11,14 +11,21 @@ import android.util.Log;
 
 public final class DatabaseHelper extends SQLiteOpenHelper {
 
+    public static final String DATABASE_NAME = "database.db";
+
+    public static final String CALENDAR_TABLE_NAME = "calendar";
+
     private static final String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
     private static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "database.db";
-
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public SQLiteDatabase getWritableDatabase() {
+        throw new RuntimeException("Operation not supported.");
     }
 
     @Override

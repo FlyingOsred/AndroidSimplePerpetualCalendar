@@ -4,5 +4,7 @@
 <!--This file is auto-generated-->
 <!--DO NOT MODIFY-->
 <resources>
-    <string name="database_version_name" translatable="false">2016-06-15 10:18:06</string>
+    <string name="region_china_name">China</string>
+    <string name="region_taiwan_name">Taiwan</string>
+    <string name="region_hongkong_name">HongKong</string>
 </resources>

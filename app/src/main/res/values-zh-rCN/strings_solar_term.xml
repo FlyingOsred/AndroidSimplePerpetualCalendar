@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
 <resources>
     <string name="solar_term_minor_cold_name">小寒</string>
     <string name="solar_term_major_cold_name">大寒</string>
@@ -17,7 +21,7 @@
     <string name="solar_term_start_of_autumn_name">立秋</string>
     <string name="solar_term_limit_of_heat_name">处暑</string>
     <string name="solar_term_white_dew_name">白露</string>
-    <string name="solar_term_autumnal_eqinox_name">秋分</string>
+    <string name="solar_term_autumnal_equinox_name">秋分</string>
     <string name="solar_term_cold_dew_name">寒露</string>
     <string name="solar_term_frost_descent_name">霜降</string>
     <string name="solar_term_start_of_winter_name">立冬</string>

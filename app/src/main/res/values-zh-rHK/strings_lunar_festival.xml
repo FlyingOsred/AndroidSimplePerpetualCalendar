@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string name="lunar_festival_spring_festival_name">農曆年初一</string>
+    <string name="lunar_festival_lantern_festival_name">元宵節</string>
+    <string name="lunar_festival_dragon_head_raising_festival_name">龍抬頭</string>
+    <string name="lunar_festival_shangsi_festival_name">上巳節</string>
+    <string name="lunar_festival_cold_food_festival_name">寒食節</string>
+    <string name="lunar_festival_tomb_sweeping_day_name">清明節</string>
+    <string name="lunar_festival_dragon_boat_festival_name">端午節</string>
+    <string name="lunar_festival_double_seventh_day_name">七夕</string>
+    <string name="lunar_festival_ghost_festival_name">中元節</string>
+    <string name="lunar_festival_obon_name">盂蘭盆節</string>
+    <string name="lunar_festival_mid_autumn_festival_name">中秋節</string>
+    <string name="lunar_festival_double_ninth_festival_name">重陽節</string>
+    <string name="lunar_festival_winter_clothing_festival_name">寒衣節</string>
+    <string name="lunar_festival_xiayuan_festival_name">下元節</string>
+    <string name="lunar_festival_laba_festival_name">臘八節</string>
+    <string name="lunar_festival_kitchen_god_festival_name">小年</string>
+    <string name="lunar_festival_chinese_new_years_eve_name">除夕</string>
+</resources>

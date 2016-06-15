@@ -87,6 +87,7 @@ public class DatabaseUpdateActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
+            long startTime = System.currentTimeMillis();
             File dbFile = mContext.getDatabasePath(DatabaseHelper.DATABASE_NAME);
             String dbPath = dbFile.getParent();
             Log.d(LOG_TAG, "DatabaseUpdateTask dbFile is " + dbFile.getAbsolutePath() + " dbPath is " + dbPath);
@@ -96,6 +97,7 @@ public class DatabaseUpdateActivity extends AppCompatActivity {
                     Log.d(LOG_TAG, dbPathFile + " is created.");
                 }
             }
+            long writtenBytes = 0;
             InputStream in = null;
             try {
                 in = mContext.getAssets().open(ZIP_FILE_NAME);
@@ -111,18 +113,24 @@ public class DatabaseUpdateActivity extends AppCompatActivity {
                         }
                     }
                     FileOutputStream fileOutput = new FileOutputStream(dbFile);
-                    for (int c = zin.read(); c != -1; c = zin.read()) {
-                        fileOutput.write(c);
-
-                        zin.closeEntry();
-                        fileOutput.close();
+                    byte[] buffer = new byte[4096];
+                    int length = zin.read(buffer);
+                    while (length > 0) {
+                        fileOutput.write(buffer, 0, length);
+                        writtenBytes += length;
+                        length = zin.read(buffer);
                     }
+                    zin.closeEntry();
+                    fileOutput.close();
                 }
                 zin.close();
                 Log.d(LOG_TAG, "DatabaseUpdateTask unzip done");
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            long endTime = System.currentTimeMillis();
+            Log.i(LOG_TAG, "DatabaseUpdateTask unzip " + writtenBytes + " bytes cost "
+                    + (endTime - startTime) + " millis");
             return null;
         }
 

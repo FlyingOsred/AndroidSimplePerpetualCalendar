@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string name="taiwan_festival_republic_day_name">中华民国开国纪念日</string>
+    <string name="taiwan_festival_beano_name">尾牙</string>
+    <string name="taiwan_festival_farmers_day_name">农民节</string>
+    <string name="taiwan_festival_taoist_day_name">道教节</string>
+    <string name="taiwan_festival_peace_memorial_day_name">和平纪念日</string>
+    <string name="taiwan_festival_army_day_children_name">童军节</string>
+    <string name="taiwan_festival_sun_yat_sens_passing_day_name">国父逝世纪念日</string>
+    <string name="taiwan_festival_japanese_aggression_name">反侵略日</string>
+    <string name="taiwan_festival_art_festival_name">美术节</string>
+    <string name="taiwan_festival_day_martyrs_name">革命先烈纪念日</string>
+    <string name="taiwan_festival_joint_service_day_name">联勤节</string>
+    <string name="taiwan_festival_tomb_sweeping_day_name">民族扫墓节</string>
+    <string name="taiwan_festival_army_day_name">陆军节</string>
+    <string name="taiwan_festival_martial_law_anniversary_name">解严纪念日</string>
+    <string name="taiwan_festival_air_force_day_name">空军节</string>
+    <string name="taiwan_festival_navy_day_name">海军节</string>
+    <string name="taiwan_festival_confucius_birthday_name">孔子诞辰纪念日</string>
+    <string name="taiwan_festival_overseas_chinese_day_name">华侨节</string>
+    <string name="taiwan_festival_united_nations_day_name">台湾联合国日</string>
+    <string name="taiwan_festival_taiwan_retrocession_day_name">台湾光复节</string>
+    <string name="taiwan_festival_sun_yat_sens_birthday_name">国父诞辰纪念日</string>
+    <string name="taiwan_festival_cultural_renaissance_day_name">中华文化复兴节</string>
+    <string name="taiwan_festival_gendarmerie_section_day_name">宪兵节</string>
+    <string name="taiwan_festival_constitution_day_name">行宪纪念日</string>
+</resources>

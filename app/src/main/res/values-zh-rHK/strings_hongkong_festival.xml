@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--Copyright (C) 2016 Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.-->
+<!--This file is auto-generated-->
+<!--DO NOT MODIFY-->
+<resources>
+    <string name="hongkong_festival_second_day_of_lunar_new_year_name">農曆年初二</string>
+    <string name="hongkong_festival_third_day_of_lunar_new_year_name">農曆年初三</string>
+    <string name="hongkong_festival_day_following_labour_day_name">勞動節翌日</string>
+    <string name="hongkong_festival_hong_kong_special_administrative_region_establishment_day_name">香港特別行政區成立紀念日</string>
+    <string name="hongkong_festival_day_following_the_mid_autumn_festival_name">中秋節翌日</string>
+    <string name="hongkong_festival_day_following_double_ninth_festival_next_day_name">重陽節翌日</string>
+    <string name="hongkong_festival_the_first_weekday_after_christmas_name">聖誕節後第一個周日</string>
+    <string name="hongkong_festival_the_second_weekday_after_christmas_name">聖誕節後第二個周日</string>
+</resources>

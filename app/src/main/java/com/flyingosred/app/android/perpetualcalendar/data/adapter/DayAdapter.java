@@ -6,13 +6,11 @@ package com.flyingosred.app.android.perpetualcalendar.data.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +20,11 @@ import android.widget.TextView;
 
 import com.flyingosred.app.android.perpetualcalendar.R;
 import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract;
-import com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.perpetualcalendar.data.resource.Resource;
 import com.flyingosred.app.android.perpetualcalendar.util.Utils;
 
 import java.util.Calendar;
 
-import static com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar.DAYS_IN_WEEK;
 import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
 
 public class DayAdapter extends RecyclerView.Adapter {
@@ -104,6 +100,22 @@ public class DayAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public Calendar get(int position) {
+        if (position >= mFrontOffset || mCursor != null) {
+            mCursor.moveToPosition(position - mFrontOffset);
+            return mResource.getCalendar(mCursor);
+        }
+        return null;
+    }
+
+    public int getDataPosition(int position) {
+        return position - mFrontOffset;
+    }
+
+    public Cursor getData() {
+        return mCursor;
+    }
+
     public void setFirstDayOfWeek(int firstDayOfWeek) {
         if (mFirstDayOfWeek != firstDayOfWeek) {
             mFirstDayOfWeek = firstDayOfWeek;
@@ -164,7 +176,7 @@ public class DayAdapter extends RecyclerView.Adapter {
                 return;
             }
             boolean showWeekNumber = mShowWeekNumber
-                    && (getAdapterPosition() % PerpetualCalendar.DAYS_IN_WEEK == 0);
+                    && (getAdapterPosition() % calendar.getActualMaximum(Calendar.DAY_OF_WEEK) == 0);
             setWeekNumber(showWeekNumber, calendar);
             String todayText;
             if (Utils.isToday(calendar)) {
@@ -172,16 +184,15 @@ public class DayAdapter extends RecyclerView.Adapter {
             } else {
                 todayText = null;
             }
-            setText(mTodayTextView, todayText);
+            mResource.setText(mTodayTextView, todayText);
             mDayTextView.setText(String.valueOf(calendar.get(Calendar.DATE)));
-            setText(mLunarTextView, mResource.getLunarShortName(cursor));
-            setText(mSolarTermTextView, mResource.getSolarTermName(cursor));
-            setText(mConstellationTextView, mResource.getConstellationName(cursor));
+            mResource.setText(mLunarTextView, mResource.getLunarShortName(cursor));
+            mResource.setText(mSolarTermTextView, mResource.getSolarTermName(cursor));
+            mResource.setText(mConstellationTextView, mResource.getConstellationName(cursor));
             setHoliday(cursor);
-            int offWork = mResource.getHolidayOffWork(cursor, mHolidayRegion);
-            setText(mOffWorkTextView, mResource.getHolidayOffWorkString(cursor, mHolidayRegion));
+            mResource.setText(mOffWorkTextView, mResource.getHolidayOffWorkString(cursor, mHolidayRegion));
             mDateContainerView.setActivated(getAdapterPosition() == mActivatedItem);
-            setTextColor(mDayTextView, calendar, offWork);
+            mResource.setTextColor(mDayTextView, cursor, mHolidayRegion, mDefaultTextColor);
         }
 
         public Cursor getData() {
@@ -198,42 +209,6 @@ public class DayAdapter extends RecyclerView.Adapter {
             }
         }
 
-        private void setText(TextView textView, String text) {
-            if (text != null) {
-                textView.setText(text);
-                textView.setVisibility(View.VISIBLE);
-            } else {
-                textView.setVisibility(View.GONE);
-            }
-        }
-
-        private void setTextColor(TextView textView, Calendar calendar, int offWork) {
-            int textColor = 0;
-            int textColorResId = 0;
-            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-                textColorResId = R.attr.colorSaturdayText;
-            } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                textColorResId = R.attr.colorSundayText;
-            }
-            if (offWork == 1) {
-                textColorResId = R.attr.colorHolidayText;
-            } else if (offWork == 0) {
-                textColorResId = 0;
-            }
-            if (textColorResId != 0) {
-                TypedValue typedValue = new TypedValue();
-                TypedArray a = mContext.obtainStyledAttributes(typedValue.data, new int[]{textColorResId});
-                textColor = a.getColor(0, 0);
-                a.recycle();
-            }
-
-            if (textColor != 0) {
-                textView.setTextColor(textColor);
-            } else {
-                textView.setTextColor(mDefaultTextColor);
-            }
-        }
-
         private void setHoliday(Cursor cursor) {
             Drawable flagDrawable = mResource.getRegionFlag(mHolidayRegion);
             mHolidayContainerView.removeAllViews();
@@ -243,7 +218,7 @@ public class DayAdapter extends RecyclerView.Adapter {
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 for (int i = 0; i < holidayNames.length; i++) {
                     String holidayName = holidayNames[i];
-                    @SuppressLint("InflateParams") View holidayItem = inflater.inflate(R.layout.holiday_item_view, null);
+                    @SuppressLint("InflateParams") View holidayItem = inflater.inflate(R.layout.day_recycler_view_item_holiday_view, null);
                     AppCompatImageView imageView = (AppCompatImageView) holidayItem.findViewById(R.id.holiday_item_image_view);
                     imageView.setImageDrawable(flagDrawable);
                     TextView textView = (TextView) holidayItem.findViewById(R.id.holiday_item_text_view);
@@ -261,7 +236,7 @@ public class DayAdapter extends RecyclerView.Adapter {
             mCursor.moveToFirst();
             Calendar calendar = mResource.getCalendar(mCursor);
             mFrontOffset = findDayOffset(calendar.get(Calendar.DAY_OF_WEEK), firstDayOfWeek,
-                    DAYS_IN_WEEK);
+                    calendar.getActualMaximum(Calendar.DAY_OF_WEEK));
         } else {
             mFrontOffset = 0;
         }

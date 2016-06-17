@@ -19,7 +19,7 @@
         android:layout_gravity="bottom|end"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="@dimen/day_info_view_holiday_text_size" />
+        android:textSize="@dimen/day_recycler_item_holiday_text_size" />
 
 </LinearLayout>
 

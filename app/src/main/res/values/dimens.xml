@@ -1,14 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="day_info_view_day_text_size">24sp</dimen>
-    <dimen name="day_info_view_constellation_text_size">6sp</dimen>
-    <dimen name="day_info_view_week_number_text_size">6sp</dimen>
-    <dimen name="day_info_view_today_text_size">6sp</dimen>
-    <dimen name="day_info_view_off_or_work_text_size">6sp</dimen>
-    <dimen name="day_info_view_lunar_text_size">6sp</dimen>
-    <dimen name="day_info_view_solar_term_text_size">6sp</dimen>
-    <dimen name="day_info_view_holiday_text_size">6sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="day_recycler_item_day_text_size">24sp</dimen>
     <dimen name="day_recycler_item_constellation_text_size">6sp</dimen>
@@ -19,19 +13,8 @@
     <dimen name="day_recycler_item_solar_term_text_size">6sp</dimen>
     <dimen name="day_recycler_item_holiday_text_size">6sp</dimen>
 
-    <dimen name="day_card_text_view_margin">6dp</dimen>
-
-    <dimen name="day_card_margin">16dp</dimen>
-    <dimen name="day_card_day_text_size">128sp</dimen>
-    <dimen name="day_card_date_text_size">28sp</dimen>
-    <dimen name="day_card_days_from_today_text_size">16sp</dimen>
-    <dimen name="day_card_lunar_text_size">24sp</dimen>
-    <dimen name="day_card_solar_term_text_size">24sp</dimen>
-    <dimen name="day_card_constellation_text_size">24sp</dimen>
-    <dimen name="day_card_off_work_text_size">24sp</dimen>
-    <dimen name="day_card_holiday_text_size">24sp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="day_detail_info_view_day_text_size">64sp</dimen>
+    <dimen name="day_detail_info_view_date_text_size">16sp</dimen>
+    <dimen name="day_detail_info_view_lunar_text_size">16sp</dimen>
 
 </resources>

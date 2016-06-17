@@ -4,6 +4,9 @@
 
 package com.flyingosred.app.android.perpetualcalendar.util;
 
+import android.view.View;
+import android.widget.TextView;
+
 import java.util.Calendar;
 
 public final class Utils {
@@ -107,4 +110,12 @@ public final class Utils {
         return isLeapYear(year) ? 366 : 365;
     }
 
+    public static void setText(TextView textView, String text) {
+        if (text != null) {
+            textView.setText(text);
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            textView.setVisibility(View.GONE);
+        }
+    }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2016. Osred Brockhoist <osred.brockhoist@hotmail.com>. All Rights Reserved.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/day_detail_info_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?popupTextColor"
+        android:textSize="@dimen/day_detail_info_view_date_text_size" />
+
+    <TextView
+        android:id="@+id/day_detail_info_day_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?popupTextColor"
+        android:textSize="@dimen/day_detail_info_view_day_text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/day_detail_info_lunar_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?popupTextColor"
+        android:textSize="@dimen/day_detail_info_view_lunar_text_size" />
+
+</LinearLayout>

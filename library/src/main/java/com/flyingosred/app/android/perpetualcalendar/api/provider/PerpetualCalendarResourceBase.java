@@ -185,9 +185,9 @@ public abstract class PerpetualCalendarResourceBase {
         String dayString = formatLunarChineseDay(context, day);
         sb.append(eraYearString);
         sb.append(WHITESPACE);
-        sb.append(month);
+        sb.append(monthString);
         sb.append(WHITESPACE);
-        sb.append(day);
+        sb.append(dayString);
         return sb.toString();
     }
 

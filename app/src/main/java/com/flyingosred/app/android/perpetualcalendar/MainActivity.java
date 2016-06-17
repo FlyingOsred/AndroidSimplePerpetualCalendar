@@ -8,15 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
-
-public class MainActivity extends AppCompatActivity implements MainActivityFragment.OnDaySelectedListener {
-
-    private boolean mTwoPane = false;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +19,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.day_card_toolbar);
         setSupportActionBar(toolbar);
-
-        if (findViewById(R.id.day_card_container) != null) {
-            mTwoPane = true;
-        }
     }
 
     @Override
@@ -46,23 +37,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onDaySelected(DisplayCalendar displayCalendar) {
-        Log.d(LOG_TAG, "onDaySelected");
-        if (mTwoPane) {
-            Bundle arguments = new Bundle();
-            arguments.putParcelable(DayCardFragment.ARG_DATE, displayCalendar);
-            DayCardFragment fragment = new DayCardFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.day_card_container, fragment)
-                    .commit();
-        } else {
-            Intent intent = new Intent(this, DayCardActivity.class);
-            intent.putExtra(DayCardFragment.ARG_DATE, displayCalendar);
-            startActivity(intent);
-        }
     }
 }

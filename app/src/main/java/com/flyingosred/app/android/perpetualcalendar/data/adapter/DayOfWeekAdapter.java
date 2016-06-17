@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.flyingosred.app.android.perpetualcalendar.R;
-import com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -37,16 +36,17 @@ public class DayOfWeekAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
+        Calendar calendar = Calendar.getInstance();
+        int maxDaysInWeek = calendar.getActualMaximum(Calendar.DAY_OF_WEEK);
         if (mShowWeekNumber && position == 0) {
             viewHolder.mWeekNumberTextView.setVisibility(View.VISIBLE);
         } else {
             viewHolder.mWeekNumberTextView.setVisibility(View.GONE);
         }
         int dayOfWeek = mFirstDayOfWeek + position;
-        if (dayOfWeek > PerpetualCalendar.DAYS_IN_WEEK) {
-            dayOfWeek -= PerpetualCalendar.DAYS_IN_WEEK;
+        if (dayOfWeek > maxDaysInWeek) {
+            dayOfWeek -= maxDaysInWeek;
         }
-        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
         String dayOfWeekString = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT,
                 Locale.getDefault()).toUpperCase(Locale.getDefault());
@@ -55,7 +55,7 @@ public class DayOfWeekAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return PerpetualCalendar.DAYS_IN_WEEK;
+        return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_WEEK);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

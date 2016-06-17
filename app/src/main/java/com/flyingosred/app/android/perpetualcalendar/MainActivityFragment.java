@@ -36,9 +36,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract;
-import com.flyingosred.app.android.perpetualcalendar.data.PerpetualCalendar;
 import com.flyingosred.app.android.perpetualcalendar.data.adapter.DayAdapter;
 import com.flyingosred.app.android.perpetualcalendar.data.adapter.DayOfWeekAdapter;
+import com.flyingosred.app.android.perpetualcalendar.view.DayDetailView;
 import com.flyingosred.app.android.perpetualcalendar.view.DayRecyclerView;
 
 import java.util.Calendar;
@@ -50,7 +50,8 @@ import static com.flyingosred.app.android.perpetualcalendar.api.provider.Perpetu
 import static com.flyingosred.app.android.perpetualcalendar.util.Utils.LOG_TAG;
 
 public class MainActivityFragment extends Fragment implements
-        SharedPreferences.OnSharedPreferenceChangeListener, RecyclerView.OnItemTouchListener, LoaderManager.LoaderCallbacks<Cursor> {
+        SharedPreferences.OnSharedPreferenceChangeListener, RecyclerView.OnItemTouchListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int CONTENT_LOADER_ID = 1;
 
@@ -68,11 +69,11 @@ public class MainActivityFragment extends Fragment implements
 
     private DateChangeReceiver mDateChangeReceiver = new DateChangeReceiver();
 
-    private OnDaySelectedListener mOnDaySelectedListener = null;
-
     private String mHolidayRegion;
 
     private int mFirstDayOfWeek;
+
+    private DayDetailView mDayDetailView;
 
     public MainActivityFragment() {
     }
@@ -80,16 +81,7 @@ public class MainActivityFragment extends Fragment implements
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        try {
-            mOnDaySelectedListener = (OnDaySelectedListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnDaySelectedListener");
-        }
-
         getContext().registerReceiver(mDateChangeReceiver, new IntentFilter(Intent.ACTION_DATE_CHANGED));
-
     }
 
     @Override
@@ -105,6 +97,7 @@ public class MainActivityFragment extends Fragment implements
         mDayView = (DayRecyclerView) view.findViewById(R.id.day_recycler_view);
         mDayOfWeekView = (RecyclerView) view.findViewById(R.id.day_of_week_recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar_loading);
+        mDayDetailView = new DayDetailView(getContext(), view.findViewById(R.id.day_detail_view));
         return view;
     }
 
@@ -189,10 +182,6 @@ public class MainActivityFragment extends Fragment implements
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.d(LOG_TAG, "onLoaderReset");
         mDayAdapter.swapCursor(null);
-    }
-
-    public interface OnDaySelectedListener {
-        void onDaySelected(DisplayCalendar displayCalendar);
     }
 
     private int getPrefFirstDayOfWeek(SharedPreferences sharedPreferences) {
@@ -296,12 +285,12 @@ public class MainActivityFragment extends Fragment implements
     }
 
     private void updateTitle(int position) {
+        updateTitle(mDayAdapter.get(position));
+    }
+
+    private void updateTitle(Calendar calendar) {
         ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
-        DayAdapter.ViewHolder viewHolder = (DayAdapter.ViewHolder) mDayView.findViewHolderForAdapterPosition(position);
-        Cursor cursor = viewHolder.getData();
-        if (cursor != null && actionBar != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(PerpetualCalendarContract.PerpetualCalendar.SOLAR)));
+        if (calendar != null && actionBar != null) {
             String date = DateUtils.formatDateRange(getContext(), calendar.getTimeInMillis(),
                     calendar.getTimeInMillis(),
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_MONTH_DAY
@@ -318,16 +307,13 @@ public class MainActivityFragment extends Fragment implements
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            if ((dx != 0 || dy != 0)
-                    && recyclerView.getScrollState() != RecyclerView.SCROLL_STATE_DRAGGING) {
-                View view = recyclerView.findChildViewUnder(dx, dy);
-                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
-                int firstItem = layoutManager.findFirstCompletelyVisibleItemPosition();
-                int lastItem = layoutManager.findLastCompletelyVisibleItemPosition();
-                final int count = (lastItem - firstItem) / 2;
-                int center = firstItem + count;
-                updateTitle(center);
-            }
+            mDayDetailView.hide();
+            GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+            int firstItem = layoutManager.findFirstCompletelyVisibleItemPosition();
+            int lastItem = layoutManager.findLastCompletelyVisibleItemPosition();
+            final int count = (lastItem - firstItem) / 2;
+            int center = firstItem + count;
+            updateTitle(center);
         }
     }
 
@@ -342,7 +328,7 @@ public class MainActivityFragment extends Fragment implements
         int position = mDayAdapter.getPosition(calendar);
         Log.d(LOG_TAG, "scrollToDate " + calendar.getTime() + " position " + position);
         GridLayoutManager layoutManager = (GridLayoutManager) mDayView.getLayoutManager();
-        int offset = PerpetualCalendar.DAYS_IN_WEEK * 2 + findDayOffset(calendar);
+        int offset = calendar.getActualMaximum(Calendar.DAY_OF_WEEK) * 2 + findDayOffset(calendar);
         int innerPosition = position - offset;
         if (innerPosition < 0) {
             innerPosition = 0;
@@ -354,6 +340,9 @@ public class MainActivityFragment extends Fragment implements
 
     private void activeItem(int position, boolean showCard) {
         if (showCard) {
+            int dataPosition = mDayAdapter.getDataPosition(position);
+            Cursor cursor = mDayAdapter.getData();
+            mDayDetailView.setData(cursor, dataPosition, mHolidayRegion);
             DayAdapter.ViewHolder viewHolder =
                     (DayAdapter.ViewHolder) mDayView.findViewHolderForAdapterPosition(position);
             //mOnDaySelectedListener.onDaySelected(viewHolder.getDisplayCalendar());
@@ -373,7 +362,7 @@ public class MainActivityFragment extends Fragment implements
         int dayOfWeekStart = calendar.get(Calendar.DAY_OF_WEEK);
         final int offset = dayOfWeekStart - mFirstDayOfWeek;
         if (dayOfWeekStart < mFirstDayOfWeek) {
-            return offset + PerpetualCalendar.DAYS_IN_WEEK;
+            return offset + calendar.getActualMaximum(Calendar.DAY_OF_WEEK);
         }
         return offset;
     }

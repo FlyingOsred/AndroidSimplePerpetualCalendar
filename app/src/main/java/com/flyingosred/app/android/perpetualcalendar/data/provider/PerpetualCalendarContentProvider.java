@@ -34,16 +34,16 @@ public class PerpetualCalendarContentProvider extends ContentProvider {
 
     private static final UriMatcher URI_MATCHER;
 
-    private DatabaseHelper mDbHelper;
-
-    private SQLiteDatabase mDatabase;
-
     static {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
         URI_MATCHER.addURI(PerpetualCalendarContract.AUTHORITY, "date", CODE_DATE);
         URI_MATCHER.addURI(PerpetualCalendarContract.AUTHORITY, "date/*", CODE_DATE_DAY);
         URI_MATCHER.addURI(PerpetualCalendarContract.AUTHORITY, "date/*/*", CODE_DATE_RANGE);
     }
+
+    private DatabaseHelper mDbHelper;
+
+    private SQLiteDatabase mDatabase;
 
     public PerpetualCalendarContentProvider() {
     }

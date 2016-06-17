@@ -58,18 +58,6 @@ public class DayOfWeekAdapter extends RecyclerView.Adapter {
         return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_WEEK);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public final TextView mDayOfWeekTextView;
-        public final TextView mWeekNumberTextView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            mDayOfWeekTextView = (TextView) itemView.findViewById(R.id.day_of_week_text_view);
-            mWeekNumberTextView = (TextView) itemView.findViewById(R.id.week_number_label_text_view);
-        }
-    }
-
     public void setFirstDayOfWeek(int firstDayOfWeek) {
         if (mFirstDayOfWeek != firstDayOfWeek) {
             mFirstDayOfWeek = firstDayOfWeek;
@@ -81,6 +69,18 @@ public class DayOfWeekAdapter extends RecyclerView.Adapter {
         if (mShowWeekNumber != showWeekNumber) {
             mShowWeekNumber = showWeekNumber;
             notifyDataSetChanged();
+        }
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        public final TextView mDayOfWeekTextView;
+        public final TextView mWeekNumberTextView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            mDayOfWeekTextView = (TextView) itemView.findViewById(R.id.day_of_week_text_view);
+            mWeekNumberTextView = (TextView) itemView.findViewById(R.id.week_number_label_text_view);
         }
     }
 }

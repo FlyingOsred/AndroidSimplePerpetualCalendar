@@ -5,7 +5,6 @@
 package com.flyingosred.app.android.perpetualcalendar.data.loader;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 
 import com.flyingosred.app.android.perpetualcalendar.api.provider.PerpetualCalendarContract;

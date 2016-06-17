@@ -34,6 +34,43 @@ public final class PerpetualCalendarContract {
     private PerpetualCalendarContract() {
     }
 
+    protected interface SolarColumns {
+
+        String SOLAR = "solar";
+    }
+
+    protected interface LunarColumns {
+
+        String LUNAR_YEAR = "lunar_year";
+
+        String LUNAR_MONTH = "lunar_month";
+
+        String LUNAR_DAY = "lunar_day";
+
+        String LUNAR_IS_LEAP_MONTH = "lunar_is_leap_month";
+
+        String LUNAR_DAYS_IN_MONTH = "lunar_days_in_month";
+
+    }
+
+    protected interface SolarTermColumns {
+
+        String SOLAR_TERM_ID = "solar_term_id";
+
+    }
+
+    protected interface ConstellationColumns {
+
+        String CONSTELLATION_ID = "constellation_id";
+
+    }
+
+    protected interface HolidayColumns {
+
+        String HOLIDAY_PREFIX = "holiday_";
+
+    }
+
     public static final class PerpetualCalendar implements BaseColumns, SolarColumns, LunarColumns,
             SolarTermColumns, HolidayColumns, ConstellationColumns {
 
@@ -69,25 +106,6 @@ public final class PerpetualCalendarContract {
         }
     }
 
-    protected interface SolarColumns {
-
-        String SOLAR = "solar";
-    }
-
-    protected interface LunarColumns {
-
-        String LUNAR_YEAR = "lunar_year";
-
-        String LUNAR_MONTH = "lunar_month";
-
-        String LUNAR_DAY = "lunar_day";
-
-        String LUNAR_IS_LEAP_MONTH = "lunar_is_leap_month";
-
-        String LUNAR_DAYS_IN_MONTH = "lunar_days_in_month";
-
-    }
-
     public static final class Lunar implements BaseColumns, LunarColumns {
 
         public static final int DAYS_IN_LARGE_MONTH = 30;
@@ -119,12 +137,6 @@ public final class PerpetualCalendarContract {
         }
     }
 
-    protected interface SolarTermColumns {
-
-        String SOLAR_TERM_ID = "solar_term_id";
-
-    }
-
     public static final class SolarTerm implements BaseColumns, SolarTermColumns {
 
         public static final int MAX_ID = 24;
@@ -133,24 +145,11 @@ public final class PerpetualCalendarContract {
         }
     }
 
-
-    protected interface ConstellationColumns {
-
-        String CONSTELLATION_ID = "constellation_id";
-
-    }
-
     public static final class Constellation implements BaseColumns, ConstellationColumns {
 
         public static final int MAX_ID = 12;
 
         private Constellation() {
         }
-    }
-
-    protected interface HolidayColumns {
-
-        String HOLIDAY_PREFIX = "holiday_";
-
     }
 }

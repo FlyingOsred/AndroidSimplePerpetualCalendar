@@ -139,6 +139,34 @@ public class DayAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void computeOffset(int firstDayOfWeek) {
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+            Calendar calendar = mResource.getCalendar(mCursor);
+            mFrontOffset = findDayOffset(calendar.get(Calendar.DAY_OF_WEEK), firstDayOfWeek,
+                    calendar.getActualMaximum(Calendar.DAY_OF_WEEK));
+        } else {
+            mFrontOffset = 0;
+        }
+        Log.d(LOG_TAG, "Front offset is " + mFrontOffset);
+    }
+
+    private int findDayOffset(int dayOfWeekStart, int firstDayOfWeek, int maxDaysInWeek) {
+        final int offset = dayOfWeekStart - firstDayOfWeek;
+        if (dayOfWeekStart < firstDayOfWeek) {
+            return offset + maxDaysInWeek;
+        }
+        return offset;
+    }
+
+    public int getPosition(Calendar calendar) {
+        int position = 0;
+        if (mCursor != null) {
+            position = Utils.daysBetween(PerpetualCalendarContract.MIN_DATE, calendar) + mFrontOffset;
+        }
+        return position;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView mWeekNumberTextView;
@@ -229,33 +257,5 @@ public class DayAdapter extends RecyclerView.Adapter {
                 mHolidayContainerView.setVisibility(View.GONE);
             }
         }
-    }
-
-    public void computeOffset(int firstDayOfWeek) {
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-            Calendar calendar = mResource.getCalendar(mCursor);
-            mFrontOffset = findDayOffset(calendar.get(Calendar.DAY_OF_WEEK), firstDayOfWeek,
-                    calendar.getActualMaximum(Calendar.DAY_OF_WEEK));
-        } else {
-            mFrontOffset = 0;
-        }
-        Log.d(LOG_TAG, "Front offset is " + mFrontOffset);
-    }
-
-    private int findDayOffset(int dayOfWeekStart, int firstDayOfWeek, int maxDaysInWeek) {
-        final int offset = dayOfWeekStart - firstDayOfWeek;
-        if (dayOfWeekStart < firstDayOfWeek) {
-            return offset + maxDaysInWeek;
-        }
-        return offset;
-    }
-
-    public int getPosition(Calendar calendar) {
-        int position = 0;
-        if (mCursor != null) {
-            position = Utils.daysBetween(PerpetualCalendarContract.MIN_DATE, calendar) + mFrontOffset;
-        }
-        return position;
     }
 }

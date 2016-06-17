@@ -273,17 +273,6 @@ public class MainActivityFragment extends Fragment implements
 
     }
 
-    private class DayViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            View view = mDayView.findChildViewUnder(e.getX(), e.getY());
-            int position = mDayView.getChildAdapterPosition(view);
-            Log.d(LOG_TAG, "onSingleTapConfirmed position is " + position);
-            activeItem(position, true);
-            return super.onSingleTapConfirmed(e);
-        }
-    }
-
     private void updateTitle(int position) {
         updateTitle(mDayAdapter.get(position));
     }
@@ -296,31 +285,6 @@ public class MainActivityFragment extends Fragment implements
                     DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_MONTH_DAY
                             | DateUtils.FORMAT_SHOW_YEAR).toUpperCase(Locale.getDefault());
             actionBar.setTitle(date);
-        }
-    }
-
-    private class DayViewOnScrollListener extends RecyclerView.OnScrollListener {
-
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            mDayDetailView.hide();
-            GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
-            int firstItem = layoutManager.findFirstCompletelyVisibleItemPosition();
-            int lastItem = layoutManager.findLastCompletelyVisibleItemPosition();
-            final int count = (lastItem - firstItem) / 2;
-            int center = firstItem + count;
-            updateTitle(center);
-        }
-    }
-
-    private class DayAdapterDataObserver extends RecyclerView.AdapterDataObserver {
-
-        public void onChanged() {
-            Log.d(LOG_TAG, "DayAdapterDataObserver onChanged");
         }
     }
 
@@ -350,14 +314,6 @@ public class MainActivityFragment extends Fragment implements
         mDayAdapter.activateItem(position);
     }
 
-    private class DateChangeReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(LOG_TAG, "onReceive date change");
-        }
-    }
-
     private int findDayOffset(Calendar calendar) {
         int dayOfWeekStart = calendar.get(Calendar.DAY_OF_WEEK);
         final int offset = dayOfWeekStart - mFirstDayOfWeek;
@@ -365,5 +321,49 @@ public class MainActivityFragment extends Fragment implements
             return offset + calendar.getActualMaximum(Calendar.DAY_OF_WEEK);
         }
         return offset;
+    }
+
+    private class DayViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            View view = mDayView.findChildViewUnder(e.getX(), e.getY());
+            int position = mDayView.getChildAdapterPosition(view);
+            Log.d(LOG_TAG, "onSingleTapConfirmed position is " + position);
+            activeItem(position, true);
+            return super.onSingleTapConfirmed(e);
+        }
+    }
+
+    private class DayViewOnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            mDayDetailView.hide();
+            GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+            int firstItem = layoutManager.findFirstCompletelyVisibleItemPosition();
+            int lastItem = layoutManager.findLastCompletelyVisibleItemPosition();
+            final int count = (lastItem - firstItem) / 2;
+            int center = firstItem + count;
+            updateTitle(center);
+        }
+    }
+
+    private class DayAdapterDataObserver extends RecyclerView.AdapterDataObserver {
+
+        public void onChanged() {
+            Log.d(LOG_TAG, "DayAdapterDataObserver onChanged");
+        }
+    }
+
+    private class DateChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(LOG_TAG, "onReceive date change");
+        }
     }
 }

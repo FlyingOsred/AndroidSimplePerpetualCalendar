@@ -10,6 +10,7 @@ import android.os.CountDownTimer;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flyingosred.app.android.perpetualcalendar.R;
@@ -34,6 +35,12 @@ public class DayDetailView {
 
     private final TextView mDayTextView;
 
+    private final TextView mConstellationTextView;
+
+    private final TextView mSolarTermTextView;
+
+    private final LinearLayout mHolidayContainer;
+
     private final TextView mLunarTextView;
 
     private final CountDownTimer mCountDownTimer;
@@ -48,6 +55,9 @@ public class DayDetailView {
         mDayTextView = (TextView) root.findViewById(R.id.day_detail_info_day_text_view);
         mDefaultTextColor = mDayTextView.getCurrentTextColor();
         mLunarTextView = (TextView) root.findViewById(R.id.day_detail_info_lunar_date_text_view);
+        mConstellationTextView = (TextView) root.findViewById(R.id.day_detail_extra_info_constellation_text_view);
+        mSolarTermTextView = (TextView) root.findViewById(R.id.day_detail_extra_info_solar_term_text_view);
+        mHolidayContainer = (LinearLayout) root.findViewById(R.id.day_detail_extra_info_holiday_container_view);
         mCountDownTimer = new CountDownTimer(SHOW_PERIOD, SHOW_PERIOD) {
 
             public void onTick(long millisUntilFinished) {

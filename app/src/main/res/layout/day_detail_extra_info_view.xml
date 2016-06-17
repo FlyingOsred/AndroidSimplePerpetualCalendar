@@ -10,51 +10,21 @@
     android:gravity="end"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/day_detail_extra_info_constellation_text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/day_extra_info_constellation_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/day_detail_extra_info_solar_term_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:id="@+id/day_extra_info_solar_term_container_view"
+        android:id="@+id/day_detail_extra_info_holiday_container_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/solar_term_name" />
-
-        <TextView
-            android:id="@+id/day_extra_info_solar_term_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/day_extra_info_holiday_container_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pref_holiday_region_title" />
-
-    </LinearLayout>
+        android:orientation="vertical" />
 
 </LinearLayout>

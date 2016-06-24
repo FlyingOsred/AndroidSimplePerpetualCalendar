@@ -47,10 +47,14 @@ public class DayDetailView {
 
     private final int mDefaultTextColor;
 
-    public DayDetailView(Context context, View root) {
+    private final boolean mIsFixed;
+
+    public DayDetailView(Context context, View root, boolean isFixed) {
         mContext = context;
         mResource = new Resource(context);
         mRootView = root;
+        mIsFixed = isFixed;
+        Log.d(LOG_TAG, "Detail view fixed is " + mIsFixed);
         mDateTextView = (TextView) root.findViewById(R.id.day_detail_info_date_text_view);
         mDayTextView = (TextView) root.findViewById(R.id.day_detail_info_day_text_view);
         mDefaultTextColor = mDayTextView.getCurrentTextColor();
@@ -58,32 +62,41 @@ public class DayDetailView {
         mConstellationTextView = (TextView) root.findViewById(R.id.day_detail_extra_info_constellation_text_view);
         mSolarTermTextView = (TextView) root.findViewById(R.id.day_detail_extra_info_solar_term_text_view);
         mHolidayContainer = (LinearLayout) root.findViewById(R.id.day_detail_extra_info_holiday_container_view);
-        mCountDownTimer = new CountDownTimer(SHOW_PERIOD, SHOW_PERIOD) {
+        if (isFixed) {
+            mCountDownTimer = null;
+        } else {
+            mCountDownTimer = new CountDownTimer(SHOW_PERIOD, SHOW_PERIOD) {
 
-            public void onTick(long millisUntilFinished) {
-            }
+                public void onTick(long millisUntilFinished) {
+                }
 
-            public void onFinish() {
-                mRootView.setVisibility(View.GONE);
-            }
-        };
-        mRootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hide();
-            }
-        });
+                public void onFinish() {
+                    mRootView.setVisibility(View.GONE);
+                }
+            };
+            mRootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hide();
+                }
+            });
+        }
+
     }
 
     public void show() {
-        mCountDownTimer.cancel();
-        mRootView.setVisibility(View.VISIBLE);
-        mCountDownTimer.start();
+        if (!mIsFixed) {
+            mCountDownTimer.cancel();
+            mRootView.setVisibility(View.VISIBLE);
+            mCountDownTimer.start();
+        }
     }
 
     public void hide() {
-        mCountDownTimer.cancel();
-        mRootView.setVisibility(View.GONE);
+        if (!mIsFixed) {
+            mCountDownTimer.cancel();
+            mRootView.setVisibility(View.GONE);
+        }
     }
 
     public void setData(Cursor cursor, int position, String region) {

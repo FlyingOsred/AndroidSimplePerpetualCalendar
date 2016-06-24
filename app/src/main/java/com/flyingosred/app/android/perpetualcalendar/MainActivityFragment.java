@@ -97,7 +97,12 @@ public class MainActivityFragment extends Fragment implements
         mDayView = (DayRecyclerView) view.findViewById(R.id.day_recycler_view);
         mDayOfWeekView = (RecyclerView) view.findViewById(R.id.day_of_week_recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar_loading);
-        mDayDetailView = new DayDetailView(getContext(), view.findViewById(R.id.day_detail_view));
+        boolean isDetailFixed = false;
+        if (view.findViewById(R.id.day_detail_fixed_view) != null) {
+            isDetailFixed = true;
+        }
+        mDayDetailView = new DayDetailView(getContext(), view.findViewById(R.id.day_detail_view),
+                isDetailFixed);
         return view;
     }
 
@@ -302,14 +307,11 @@ public class MainActivityFragment extends Fragment implements
         mDayAdapter.activateItem(position);
     }
 
-    private void activeItem(int position, boolean showCard) {
-        if (showCard) {
+    private void activeItem(int position, boolean showDetails) {
+        if (showDetails) {
             int dataPosition = mDayAdapter.getDataPosition(position);
             Cursor cursor = mDayAdapter.getData();
             mDayDetailView.setData(cursor, dataPosition, mHolidayRegion);
-            DayAdapter.ViewHolder viewHolder =
-                    (DayAdapter.ViewHolder) mDayView.findViewHolderForAdapterPosition(position);
-            //mOnDaySelectedListener.onDaySelected(viewHolder.getDisplayCalendar());
         }
         mDayAdapter.activateItem(position);
     }
